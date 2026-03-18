@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuickKit — 25+ Tools in Your Mac Menu Bar</title>
+<meta name="description" content="A lightweight macOS menu bar utility with 25+ productivity tools for developers and designers. JSON formatter, password generator, color picker, and more — one click away.">
+<meta name="keywords" content="macOS, menu bar, developer tools, productivity, JSON formatter, password generator, color picker, UUID, mac utility">
+<meta property="og:title" content="QuickKit — 25+ Tools in Your Mac Menu Bar">
+<meta property="og:description" content="Lightweight macOS menu bar utility with 25+ productivity tools. Zero setup, 100% offline.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#0c0c0f;color:#e4e4e7;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:#818cf8;text-decoration:none}
+a:hover{color:#a5b4fc}
+
+/* Nav */
+nav{padding:20px 0;border-bottom:1px solid #1e1e24;position:sticky;top:0;background:rgba(12,12,15,0.9);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:100}
+nav .container{display:flex;align-items:center;justify-content:space-between;max-width:960px;margin:0 auto;padding:0 24px}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:#e4e4e7}
+.nav-logo{width:32px;height:32px;background:linear-gradient(135deg,#6366f1,#a855f7);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff}
+.nav-links{display:flex;align-items:center;gap:24px}
+.nav-links a{color:#a1a1aa;font-size:14px;font-weight:500}
+.nav-links a:hover{color:#a5b4fc}
+.nav-cta{background:linear-gradient(135deg,#6366f1,#a855f7)!important;color:#fff!important;padding:8px 20px;border-radius:8px;font-weight:600}
+.nav-cta:hover{opacity:0.9}
+
+/* Hero */
+.hero{padding:100px 0 80px;text-align:center}
+.hero .container{max-width:720px;margin:0 auto;padding:0 24px}
+.badge{display:inline-block;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.25);color:#818cf8;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:24px}
+.hero h1{font-size:52px;font-weight:700;line-height:1.12;margin-bottom:20px}
+.hero h1 span{background:linear-gradient(135deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:18px;color:#a1a1aa;max-width:540px;margin:0 auto 36px}
+.hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.hero-cta{display:inline-block;background:linear-gradient(135deg,#6366f1,#a855f7);color:#fff;padding:14px 36px;border-radius:12px;font-size:16px;font-weight:600;transition:transform 0.2s,box-shadow 0.2s}
+.hero-cta:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,102,241,0.35);color:#fff}
+.hero-secondary{display:inline-flex;align-items:center;gap:8px;color:#a1a1aa;padding:14px 28px;border-radius:12px;border:1px solid #27272a;font-size:15px;font-weight:500;transition:border-color 0.2s}
+.hero-secondary:hover{border-color:#6366f1;color:#e4e4e7}
+
+/* Stats */
+.stats{padding:0 0 60px;text-align:center}
+.stats .container{max-width:640px;margin:0 auto;padding:0 24px;display:flex;justify-content:center;gap:48px}
+.stat{text-align:center}
+.stat-number{font-size:32px;font-weight:700;background:linear-gradient(135deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{font-size:13px;color:#71717a;margin-top:4px}
+
+/* Tool Categories */
+.categories{padding:80px 0;border-top:1px solid #1e1e24}
+.categories .container{max-width:960px;margin:0 auto;padding:0 24px}
+.categories h2{text-align:center;font-size:28px;margin-bottom:12px}
+.categories>p,.categories .container>p{text-align:center;color:#a1a1aa;margin-bottom:48px;font-size:16px}
+.cat-section{margin-bottom:48px}
+.cat-section:last-child{margin-bottom:0}
+.cat-header{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.cat-icon{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px}
+.cat-icon.text{background:rgba(34,197,94,0.15);color:#22c55e}
+.cat-icon.dev{background:rgba(99,102,241,0.15);color:#818cf8}
+.cat-icon.design{background:rgba(236,72,153,0.15);color:#ec4899}
+.cat-icon.util{background:rgba(245,158,11,0.15);color:#f59e0b}
+.cat-header h3{font-size:18px;font-weight:600}
+.tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tool-card{background:#18181b;border:1px solid #27272a;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;transition:border-color 0.2s}
+.tool-card:hover{border-color:#6366f1}
+.tool-emoji{font-size:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);border-radius:8px;flex-shrink:0}
+.tool-info h4{font-size:14px;font-weight:600;margin-bottom:2px;color:#e4e4e7}
+.tool-info p{font-size:12px;color:#71717a;line-height:1.4}
+.tool-badge{margin-left:auto;font-size:10px;font-weight:600;padding:3px 8px;border-radius:6px;flex-shrink:0;text-transform:uppercase;letter-spacing:0.5px}
+.tool-badge.new{background:rgba(99,102,241,0.12);color:#818cf8}
+
+/* Features */
+.features{padding:80px 0;border-top:1px solid #1e1e24}
+.features .container{max-width:960px;margin:0 auto;padding:0 24px}
+.features h2{text-align:center;font-size:28px;margin-bottom:12px}
+.features>p,.features .container>p{text-align:center;color:#a1a1aa;margin-bottom:48px;font-size:16px}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.feature-card{background:#18181b;border:1px solid #27272a;border-radius:16px;padding:28px;transition:border-color 0.2s}
+.feature-card:hover{border-color:#6366f1}
+.feature-card .f-icon{font-size:24px;margin-bottom:14px}
+.feature-card h3{font-size:16px;margin-bottom:8px;color:#a5b4fc}
+.feature-card p{font-size:14px;color:#a1a1aa;line-height:1.6}
+
+/* FAQ */
+.faq{padding:80px 0;border-top:1px solid #1e1e24}
+.faq .container{max-width:640px;margin:0 auto;padding:0 24px}
+.faq h2{text-align:center;font-size:28px;margin-bottom:48px}
+.faq-item{border-bottom:1px solid #1e1e24;padding:20px 0}
+.faq-item:first-of-type{border-top:1px solid #1e1e24}
+.faq-item h3{font-size:15px;font-weight:600;margin-bottom:8px;color:#e4e4e7}
+.faq-item p{font-size:14px;color:#a1a1aa;line-height:1.7}
+
+/* Footer */
+footer{padding:40px 0;border-top:1px solid #1e1e24}
+footer .container{max-width:960px;margin:0 auto;padding:0 24px;text-align:center}
+.footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:16px}
+.footer-links a{color:#71717a;font-size:13px}
+.footer-links a:hover{color:#a5b4fc}
+footer p{color:#52525b;font-size:13px}
+
+/* Responsive */
+@media(max-width:768px){
+  .hero h1{font-size:36px}
+  .hero-actions{flex-direction:column;align-items:center}
+  .stats .container{gap:32px}
+  .stat-number{font-size:24px}
+  .tools-grid{grid-template-columns:1fr}
+  .features-grid{grid-template-columns:1fr}
+  .nav-links{gap:16px}
+  .nav-links a.hide-mobile{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-brand">
+      <div class="nav-logo">&#9889;</div>
+      QuickKit
+    </div>
+    <div class="nav-links">
+      <a href="#tools" class="hide-mobile">Tools</a>
+      <a href="#features" class="hide-mobile">Features</a>
+      <a href="#faq">FAQ</a>
+      <a href="#" class="nav-cta">Download</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="badge">macOS 14+ &middot; Menu Bar App</div>
+    <h1>25+ tools,<br>one <span>click away</span></h1>
+    <p>A free, lightweight macOS menu bar utility packed with developer, text, design, and everyday tools. No setup. No accounts. 100% offline.</p>
+    <div class="hero-actions">
+      <a href="#" class="hero-cta">Download Free for Mac</a>
+      <a href="#tools" class="hero-secondary">&#9889; See all tools</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="container">
+    <div class="stat">
+      <div class="stat-number">25+</div>
+      <div class="stat-label">Built-in Tools</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">0</div>
+      <div class="stat-label">Dependencies</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Offline</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">Free</div>
+      <div class="stat-label">Forever</div>
+    </div>
+  </div>
+</section>
+
+<section class="categories" id="tools">
+  <div class="container">
+    <h2>Every tool you reach for, daily</h2>
+    <p>Organized by category. Searchable with <kbd style="background:#27272a;padding:2px 8px;border-radius:4px;font-size:12px;font-family:monospace">&#8984;K</kbd></p>
+
+    <div class="cat-section">
+      <div class="cat-header">
+        <div class="cat-icon dev">&#60;/&#62;</div>
+        <h3>Developer Tools</h3>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-emoji">{ }</div>
+          <div class="tool-info"><h4>JSON Formatter</h4><p>Format &amp; validate JSON instantly</p></div>
+
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128273;</div>
+          <div class="tool-info"><h4>JWT Decoder</h4><p>Decode and inspect JWT tokens</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128271;</div>
+          <div class="tool-info"><h4>Base64 Encode/Decode</h4><p>Encode or decode Base64 strings</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128300;</div>
+          <div class="tool-info"><h4>Regex Tester</h4><p>Test regular expressions live</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">#</div>
+          <div class="tool-info"><h4>Hash Generator</h4><p>MD5, SHA-1, SHA-256 hashes</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128737;</div>
+          <div class="tool-info"><h4>UUID Generator</h4><p>Generate random UUIDs</p></div>
+
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#9200;</div>
+          <div class="tool-info"><h4>Epoch Converter</h4><p>Unix timestamp &#8596; date conversion</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128279;</div>
+          <div class="tool-info"><h4>URL Encode/Decode</h4><p>Encode or decode URL strings</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128336;</div>
+          <div class="tool-info"><h4>Cron Parser</h4><p>Parse cron expressions</p></div>
+          <span class="tool-badge new">New</span>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128196;</div>
+          <div class="tool-info"><h4>Markdown Preview</h4><p>Preview markdown in real time</p></div>
+          <span class="tool-badge new">New</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-section">
+      <div class="cat-header">
+        <div class="cat-icon text">Aa</div>
+        <h3>Text Tools</h3>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-emoji">&#128209;</div>
+          <div class="tool-info"><h4>Text Compare</h4><p>Compare two texts &amp; highlight diffs</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128260;</div>
+          <div class="tool-info"><h4>Case Converter</h4><p>camelCase, snake_case, UPPER, lower</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128203;</div>
+          <div class="tool-info"><h4>Lorem Ipsum</h4><p>Generate placeholder text</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128220;</div>
+          <div class="tool-info"><h4>Word Counter</h4><p>Count words, characters, lines</p></div>
+
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128264;</div>
+          <div class="tool-info"><h4>Text to Speech</h4><p>Convert text to audio</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128516;</div>
+          <div class="tool-info"><h4>Text to Emoji</h4><p>Transform text into emoji</p></div>
+          <span class="tool-badge new">New</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-section">
+      <div class="cat-header">
+        <div class="cat-icon design">&#127912;</div>
+        <h3>Design Tools</h3>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-emoji">&#127752;</div>
+          <div class="tool-info"><h4>Color Generator</h4><p>Generate random color palettes</p></div>
+
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128065;</div>
+          <div class="tool-info"><h4>Color Picker</h4><p>System-wide eyedropper tool</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128247;</div>
+          <div class="tool-info"><h4>Image Compressor</h4><p>Reduce image size, keep quality</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128167;</div>
+          <div class="tool-info"><h4>Watermark Tool</h4><p>Add watermarks to images</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cat-section">
+      <div class="cat-header">
+        <div class="cat-icon util">&#9881;</div>
+        <h3>Utility Tools</h3>
+      </div>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <div class="tool-emoji">&#128274;</div>
+          <div class="tool-info"><h4>Password Generator</h4><p>Create strong random passwords</p></div>
+
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#9638;</div>
+          <div class="tool-info"><h4>QR Code Generator</h4><p>Create QR codes instantly</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128207;</div>
+          <div class="tool-info"><h4>Unit Converter</h4><p>Length, weight, temp &amp; more</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#9878;</div>
+          <div class="tool-info"><h4>BMI Calculator</h4><p>Calculate Body Mass Index</p></div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-emoji">&#128279;</div>
+          <div class="tool-info"><h4>URL Shortener</h4><p>Shorten long URLs for sharing</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <h2>Built for speed</h2>
+    <p>QuickKit is designed to stay out of your way until you need it.</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="f-icon">&#128269;</div>
+        <h3>Instant Search</h3>
+        <p>Hit &#8984;K to search across all tools. Find what you need in milliseconds.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">&#11088;</div>
+        <h3>Favorites</h3>
+        <p>Bookmark your most-used tools for one-click access from the top of the panel.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">&#9000;</div>
+        <h3>Keyboard Shortcuts</h3>
+        <p>Power shortcuts like &#8984;&#8679;J for JSON and &#8984;&#8679;P for passwords. Zero friction.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">&#128274;</div>
+        <h3>100% Offline</h3>
+        <p>No data ever leaves your Mac. No accounts, no analytics, no telemetry.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">&#9889;</div>
+        <h3>Zero Dependencies</h3>
+        <p>Pure Swift and SwiftUI. No bloat, no Electron, no runtime overhead.</p>
+      </div>
+      <div class="feature-card">
+        <div class="f-icon">&#127769;</div>
+        <h3>Dark Mode Native</h3>
+        <p>Beautiful dark interface that fits seamlessly with your macOS experience.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="container">
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>Does QuickKit require an internet connection?</h3>
+      <p>No. QuickKit runs entirely on your Mac. No data is sent anywhere, ever. The only exception is the URL Shortener tool, which requires a connection to shorten links.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What macOS versions are supported?</h3>
+      <p>QuickKit requires macOS 14 (Sonoma) or later. It runs natively on both Apple Silicon and Intel Macs.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is QuickKit really free?</h3>
+      <p>Yes. All 25+ tools are completely free with no paywalls, no subscriptions, and no in-app purchases.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Where does QuickKit live?</h3>
+      <p>In your menu bar. Click the bolt icon to open the tool panel. It stays out of your Dock and out of your way.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="mailto:rohitsainier@gmail.com">Contact</a>
+    </div>
+    <p>&copy; 2026 Rohit Saini. All rights reserved.</p>
+  </div>
+</footer>
+
+</body>
+</html>
