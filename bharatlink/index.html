@@ -198,7 +198,7 @@
 
     /* ─── Install Box ─── */
     .install-box {
-      max-width: 580px;
+      max-width: 720px;
       margin: 0 auto 24px;
       background: var(--bg-subtle);
       border: 1px solid var(--border);
@@ -259,6 +259,8 @@
       font-family: var(--mono);
       font-size: 14px;
       line-height: 1.8;
+      text-align: left;
+      overflow-x: auto;
     }
 
     .install-body .prompt { color: var(--green); user-select: none; }
@@ -754,7 +756,7 @@
       </div>
       <div class="install-body">
         <div><span class="comment"># Install (macOS/Linux) — no Rust needed</span></div>
-        <div id="install-cmd"><span class="prompt">$ </span><span class="cmd">curl</span> <span class="flag">-fsSL</span> <span class="string">https://raw.githubusercontent.com/rohitsainier/terminal/main/install.sh</span> | <span class="cmd">sh</span></div>
+        <div id="install-cmd" style="white-space:nowrap"><span class="prompt">$ </span><span class="cmd">curl</span> <span class="flag">-fsSL</span> <span class="string">https://raw.githubusercontent.com/rohitsainier/terminal/main/install.sh</span> | <span class="cmd">sh</span></div>
       </div>
     </div>
 
