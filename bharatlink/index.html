@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BharatLink — India's AirDrop for the Terminal</title>
+  <meta name="description" content="Sovereign P2P file & text sharing. No servers, no accounts, no cloud. Encrypted, fast, works across networks. Install in one command." />
+  <meta name="keywords" content="bharatlink, p2p, file sharing, terminal, cli, rust, airdrop, india, encrypted, quic" />
+  <meta property="og:title" content="BharatLink — India's AirDrop for the Terminal" />
+  <meta property="og:description" content="Sovereign P2P file & text sharing from your terminal. Zero servers, always encrypted." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090b;
+      --bg-subtle: #18181b;
+      --bg-card: #1c1c20;
+      --border: #27272a;
+      --border-hover: #3f3f46;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+      --accent: #22d3ee;
+      --accent-dim: rgba(34, 211, 238, 0.1);
+      --accent-glow: rgba(34, 211, 238, 0.15);
+      --green: #4ade80;
+      --green-dim: rgba(74, 222, 128, 0.1);
+      --orange: #fb923c;
+      --purple: #a78bfa;
+      --red: #f87171;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+      --max-w: 1120px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; transition: opacity 0.15s; }
+    a:hover { opacity: 0.85; }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(9, 9, 11, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); opacity: 1; }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-muted) !important;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .nav-github:hover { border-color: var(--border-hover); color: var(--text) !important; }
+
+    .nav-github svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 160px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 600px;
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--accent), var(--green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+
+    /* ─── Install Box ─── */
+    .install-box {
+      max-width: 580px;
+      margin: 0 auto 24px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .install-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(39, 39, 42, 0.3);
+    }
+
+    .install-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .install-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+    .install-dots span:first-child { background: #f87171; }
+    .install-dots span:nth-child(2) { background: #fbbf24; }
+    .install-dots span:nth-child(3) { background: #4ade80; }
+
+    .install-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+
+    .install-copy {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-size: 12px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: all 0.15s;
+    }
+
+    .install-copy:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+
+    .install-body {
+      padding: 20px 24px;
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .install-body .prompt { color: var(--green); user-select: none; }
+    .install-body .cmd { color: var(--text); }
+    .install-body .comment { color: var(--text-dim); }
+    .install-body .flag { color: var(--orange); }
+    .install-body .string { color: var(--accent); }
+
+    /* ─── Alt Install Methods ─── */
+    .install-alt {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 64px;
+    }
+
+    .install-alt-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: transparent;
+      transition: all 0.15s;
+      cursor: pointer;
+      font-family: var(--mono);
+    }
+
+    .install-alt-btn:hover {
+      border-color: var(--border-hover);
+      color: var(--text);
+      background: var(--bg-subtle);
+    }
+
+    /* ─── Stats ─── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 0 auto;
+      max-width: var(--max-w);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .stat-value .highlight { color: var(--accent); }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    /* ─── Section ─── */
+    section {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 96px 24px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 56px;
+      line-height: 1.7;
+    }
+
+    /* ─── Features Grid ─── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .stats { flex-direction: column; gap: 24px; }
+      .nav-links { display: none; }
+      .comparison-grid { grid-template-columns: 1fr !important; }
+    }
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 0 0 1px var(--border-hover);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .feature-icon.cyan { background: var(--accent-dim); }
+    .feature-icon.green { background: var(--green-dim); }
+    .feature-icon.orange { background: rgba(251, 146, 60, 0.1); }
+    .feature-icon.purple { background: rgba(167, 139, 250, 0.1); }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── Demo Section ─── */
+    .demo-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 768px) {
+      .demo-container { grid-template-columns: 1fr; }
+    }
+
+    .demo-terminal {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .demo-terminal-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(39, 39, 42, 0.3);
+    }
+
+    .demo-terminal-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .demo-terminal-title {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: var(--mono);
+      margin-left: 8px;
+    }
+
+    .demo-terminal-body {
+      padding: 20px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+
+    .demo-terminal-body .line { white-space: nowrap; }
+    .demo-terminal-body .prompt { color: var(--green); }
+    .demo-terminal-body .output { color: var(--text-muted); }
+    .demo-terminal-body .success { color: var(--green); }
+    .demo-terminal-body .info { color: var(--accent); }
+    .demo-terminal-body .dim { color: var(--text-dim); }
+    .demo-terminal-body .bold { color: var(--text); font-weight: 600; }
+    .demo-terminal-body .warn { color: var(--orange); }
+
+    .demo-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .demo-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .demo-step-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-dim);
+      border: 1px solid rgba(34, 211, 238, 0.2);
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .demo-step h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .demo-step p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .demo-step code {
+      font-family: var(--mono);
+      font-size: 13px;
+      background: var(--bg-subtle);
+      padding: 2px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--accent);
+    }
+
+    /* ─── Comparison ─── */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(4, 1fr);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .comp-header {
+      background: var(--bg-subtle);
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comp-header.active { color: var(--accent); }
+
+    .comp-cell {
+      padding: 14px 20px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .comp-cell:nth-child(5n+1) {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .comp-cell:nth-child(5n+2) { color: var(--accent); font-weight: 600; }
+
+    .comp-cell .check { color: var(--green); font-size: 16px; }
+    .comp-cell .cross { color: var(--text-dim); font-size: 16px; }
+    .comp-cell .partial { color: var(--orange); font-size: 16px; }
+
+    .comp-row-last .comp-cell { border-bottom: none; }
+
+    /* ─── Security ─── */
+    .security-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .security-grid { grid-template-columns: 1fr; }
+    }
+
+    .security-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .security-card .icon {
+      font-size: 24px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .security-card h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .security-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      text-align: center;
+      padding: 96px 24px;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 400px;
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section > * { position: relative; z-index: 1; }
+
+    .cta-section h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      transition: opacity 0.15s, transform 0.15s;
+      font-family: var(--font);
+    }
+
+    .cta-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 24px;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-left {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    .footer-left strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-dim);
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text); opacity: 1; }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Nav ─── -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo">🔗 <span>Bharat</span>Link</div>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#demo">How it works</a></li>
+        <li><a href="#comparison">Compare</a></li>
+        <li><a href="#security">Security</a></li>
+        <li>
+          <a href="https://github.com/rohitsainier/terminal" class="nav-github" target="_blank">
+            <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            Star
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ─── -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Published on crates.io
+    </div>
+    <h1>
+      <span class="gradient">India's AirDrop</span><br/>for the Terminal
+    </h1>
+    <p class="hero-sub">
+      Sovereign P2P file & text sharing. No servers, no accounts, no cloud.
+      Encrypted with QUIC + TLS 1.3. Works across networks.
+    </p>
+
+    <!-- Install Box -->
+    <div class="install-box">
+      <div class="install-header">
+        <div class="install-dots"><span></span><span></span><span></span></div>
+        <span class="install-label">terminal</span>
+        <button class="install-copy" onclick="copyInstall()">Copy</button>
+      </div>
+      <div class="install-body">
+        <div><span class="comment"># Install (macOS/Linux) — no Rust needed</span></div>
+        <div id="install-cmd"><span class="prompt">$ </span><span class="cmd">curl</span> <span class="flag">-fsSL</span> <span class="string">https://raw.githubusercontent.com/rohitsainier/terminal/main/install.sh</span> | <span class="cmd">sh</span></div>
+      </div>
+    </div>
+
+    <div class="install-alt">
+      <span class="install-alt-btn">cargo install bharatlink</span>
+      <span class="install-alt-btn">brew install rohitsainier/tap/bharatlink</span>
+    </div>
+  </div>
+
+  <!-- ─── Stats ─── -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Servers</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value"><span class="highlight">E2E</span></div>
+      <div class="stat-label">Encrypted</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">QUIC</div>
+      <div class="stat-label">Protocol</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value"><span class="highlight">&lt;1s</span></div>
+      <div class="stat-label">LAN Discovery</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">5</div>
+      <div class="stat-label">Platforms</div>
+    </div>
+  </div>
+
+  <!-- ─── Features ─── -->
+  <section id="features">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything you need. Nothing you don't.</h2>
+    <p class="section-desc">
+      BharatLink is a single binary with zero dependencies. No daemon, no config files,
+      no accounts. Just install and share.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon cyan">📡</div>
+        <h3>Zero-Config Discovery</h3>
+        <p>mDNS finds peers on your LAN automatically. No IP addresses, no port forwarding, no setup.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon green">🌐</div>
+        <h3>Cross-Network</h3>
+        <p>Works across different WiFi networks, NATs, and firewalls via QUIC relay fallback. Same command, any network.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon purple">🔒</div>
+        <h3>Always Encrypted</h3>
+        <p>QUIC + TLS 1.3 on every connection. Ed25519 identity keys. BLAKE3-verified file chunks. No option to turn it off.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon orange">⚡</div>
+        <h3>Content Deduplication</h3>
+        <p>iroh-blobs stores files as BLAKE3 chunks. Send the same file twice — the second transfer is instant (zero bandwidth).</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon cyan">💬</div>
+        <h3>Text & File Sharing</h3>
+        <p>Send files, text messages, clipboard content — all through the same peer connection. Interactive daemon or one-shot mode.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon green">🖥️</div>
+        <h3>GUI + CLI + Library</h3>
+        <p>Full chat UI in Flux Terminal, standalone CLI for servers & scripts, and a Rust library to embed in your own app.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon purple">🔄</div>
+        <h3>Resumable Transfers</h3>
+        <p>iroh-blobs supports chunked, resumable downloads. Connection dropped? Pick up right where you left off.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon orange">👥</div>
+        <h3>Trust System</h3>
+        <p>Trust peers by their public key. Auto-accept transfers from trusted peers. Reject everyone else.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon cyan">📦</div>
+        <h3>Single Binary</h3>
+        <p>One static binary, ~15MB. No runtime dependencies. Install with one command. Works on macOS, Linux, and Windows.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Demo ─── -->
+  <section id="demo">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Two terminals. That's it.</h2>
+    <p class="section-desc">
+      Start a node, trust a peer, send a file. No accounts, no logins, no cloud dashboards.
+    </p>
+
+    <div class="demo-container">
+      <div>
+        <div class="demo-terminal">
+          <div class="demo-terminal-header">
+            <span class="demo-terminal-dot" style="background:#f87171"></span>
+            <span class="demo-terminal-dot" style="background:#fbbf24"></span>
+            <span class="demo-terminal-dot" style="background:#4ade80"></span>
+            <span class="demo-terminal-title">Terminal 1 — Receiver</span>
+          </div>
+          <div class="demo-terminal-body">
+            <div class="line"><span class="prompt">$ </span>bharatlink start</div>
+            <div class="line"><span class="success">✅ BharatLink Node Started</span></div>
+            <div class="line"><span class="dim">─────────────────────────────────</span></div>
+            <div class="line"><span class="output">Node ID:  </span><span class="info">a1b2c3d4e5f6...</span></div>
+            <div class="line"><span class="output">Local:    </span><span class="dim">192.168.1.42:53135</span></div>
+            <div class="line"><span class="dim">─────────────────────────────────</span></div>
+            <div class="line">&nbsp;</div>
+            <div class="line"><span class="warn">bharatlink&gt;</span> <span class="dim">Waiting for connections...</span></div>
+            <div class="line"><span class="success">  ↓ Received</span> <span class="bold">photo.jpg</span> <span class="dim">3.2 MB</span></div>
+            <div class="line"><span class="success">  ✅ Saved to ~/Downloads/photo.jpg</span></div>
+          </div>
+        </div>
+
+        <div class="demo-terminal" style="margin-top: 16px;">
+          <div class="demo-terminal-header">
+            <span class="demo-terminal-dot" style="background:#f87171"></span>
+            <span class="demo-terminal-dot" style="background:#fbbf24"></span>
+            <span class="demo-terminal-dot" style="background:#4ade80"></span>
+            <span class="demo-terminal-title">Terminal 2 — Sender</span>
+          </div>
+          <div class="demo-terminal-body">
+            <div class="line"><span class="prompt">$ </span>bharatlink trust a1b2c3d4 <span class="info">"Friend"</span></div>
+            <div class="line"><span class="success">  ✅ Trusted a1b2c3d4 as "Friend"</span></div>
+            <div class="line">&nbsp;</div>
+            <div class="line"><span class="prompt">$ </span>bharatlink send file a1b2c3d4 ./photo.jpg</div>
+            <div class="line"><span class="info">  📤 Sending photo.jpg to a1b2c3d4...</span></div>
+            <div class="line"><span class="success">  ████████████████████████████ 100%</span> <span class="dim">3.2 MB</span></div>
+            <div class="line"><span class="success">  ✅ File sent successfully</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-steps">
+        <div class="demo-step">
+          <div class="demo-step-num">1</div>
+          <div>
+            <h4>Install</h4>
+            <p>One command. No Rust required. Pre-built binaries for macOS, Linux, and Windows.</p>
+            <code>curl -fsSL ...install.sh | sh</code>
+          </div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-num">2</div>
+          <div>
+            <h4>Start your node</h4>
+            <p>Run <code>bharatlink start</code> to fire up your P2P node. It prints your Node ID — share it with your friend.</p>
+          </div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-num">3</div>
+          <div>
+            <h4>Trust each other</h4>
+            <p>Run <code>bharatlink trust &lt;id&gt; "Name"</code> on both machines. This creates a mutual trust relationship.</p>
+          </div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-num">4</div>
+          <div>
+            <h4>Send anything</h4>
+            <p>Files, text, clipboard — all encrypted, all direct. Use <code>send file</code> or <code>send text</code> from the interactive prompt.</p>
+          </div>
+        </div>
+        <div class="demo-step">
+          <div class="demo-step-num">5</div>
+          <div>
+            <h4>Or use the GUI</h4>
+            <p>BharatLink is built into <a href="https://github.com/rohitsainier/terminal">Flux Terminal</a> with a full chat UI, drag & drop, image previews, read receipts, and more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Comparison ─── -->
+  <section id="comparison">
+    <div class="section-label">Compare</div>
+    <h2 class="section-title">How BharatLink stacks up</h2>
+    <p class="section-desc">
+      Built for developers who want privacy, speed, and zero friction.
+    </p>
+
+    <div class="comparison-grid">
+      <div class="comp-header">Feature</div>
+      <div class="comp-header active">BharatLink</div>
+      <div class="comp-header">LocalSend</div>
+      <div class="comp-header">croc</div>
+      <div class="comp-header">AirDrop</div>
+
+      <div class="comp-cell">No servers required</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+
+      <div class="comp-cell">Cross-network (WAN)</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+
+      <div class="comp-cell">CLI tool</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+
+      <div class="comp-cell">GUI app</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+
+      <div class="comp-cell">Embeddable library</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+
+      <div class="comp-cell">Content deduplication</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+
+      <div class="comp-cell">Resumable transfers</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+
+      <div class="comp-cell">Text messaging</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="partial">~</span></div>
+      <div class="comp-cell"><span class="partial">~</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+
+      <div class="comp-cell">Trust system</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+
+      <div class="comp-cell">Cross-platform</div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="check">✓</span></div>
+      <div class="comp-cell"><span class="cross">✗</span></div>
+    </div>
+  </section>
+
+  <!-- ─── Security ─── -->
+  <section id="security">
+    <div class="section-label">Security</div>
+    <h2 class="section-title">Encrypted by default. No option to turn it off.</h2>
+    <p class="section-desc">
+      Every connection, every byte, every time. BharatLink was built with security as a non-negotiable.
+    </p>
+
+    <div class="security-grid">
+      <div class="security-card">
+        <div class="icon">🔐</div>
+        <div>
+          <h3>QUIC + TLS 1.3</h3>
+          <p>All connections use QUIC transport with mandatory TLS 1.3 encryption. There is no unencrypted mode.</p>
+        </div>
+      </div>
+      <div class="security-card">
+        <div class="icon">🧬</div>
+        <div>
+          <h3>BLAKE3 Verification</h3>
+          <p>Every file chunk is hash-verified with BLAKE3. Corruption or tampering is mathematically impossible.</p>
+        </div>
+      </div>
+      <div class="security-card">
+        <div class="icon">🔑</div>
+        <div>
+          <h3>Ed25519 Identity</h3>
+          <p>Each node has a unique Ed25519 keypair. Your identity is your public key — no usernames, no passwords, no accounts.</p>
+        </div>
+      </div>
+      <div class="security-card">
+        <div class="icon">🚫</div>
+        <div>
+          <h3>Zero Servers</h3>
+          <p>Data never touches any cloud. Direct peer-to-peer only. Relay servers facilitate connection setup but never see your data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─── -->
+  <div class="cta-section">
+    <h2>Start sharing in 10 seconds</h2>
+    <p>One command. No account. No cloud. Just pure P2P.</p>
+    <a href="https://github.com/rohitsainier/terminal" class="cta-btn" target="_blank">
+      View on GitHub →
+    </a>
+  </div>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <strong>BharatLink</strong> — Built in India with 🦀 Rust
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/rohitsainier/terminal" target="_blank">GitHub</a></li>
+        <li><a href="https://crates.io/crates/bharatlink" target="_blank">crates.io</a></li>
+        <li><a href="https://crates.io/crates/bharatlink-core" target="_blank">bharatlink-core</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    function copyInstall() {
+      const cmd = 'curl -fsSL https://raw.githubusercontent.com/rohitsainier/terminal/main/install.sh | sh';
+      navigator.clipboard.writeText(cmd).then(() => {
+        const btn = document.querySelector('.install-copy');
+        btn.textContent = 'Copied!';
+        setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
+      });
+    }
+  </script>
+
+</body>
+</html>
