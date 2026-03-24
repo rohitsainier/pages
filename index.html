@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rohit Sainier — Projects</title>
+  <meta name="description" content="Open source tools by Rohit Sainier. Flux Terminal, BharatLink, QuickKit, StyleSnap." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090b;
+      --bg-subtle: #18181b;
+      --bg-card: #1c1c20;
+      --border: #27272a;
+      --border-hover: #3f3f46;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+      --radius: 16px;
+      --radius-sm: 10px;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'JetBrains Mono', 'SF Mono', monospace;
+      --max-w: 960px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Header ─── */
+    .header {
+      padding: 80px 24px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(139, 92, 246, 0.08) 0%, rgba(34, 211, 238, 0.04) 40%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header > * { position: relative; z-index: 1; }
+
+    .header-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    .header h1 {
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .header h1 .gradient {
+      background: linear-gradient(135deg, #8b5cf6, #22d3ee);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-sub {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ─── Projects Grid ─── */
+    .projects {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 64px 24px 96px;
+      flex: 1;
+    }
+
+    .projects-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .project-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .project-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 800;
+      font-family: var(--mono);
+      color: #fff;
+    }
+
+    .project-arrow {
+      font-size: 20px;
+      color: var(--text-dim);
+      transition: color 0.15s, transform 0.15s;
+    }
+
+    .project-card:hover .project-arrow {
+      color: var(--text);
+      transform: translateX(4px);
+    }
+
+    .project-name {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .project-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .project-tag {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+
+    /* ─── Individual card accent colors ─── */
+    .project-card[data-project="flux"] .project-name { color: #a78bfa; }
+    .project-card[data-project="flux"]:hover { border-color: rgba(139, 92, 246, 0.3); box-shadow: 0 8px 40px rgba(139, 92, 246, 0.08); }
+
+    .project-card[data-project="bharatlink"] .project-name { color: #22d3ee; }
+    .project-card[data-project="bharatlink"]:hover { border-color: rgba(34, 211, 238, 0.3); box-shadow: 0 8px 40px rgba(34, 211, 238, 0.08); }
+
+    .project-card[data-project="quickkit"] .project-name { color: #818cf8; }
+    .project-card[data-project="quickkit"]:hover { border-color: rgba(99, 102, 241, 0.3); box-shadow: 0 8px 40px rgba(99, 102, 241, 0.08); }
+
+    .project-card[data-project="stylesnap"] .project-name { color: #fbbf24; }
+    .project-card[data-project="stylesnap"]:hover { border-color: rgba(245, 158, 11, 0.3); box-shadow: 0 8px 40px rgba(245, 158, 11, 0.08); }
+
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-dim);
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 640px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .header { padding-top: 56px; }
+    }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Header ─── -->
+  <div class="header">
+    <div class="header-name">Rohit Sainier</div>
+    <h1>Open Source <span class="gradient">Tools</span></h1>
+    <p class="header-sub">
+      Developer tools, terminal emulators, and utilities — all open source, all built to ship.
+    </p>
+  </div>
+
+  <!-- ─── Projects ─── -->
+  <div class="projects">
+    <div class="projects-label">Projects</div>
+
+    <div class="projects-grid">
+
+      <!-- Flux Terminal -->
+      <a href="./flux-terminal/" class="project-card" data-project="flux">
+        <div class="project-top">
+          <div class="project-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">FX</div>
+          <span class="project-arrow">&rarr;</span>
+        </div>
+        <div class="project-name">Flux Terminal</div>
+        <div class="project-desc">AI-powered, GPU-accelerated terminal emulator with cyberpunk aesthetics. 28 NETOPS tools, P2P file sharing, 6 themes.</div>
+        <div class="project-tags">
+          <span class="project-tag">Rust</span>
+          <span class="project-tag">Tauri 2.0</span>
+          <span class="project-tag">SolidJS</span>
+          <span class="project-tag">AI</span>
+        </div>
+      </a>
+
+      <!-- BharatLink -->
+      <a href="./bharatlink/" class="project-card" data-project="bharatlink">
+        <div class="project-top">
+          <div class="project-icon" style="background: linear-gradient(135deg, #22d3ee, #0891b2);">BL</div>
+          <span class="project-arrow">&rarr;</span>
+        </div>
+        <div class="project-name">BharatLink</div>
+        <div class="project-desc">Sovereign P2P file & text sharing. No servers, no accounts, no cloud. Encrypted with QUIC + TLS 1.3. CLI + Library.</div>
+        <div class="project-tags">
+          <span class="project-tag">Rust</span>
+          <span class="project-tag">QUIC</span>
+          <span class="project-tag">P2P</span>
+          <span class="project-tag">crates.io</span>
+        </div>
+      </a>
+
+      <!-- QuickKit -->
+      <a href="./quickkit/" class="project-card" data-project="quickkit">
+        <div class="project-top">
+          <div class="project-icon" style="background: linear-gradient(135deg, #6366f1, #a855f7);">QK</div>
+          <span class="project-arrow">&rarr;</span>
+        </div>
+        <div class="project-name">QuickKit</div>
+        <div class="project-desc">25+ developer and design tools in your macOS menu bar. JSON formatter, password generator, color picker, and more.</div>
+        <div class="project-tags">
+          <span class="project-tag">macOS</span>
+          <span class="project-tag">SwiftUI</span>
+          <span class="project-tag">Menu Bar</span>
+          <span class="project-tag">Free</span>
+        </div>
+      </a>
+
+      <!-- StyleSnap -->
+      <a href="./stylesnap/" class="project-card" data-project="stylesnap">
+        <div class="project-top">
+          <div class="project-icon" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">SS</div>
+          <span class="project-arrow">&rarr;</span>
+        </div>
+        <div class="project-name">StyleSnap</div>
+        <div class="project-desc">Instant CSS inspector for Chrome. Hover any element to inspect, copy, and export its CSS. Component export in Pro.</div>
+        <div class="project-tags">
+          <span class="project-tag">Chrome</span>
+          <span class="project-tag">Extension</span>
+          <span class="project-tag">CSS</span>
+          <span class="project-tag">Free</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        &copy; 2026 Rohit Sainier
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/rohitsainier" target="_blank">GitHub</a></li>
+        <li><a href="https://crates.io/users/rohitsainier" target="_blank">crates.io</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</body>
+</html>
