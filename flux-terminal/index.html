@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Flux Terminal — AI-Powered GPU-Accelerated Terminal</title>
+  <meta name="description" content="AI-powered, GPU-accelerated terminal emulator with cyberpunk aesthetics. Built with Tauri 2.0, Rust, and SolidJS. AI command translation, P2P file sharing, 28 NETOPS tools." />
+  <meta name="keywords" content="flux terminal, ai terminal, gpu terminal, cyberpunk, tauri, rust, solidjs, netops, bharatlink, p2p" />
+  <meta property="og:title" content="Flux Terminal — AI-Powered GPU-Accelerated Terminal" />
+  <meta property="og:description" content="The terminal reimagined. AI command translation, P2P file sharing, 28 security tools, cyberpunk themes." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Reset & Base ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090b;
+      --bg-subtle: #18181b;
+      --bg-card: #1c1c20;
+      --border: #27272a;
+      --border-hover: #3f3f46;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+      --accent: #8b5cf6;
+      --accent-dim: rgba(139, 92, 246, 0.1);
+      --accent-glow: rgba(139, 92, 246, 0.15);
+      --cyan: #22d3ee;
+      --cyan-dim: rgba(34, 211, 238, 0.1);
+      --green: #4ade80;
+      --green-dim: rgba(74, 222, 128, 0.1);
+      --orange: #fb923c;
+      --orange-dim: rgba(251, 146, 60, 0.1);
+      --red: #f87171;
+      --pink: #f472b6;
+      --pink-dim: rgba(244, 114, 182, 0.1);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+      --max-w: 1120px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--accent); text-decoration: none; transition: opacity 0.15s; }
+    a:hover { opacity: 0.85; }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(9, 9, 11, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); opacity: 1; }
+
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--text-muted) !important;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .nav-github:hover { border-color: var(--border-hover); color: var(--text) !important; }
+    .nav-github svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 160px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 700px;
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, rgba(34, 211, 238, 0.05) 40%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 32px;
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 68px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, var(--accent), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 48px;
+      line-height: 1.7;
+    }
+
+    /* ─── Hero Buttons ─── */
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      transition: opacity 0.15s, transform 0.15s;
+      font-family: var(--font);
+    }
+
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 15px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: all 0.15s;
+      font-family: var(--font);
+    }
+
+    .btn-secondary:hover { border-color: var(--border-hover); color: var(--text); }
+
+    /* ─── Terminal Preview ─── */
+    .hero-terminal {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 24px 80px rgba(139, 92, 246, 0.08), 0 0 0 1px rgba(139, 92, 246, 0.05);
+    }
+
+    .hero-terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(39, 39, 42, 0.3);
+    }
+
+    .hero-terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .hero-terminal-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .hero-terminal-title {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+
+    .hero-terminal-tabs {
+      display: flex;
+      gap: 2px;
+    }
+
+    .hero-terminal-tab {
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 12px;
+      border-radius: 4px;
+      color: var(--text-dim);
+    }
+
+    .hero-terminal-tab.active {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    .hero-terminal-body {
+      padding: 20px 24px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.9;
+      text-align: left;
+      min-height: 220px;
+    }
+
+    .hero-terminal-body .prompt { color: var(--green); user-select: none; }
+    .hero-terminal-body .cmd { color: var(--text); }
+    .hero-terminal-body .comment { color: var(--text-dim); }
+    .hero-terminal-body .flag { color: var(--orange); }
+    .hero-terminal-body .string { color: var(--cyan); }
+    .hero-terminal-body .ai-label { color: var(--accent); font-weight: 600; }
+    .hero-terminal-body .success { color: var(--green); }
+    .hero-terminal-body .dim { color: var(--text-dim); }
+    .hero-terminal-body .output { color: var(--text-muted); }
+    .hero-terminal-body .bold { color: var(--text); font-weight: 600; }
+
+    /* ─── Stats ─── */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 40px 24px;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 0 auto;
+      max-width: var(--max-w);
+    }
+
+    .stat { text-align: center; }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .stat-value .highlight { color: var(--accent); }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 500;
+    }
+
+    /* ─── Section ─── */
+    section {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 96px 24px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin-bottom: 56px;
+      line-height: 1.7;
+    }
+
+    /* ─── Features Grid ─── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 0 0 1px var(--border-hover);
+    }
+
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .feature-icon.violet { background: var(--accent-dim); }
+    .feature-icon.cyan { background: var(--cyan-dim); }
+    .feature-icon.green { background: var(--green-dim); }
+    .feature-icon.orange { background: var(--orange-dim); }
+    .feature-icon.pink { background: var(--pink-dim); }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── Tools Showcase ─── */
+    .tools-categories {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .tools-category {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .tools-category-header {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tools-category-header.net { color: var(--cyan); }
+    .tools-category-header.sec { color: var(--orange); }
+    .tools-category-header.off { color: var(--red); }
+
+    .tool-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .tool-item .tool-icon {
+      font-size: 14px;
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    /* ─── Themes Showcase ─── */
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .theme-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .theme-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .theme-preview {
+      height: 120px;
+      padding: 16px;
+      font-family: var(--mono);
+      font-size: 11px;
+      line-height: 1.7;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .theme-name {
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .theme-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* ─── Comparison ─── */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(4, 1fr);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .comp-header {
+      background: var(--bg-subtle);
+      padding: 14px 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comp-header.active { color: var(--accent); }
+
+    .comp-cell {
+      padding: 14px 20px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .comp-cell:nth-child(5n+1) { color: var(--text); font-weight: 500; }
+    .comp-cell:nth-child(5n+2) { color: var(--accent); font-weight: 600; }
+    .comp-cell .check { color: var(--green); font-size: 16px; }
+    .comp-cell .cross { color: var(--text-dim); font-size: 16px; }
+    .comp-cell .partial { color: var(--orange); font-size: 16px; }
+
+    /* ─── Keyboard Shortcuts ─── */
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .shortcut {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+
+    .shortcut-label {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .shortcut-keys {
+      display: flex;
+      gap: 4px;
+    }
+
+    .key {
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 4px 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ─── CTA ─── */
+    .cta-section {
+      text-align: center;
+      padding: 96px 24px;
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, rgba(34, 211, 238, 0.05) 40%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-section > * { position: relative; z-index: 1; }
+
+    .cta-section h2 {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 24px;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .footer-left {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    .footer-left strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-dim);
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text); opacity: 1; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .tools-categories { grid-template-columns: 1fr; }
+      .themes-grid { grid-template-columns: 1fr; }
+      .shortcuts-grid { grid-template-columns: 1fr; }
+      .stats { flex-direction: column; gap: 24px; }
+      .nav-links { display: none; }
+      .comparison-grid { grid-template-columns: 1fr !important; }
+      .hero-actions { flex-direction: column; align-items: center; }
+    }
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+      .tools-categories { grid-template-columns: repeat(2, 1fr); }
+      .themes-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Nav ─── -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo"><span>Flux</span> Terminal</div>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#netops">NETOPS</a></li>
+        <li><a href="#themes">Themes</a></li>
+        <li><a href="#comparison">Compare</a></li>
+        <li>
+          <a href="https://github.com/rohitsainier/terminal" class="nav-github" target="_blank">
+            <svg viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            Star
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ─── -->
+  <div class="hero">
+    <div class="hero-badge">
+      <span class="hero-badge-dot"></span>
+      Built with Rust + Tauri 2.0
+    </div>
+    <h1>
+      The <span class="gradient">AI-Powered</span><br/>Terminal of the Future
+    </h1>
+    <p class="hero-sub">
+      GPU-accelerated terminal with AI command translation, P2P file sharing,
+      28 NETOPS security tools, and cyberpunk aesthetics. Built with Rust.
+    </p>
+
+    <div class="hero-actions">
+      <a href="https://github.com/rohitsainier/terminal" class="btn-primary" target="_blank">
+        Download for macOS
+      </a>
+      <a href="https://github.com/rohitsainier/terminal" class="btn-secondary" target="_blank">
+        View Source on GitHub
+      </a>
+    </div>
+
+    <!-- Terminal Preview -->
+    <div class="hero-terminal">
+      <div class="hero-terminal-header">
+        <div class="hero-terminal-dots">
+          <span style="background:#f87171"></span>
+          <span style="background:#fbbf24"></span>
+          <span style="background:#4ade80"></span>
+        </div>
+        <div class="hero-terminal-tabs">
+          <span class="hero-terminal-tab active">zsh</span>
+          <span class="hero-terminal-tab">NETOPS</span>
+          <span class="hero-terminal-tab">BharatLink</span>
+        </div>
+        <span class="hero-terminal-title">flux-terminal</span>
+      </div>
+      <div class="hero-terminal-body">
+        <div><span class="comment"># Ask AI to translate your intent into commands</span></div>
+        <div><span class="prompt">~ </span><span class="ai-label">[AI] </span><span class="string">"find all large files over 100MB and list by size"</span></div>
+        <div><span class="dim">  translating...</span></div>
+        <div><span class="output">  </span><span class="cmd">find</span> <span class="flag">.</span> <span class="flag">-type</span> f <span class="flag">-size</span> +100M <span class="flag">-exec</span> ls <span class="flag">-lhS</span> {} +</div>
+        <div><span class="success">  ✓ Execute?</span> <span class="dim">[y/n/explain]</span></div>
+        <div>&nbsp;</div>
+        <div><span class="prompt">~ </span><span class="cmd">bharatlink</span> <span class="flag">send file</span> a1b2c3 <span class="string">./report.pdf</span></div>
+        <div><span class="success">  ████████████████████████ 100%</span> <span class="dim">2.4 MB sent</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Stats ─── -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value"><span class="highlight">3</span></div>
+      <div class="stat-label">AI Providers</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value"><span class="highlight">28</span></div>
+      <div class="stat-label">NETOPS Tools</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">6</div>
+      <div class="stat-label">Themes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">P2P</div>
+      <div class="stat-label">File Sharing</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value"><span class="highlight">Rust</span></div>
+      <div class="stat-label">Powered</div>
+    </div>
+  </div>
+
+  <!-- ─── Features ─── -->
+  <section id="features">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">A terminal that thinks, shares, and protects.</h2>
+    <p class="section-desc">
+      Flux Terminal combines the power of a native terminal with AI intelligence,
+      peer-to-peer networking, and professional security tools.
+    </p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon violet">AI</div>
+        <h3>AI Command Translation</h3>
+        <p>Describe what you want in plain English. Flux translates it to shell commands with danger detection and one-click execution. Supports Ollama, OpenAI, and Claude.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon cyan">P2P</div>
+        <h3>BharatLink File Sharing</h3>
+        <p>Sovereign P2P file and text sharing built in. No servers, no accounts. Chat-style UI with drag & drop, image previews, read receipts, and encrypted transfers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon orange">NET</div>
+        <h3>28 NETOPS Tools</h3>
+        <p>Full network operations dashboard. Port scan, DNS lookup, WiFi analysis, SSL inspection, threat intelligence, vulnerability scanning, and more.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon green">GPU</div>
+        <h3>GPU Accelerated</h3>
+        <p>Hardware-accelerated rendering with CRT scanlines, matrix rain, keystroke particles, and holographic effects. Buttery smooth at every frame.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon pink">MCP</div>
+        <h3>MCP Server Support</h3>
+        <p>Model Context Protocol integration lets AI access your tools, files, and APIs through a standardized interface. Extend AI capabilities infinitely.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon violet">SSH</div>
+        <h3>SSH + Multi-Tab</h3>
+        <p>Manage multiple terminal sessions with tabs. SSH into remote servers. Command palette for instant access to everything. All keyboard-driven.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon cyan">SNIP</div>
+        <h3>Snippet Library</h3>
+        <p>Save, organize, and instantly recall command snippets. Categories, search, import/export. Never forget a useful command again.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon orange">CFG</div>
+        <h3>Hot-Reload Config</h3>
+        <p>Configuration stored in your OS config directory. Changes apply instantly without restart. Customize everything from themes to AI providers.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon green">OSS</div>
+        <h3>Open Source</h3>
+        <p>100% open source, built with Rust and Tauri 2.0. Fast, secure, and cross-platform. Contribute or build your own extensions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NETOPS ─── -->
+  <section id="netops">
+    <div class="section-label">NETOPS Dashboard</div>
+    <h2 class="section-title">28 security tools. One dashboard.</h2>
+    <p class="section-desc">
+      Professional-grade network operations and security tools built directly into your terminal.
+      No external apps needed.
+    </p>
+
+    <div class="tools-categories">
+      <div class="tools-category">
+        <div class="tools-category-header net">Network</div>
+        <div class="tool-item"><span class="tool-icon">PING</span> Ping & Latency</div>
+        <div class="tool-item"><span class="tool-icon">PORT</span> Port Scanner</div>
+        <div class="tool-item"><span class="tool-icon">DNS</span> DNS Lookup</div>
+        <div class="tool-item"><span class="tool-icon">WHO</span> WHOIS Query</div>
+        <div class="tool-item"><span class="tool-icon">WIFI</span> WiFi Scanner</div>
+        <div class="tool-item"><span class="tool-icon">HTTP</span> HTTP Headers</div>
+        <div class="tool-item"><span class="tool-icon">SSL</span> SSL Inspector</div>
+        <div class="tool-item"><span class="tool-icon">GEO</span> IP Geolocation</div>
+        <div class="tool-item"><span class="tool-icon">ARP</span> ARP Table</div>
+        <div class="tool-item"><span class="tool-icon">SUB</span> Subnet Calculator</div>
+        <div class="tool-item"><span class="tool-icon">rDNS</span> Reverse DNS</div>
+        <div class="tool-item"><span class="tool-icon">TRACE</span> Traceroute</div>
+        <div class="tool-item"><span class="tool-icon">AUTH</span> WiFi Auth Monitor</div>
+      </div>
+      <div class="tools-category">
+        <div class="tools-category-header sec">Security</div>
+        <div class="tool-item"><span class="tool-icon">TRAF</span> Traffic Anomaly Detection</div>
+        <div class="tool-item"><span class="tool-icon">ROGUE</span> Rogue AP Detection</div>
+        <div class="tool-item"><span class="tool-icon">LOG</span> System Log Viewer</div>
+        <div class="tool-item"><span class="tool-icon">INTEL</span> Threat Intelligence</div>
+        <div class="tool-item"><span class="tool-icon">SCORE</span> Security Scoring</div>
+        <div class="tool-item"><span class="tool-icon">INC</span> Incident Tracking</div>
+        <div class="tool-item"><span class="tool-icon">WPA</span> WPA Handshake Analyzer</div>
+      </div>
+      <div class="tools-category">
+        <div class="tools-category-header off">Offensive</div>
+        <div class="tool-item"><span class="tool-icon">SVC</span> Service Scanner</div>
+        <div class="tool-item"><span class="tool-icon">ENUM</span> Subdomain Enumeration</div>
+        <div class="tool-item"><span class="tool-icon">DIR</span> Directory Brute Force</div>
+        <div class="tool-item"><span class="tool-icon">FPRINT</span> Web Fingerprint</div>
+        <div class="tool-item"><span class="tool-icon">WAF</span> WAF Detection</div>
+        <div class="tool-item"><span class="tool-icon">VULN</span> Vulnerability Scanner</div>
+        <div class="tool-item"><span class="tool-icon">HASH</span> Hash Identifier</div>
+        <div class="tool-item"><span class="tool-icon">TLS</span> Cipher Scan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Themes ─── -->
+  <section id="themes">
+    <div class="section-label">Themes & Effects</div>
+    <h2 class="section-title">Cyberpunk aesthetics. GPU-powered effects.</h2>
+    <p class="section-desc">
+      Six hand-crafted themes with real-time visual effects.
+      CRT scanlines, matrix rain, keystroke particles, and holographic sweeps.
+    </p>
+
+    <div class="themes-grid">
+      <div class="theme-card">
+        <div class="theme-preview" style="background: #0a0a0a; color: #00ff41;">
+          <div><span style="color:#00ff41">$ </span>whoami</div>
+          <div><span style="color:#00cc33">root@flux</span></div>
+          <div><span style="color:#00ff41">$ </span>hack the planet_</div>
+        </div>
+        <div class="theme-name"><span class="theme-dot" style="background:#00ff41"></span> Hacker Green</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview" style="background: #0d0221; color: #ff2a6d;">
+          <div><span style="color:#ff2a6d">$ </span>neon --mode city</div>
+          <div><span style="color:#05d9e8">Loading cyberpunk...</span></div>
+          <div><span style="color:#ff2a6d">$ </span>ready_</div>
+        </div>
+        <div class="theme-name"><span class="theme-dot" style="background:#ff2a6d"></span> Cyberpunk</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview" style="background: #000000; color: #00ff41;">
+          <div style="color:#003b00">01001000 01101001</div>
+          <div style="color:#00ff41">Follow the white rabbit...</div>
+          <div style="color:#008f11">Wake up, Neo_</div>
+        </div>
+        <div class="theme-name"><span class="theme-dot" style="background:#00ff41"></span> Matrix</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview" style="background: #0a0e14; color: #7eb8da;">
+          <div><span style="color:#7eb8da">$ </span>stealth --mode ghost</div>
+          <div><span style="color:#4a6a7a">Invisible protocol...</span></div>
+          <div><span style="color:#7eb8da">$ </span>ready_</div>
+        </div>
+        <div class="theme-name"><span class="theme-dot" style="background:#7eb8da"></span> Ghost Protocol</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview" style="background: #05050f; color: #6fc3df;">
+          <div><span style="color:#6fc3df">$ </span>grid --activate</div>
+          <div><span style="color:#df740c">User recognized...</span></div>
+          <div><span style="color:#6fc3df">$ </span>enter the grid_</div>
+        </div>
+        <div class="theme-name"><span class="theme-dot" style="background:#6fc3df"></span> Tron</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview" style="background: #1a1b2e; color: #a78bfa;">
+          <div><span style="color:#a78bfa">$ </span>flux --theme midnight</div>
+          <div><span style="color:#6366f1">Stars loading...</span></div>
+          <div><span style="color:#a78bfa">$ </span>ready_</div>
+        </div>
+        <div class="theme-name"><span class="theme-dot" style="background:#a78bfa"></span> Midnight</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Keyboard Shortcuts ─── -->
+  <section id="shortcuts">
+    <div class="section-label">Keyboard Driven</div>
+    <h2 class="section-title">Everything at your fingertips.</h2>
+    <p class="section-desc">
+      Flux Terminal is designed for keyboard-first workflows. Every feature is one shortcut away.
+    </p>
+
+    <div class="shortcuts-grid">
+      <div class="shortcut">
+        <span class="shortcut-label">AI Command Bar</span>
+        <div class="shortcut-keys"><span class="key">&#8984;</span><span class="key">K</span></div>
+      </div>
+      <div class="shortcut">
+        <span class="shortcut-label">Command Palette</span>
+        <div class="shortcut-keys"><span class="key">&#8984;</span><span class="key">P</span></div>
+      </div>
+      <div class="shortcut">
+        <span class="shortcut-label">NETOPS Dashboard</span>
+        <div class="shortcut-keys"><span class="key">&#8984;</span><span class="key">&#8679;</span><span class="key">N</span></div>
+      </div>
+      <div class="shortcut">
+        <span class="shortcut-label">BharatLink P2P</span>
+        <div class="shortcut-keys"><span class="key">&#8984;</span><span class="key">&#8679;</span><span class="key">B</span></div>
+      </div>
+      <div class="shortcut">
+        <span class="shortcut-label">Snippet Library</span>
+        <div class="shortcut-keys"><span class="key">&#8984;</span><span class="key">&#8679;</span><span class="key">S</span></div>
+      </div>
+      <div class="shortcut">
+        <span class="shortcut-label">Settings</span>
+        <div class="shortcut-keys"><span class="key">&#8984;</span><span class="key">,</span></div>
+      </div>
+      <div class="shortcut">
+        <span class="shortcut-label">New Tab</span>
+        <div class="shortcut-keys"><span class="key">&#8984;</span><span class="key">T</span></div>
+      </div>
+      <div class="shortcut">
+        <span class="shortcut-label">Toggle Effects</span>
+        <div class="shortcut-keys"><span class="key">&#8984;</span><span class="key">&#8679;</span><span class="key">E</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── Comparison ─── -->
+  <section id="comparison">
+    <div class="section-label">Compare</div>
+    <h2 class="section-title">Why Flux Terminal?</h2>
+    <p class="section-desc">
+      Feature comparison with popular terminal emulators.
+    </p>
+
+    <div class="comparison-grid">
+      <div class="comp-header">Feature</div>
+      <div class="comp-header active">Flux</div>
+      <div class="comp-header">Warp</div>
+      <div class="comp-header">iTerm2</div>
+      <div class="comp-header">Alacritty</div>
+
+      <div class="comp-cell">AI command translation</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+
+      <div class="comp-cell">P2P file sharing</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+
+      <div class="comp-cell">Network security tools</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+
+      <div class="comp-cell">GPU-accelerated effects</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+
+      <div class="comp-cell">MCP server support</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+
+      <div class="comp-cell">Multiple AI providers</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="partial">~</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+
+      <div class="comp-cell">Cyberpunk themes</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="partial">~</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+
+      <div class="comp-cell">Open source</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+
+      <div class="comp-cell">Cross-platform</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="partial">~</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+
+      <div class="comp-cell">Snippet library</div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="check">&#10003;</span></div>
+      <div class="comp-cell"><span class="partial">~</span></div>
+      <div class="comp-cell"><span class="cross">&#10007;</span></div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─── -->
+  <div class="cta-section">
+    <h2>Your terminal, upgraded.</h2>
+    <p>AI-powered. GPU-accelerated. Open source. Built with Rust.</p>
+    <div class="hero-actions">
+      <a href="https://github.com/rohitsainier/terminal" class="btn-primary" target="_blank">
+        Download Flux Terminal
+      </a>
+      <a href="https://github.com/rohitsainier/terminal" class="btn-secondary" target="_blank">
+        View on GitHub
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <strong>Flux Terminal</strong> — Built with Rust + Tauri 2.0
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://github.com/rohitsainier/terminal" target="_blank">GitHub</a></li>
+        <li><a href="https://crates.io/crates/bharatlink" target="_blank">BharatLink CLI</a></li>
+        <li><a href="https://crates.io/crates/bharatlink-core" target="_blank">bharatlink-core</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</body>
+</html>
