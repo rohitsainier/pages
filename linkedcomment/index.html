@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkedComment — AI Comment Generator for LinkedIn</title>
+  <meta name="description" content="Generate AI-powered LinkedIn comments with OpenAI, Gemini, Claude, or local Ollama. Detects trending posts, pick a style, get a perfect comment." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090b;
+      --bg-subtle: #18181b;
+      --bg-card: #1c1c20;
+      --border: #27272a;
+      --border-hover: #3f3f46;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+      --accent: #34d399;
+      --accent-dim: #059669;
+      --accent-glow: rgba(52, 211, 153, 0.08);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: 'JetBrains Mono', 'SF Mono', monospace;
+      --max-w: 960px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 9, 11, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo {
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      font-family: var(--mono);
+      color: #fff;
+    }
+
+    .nav-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-dim);
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 18px;
+      background: var(--accent);
+      color: #09090b;
+      border-radius: 8px;
+      transition: opacity 0.15s;
+    }
+
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 100px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(52, 211, 153, 0.1) 0%, rgba(5, 150, 105, 0.04) 40%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(52, 211, 153, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.2);
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .gradient {
+      background: linear-gradient(135deg, #34d399, #0ea5e9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      font-size: 15px;
+      font-weight: 700;
+      background: var(--accent);
+      color: #09090b;
+      border-radius: 10px;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+
+    .btn-secondary:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+
+    /* ─── Providers ─── */
+    .providers {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      text-align: center;
+    }
+
+    .providers-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+
+    .providers-grid {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .provider-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: border-color 0.15s;
+    }
+
+    .provider-chip:hover { border-color: var(--border-hover); }
+
+    .provider-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* ─── Features ─── */
+    .features {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px 96px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: border-color 0.2s;
+    }
+
+    .feature-card:hover { border-color: var(--border-hover); }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 14px;
+    }
+
+    .feature-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ─── How It Works ─── */
+    .how {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px 96px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .step {
+      text-align: center;
+      padding: 28px 20px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(52, 211, 153, 0.1);
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 800;
+      font-family: var(--mono);
+      margin-bottom: 14px;
+    }
+
+    .step h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .step p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ─── Styles Section ─── */
+    .styles {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px 96px;
+    }
+
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .style-card {
+      text-align: center;
+      padding: 24px 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .style-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+
+    .style-emoji {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .style-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .style-card p {
+      font-size: 11px;
+      color: var(--text-dim);
+      line-height: 1.4;
+    }
+
+    /* ─── Donate ─── */
+    .donate {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px 96px;
+    }
+
+    .donate-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 48px;
+      text-align: center;
+    }
+
+    .donate-box h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .donate-box p {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .btn-donate {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 32px;
+      font-size: 15px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: #fff;
+      border-radius: 10px;
+      transition: opacity 0.15s, transform 0.15s;
+      box-shadow: 0 4px 16px rgba(238, 90, 36, 0.25);
+    }
+
+    .btn-donate:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* ─── Footer ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      font-size: 14px;
+      color: var(--text-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text-dim);
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      .styles-grid { grid-template-columns: repeat(3, 1fr); }
+      .nav-links { gap: 16px; }
+    }
+
+    @media (max-width: 480px) {
+      .steps { grid-template-columns: 1fr; }
+      .styles-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding: 72px 24px 56px; }
+      .nav-links li:not(:last-child) { display: none; }
+    }
+
+    /* ─── Scrollbar ─── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Nav ─── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="../" class="nav-brand">
+        <div class="nav-logo">Lc</div>
+        <span class="nav-title">LinkedComment</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="#donate" class="nav-cta">Support</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ─── Hero ─── -->
+  <div class="hero">
+    <div class="hero-badge">Chrome Extension &middot; Free &middot; Open Source</div>
+    <h1>AI Comments That<br>Actually Get <span class="gradient">Reach</span></h1>
+    <p class="hero-sub">
+      LinkedComment detects trending LinkedIn posts in your feed and generates smart, style-matched comments using your favorite AI provider.
+    </p>
+    <div class="hero-actions">
+      <a href="https://chromewebstore.google.com" class="btn-primary" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+        Add to Chrome
+      </a>
+      <a href="https://github.com/rohitsainier" class="btn-secondary" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── Providers ─── -->
+  <div class="providers">
+    <div class="providers-label">Works with your favorite AI</div>
+    <div class="providers-grid">
+      <div class="provider-chip"><span class="provider-dot" style="background: #10a37f;"></span> OpenAI</div>
+      <div class="provider-chip"><span class="provider-dot" style="background: #4285f4;"></span> Google Gemini</div>
+      <div class="provider-chip"><span class="provider-dot" style="background: #d97706;"></span> Anthropic Claude</div>
+      <div class="provider-chip"><span class="provider-dot" style="background: #a1a1aa;"></span> Ollama (Local)</div>
+    </div>
+  </div>
+
+  <!-- ─── Features ─── -->
+  <div class="features" id="features">
+    <div class="section-label">Features</div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F525;</div>
+        <h3>Trending Detection</h3>
+        <p>Automatically identifies high-reach posts in your feed with color-coded badges: Trending, Hot, and Viral.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F3AF;</div>
+        <h3>5 Comment Styles</h3>
+        <p>Insightful, Supportive, Curious, Contrarian, or Criticize. Pick the tone that fits the conversation.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F9E0;</div>
+        <h3>Personal Angle</h3>
+        <p>Add your perspective — "as a startup founder" or "from a data science lens" — for authentic comments.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x26A1;</div>
+        <h3>One-Click Insert</h3>
+        <p>Generated comment drops directly into LinkedIn's comment box. No copy-pasting needed.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F512;</div>
+        <h3>Privacy First</h3>
+        <p>API keys stay on your device. No external servers. No data collection. No tracking.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">&#x1F319;</div>
+        <h3>Dark Mode</h3>
+        <p>Matches LinkedIn's dark theme automatically, or set it manually. Looks great either way.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── How It Works ─── -->
+  <div class="how" id="how">
+    <div class="section-label">How It Works</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Scroll Your Feed</h3>
+        <p>LinkedComment scans posts as you scroll and badges the trending ones.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Click Reply</h3>
+        <p>Hit the badge on any trending post to open the comment generator.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Pick a Style</h3>
+        <p>Choose your tone and optionally add a personal angle.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <h3>Insert &amp; Post</h3>
+        <p>One click inserts the comment. Review, edit if you want, and post.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Comment Styles ─── -->
+  <div class="styles">
+    <div class="section-label">Comment Styles</div>
+    <div class="styles-grid">
+      <div class="style-card">
+        <div class="style-emoji">&#x1F4A1;</div>
+        <h3>Insightful</h3>
+        <p>Non-obvious perspective or data point</p>
+      </div>
+      <div class="style-card">
+        <div class="style-emoji">&#x1F91D;</div>
+        <h3>Supportive</h3>
+        <p>Agree and amplify with personal experience</p>
+      </div>
+      <div class="style-card">
+        <div class="style-emoji">&#x1F914;</div>
+        <h3>Curious</h3>
+        <p>Smart follow-up question</p>
+      </div>
+      <div class="style-card">
+        <div class="style-emoji">&#x1F504;</div>
+        <h3>Contrarian</h3>
+        <p>Respectful alternative take</p>
+      </div>
+      <div class="style-card">
+        <div class="style-emoji">&#x1F50D;</div>
+        <h3>Criticize</h3>
+        <p>Point out gaps or weaknesses</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Donate ─── -->
+  <div class="donate" id="donate">
+    <div class="donate-box">
+      <h2>Support LinkedComment</h2>
+      <p>If this extension helps you grow on LinkedIn, consider buying me a coffee.</p>
+      <a href="https://paypal.me/rohitsainier" class="btn-donate" target="_blank" rel="noopener">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Donate via PayPal
+      </a>
+    </div>
+  </div>
+
+  <!-- ─── Footer ─── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-left">&copy; 2026 Rohit Sainier</div>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/rohitsainier" target="_blank">GitHub</a></li>
+        <li><a href="../">All Projects</a></li>
+      </ul>
+    </div>
+  </footer>
+
+</body>
+</html>

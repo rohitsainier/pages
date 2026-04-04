@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — LinkedComment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#09090b;color:#e4e4e7;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:#34d399;text-decoration:none}
+a:hover{color:#6ee7b7}
+nav{padding:20px 0;border-bottom:1px solid #27272a}
+nav .container{display:flex;align-items:center;gap:10px;max-width:680px;margin:0 auto;padding:0 24px}
+.nav-logo{width:32px;height:32px;background:linear-gradient(135deg,#34d399,#059669);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-weight:600;font-size:11px;color:#fff}
+nav span{font-weight:700;font-size:18px;color:#fafafa}
+.policy{max-width:680px;margin:60px auto;padding:0 24px}
+.policy h1{font-size:32px;margin-bottom:8px;color:#fafafa}
+.policy .date{color:#71717a;font-size:14px;margin-bottom:32px}
+.policy h2{font-size:20px;margin:28px 0 12px;color:#34d399}
+.policy p,.policy li{font-size:15px;color:#a1a1aa;line-height:1.7;margin-bottom:12px}
+.policy ul{padding-left:20px}
+.policy strong{color:#e4e4e7}
+footer{padding:40px 24px;border-top:1px solid #27272a;text-align:center;font-size:13px;color:#71717a;max-width:680px;margin:0 auto}
+.back-link{display:inline-block;margin-top:40px;font-size:14px;color:#34d399}
+</style>
+</head>
+<body>
+<nav><div class="container"><div class="nav-logo">Lc</div><span>LinkedComment</span></div></nav>
+<div class="policy">
+<h1>Privacy Policy</h1>
+<p class="date">Effective: April 5, 2026</p>
+
+<h2>Overview</h2>
+<p>LinkedComment is a Chrome extension that detects trending LinkedIn posts and generates AI-powered comments. Your privacy is important to us. This policy explains what data LinkedComment accesses and how it is handled.</p>
+
+<h2>Data Collection</h2>
+<p>LinkedComment does <strong>not</strong> collect, store, or transmit any personal data, browsing history, or webpage content to our servers. The extension operates entirely on your local machine. We have <strong>no servers, no analytics, and no tracking</strong>.</p>
+
+<h2>What the Extension Accesses</h2>
+<ul>
+<li><strong>Active Tab (LinkedIn only):</strong> LinkedComment reads post content on LinkedIn pages to extract text for comment generation. This data is processed locally and sent only to the AI provider you configure.</li>
+<li><strong>Clipboard:</strong> When you click "Copy", the generated comment is written to your clipboard. No data is sent externally.</li>
+<li><strong>Local Storage:</strong> Your settings (AI provider, model selection, thresholds, dark mode preference) are saved using Chrome's local storage. No personal information is stored.</li>
+</ul>
+
+<h2>AI Provider Communication</h2>
+<p>When you generate a comment, the post text is sent to the AI provider <strong>you choose and configure</strong>:</p>
+<ul>
+<li><strong>Ollama:</strong> Runs entirely on your local machine. No data leaves your device.</li>
+<li><strong>OpenAI:</strong> Post text is sent to OpenAI's API using your personal API key. See <a href="https://openai.com/privacy" target="_blank">OpenAI's Privacy Policy</a>.</li>
+<li><strong>Google Gemini:</strong> Post text is sent to Google's Generative AI API using your personal API key. See <a href="https://ai.google.dev/terms" target="_blank">Google AI Terms</a>.</li>
+<li><strong>Anthropic Claude:</strong> Post text is sent to Anthropic's API using your personal API key. See <a href="https://www.anthropic.com/privacy" target="_blank">Anthropic's Privacy Policy</a>.</li>
+</ul>
+<p>LinkedComment does <strong>not</strong> store, log, or intercept any data sent to these providers. Communication happens directly between your browser and the provider's API.</p>
+
+<h2>API Keys</h2>
+<p>Your API keys are stored locally in Chrome's extension storage on your device. They are <strong>never</strong> transmitted to our servers or any third party other than the respective AI provider during API calls. We do not have access to your API keys.</p>
+
+<h2>Permissions Explained</h2>
+<ul>
+<li><strong>activeTab:</strong> Access the current LinkedIn tab to read post content for comment generation.</li>
+<li><strong>clipboardWrite / clipboardRead:</strong> Copy generated comments to your clipboard.</li>
+<li><strong>storage:</strong> Save your settings (provider, model, thresholds) locally.</li>
+<li><strong>declarativeNetRequest:</strong> Modify request headers for local Ollama server communication (removes Origin header to bypass CORS restrictions on localhost only).</li>
+<li><strong>host_permissions (localhost):</strong> Communicate with local Ollama instance.</li>
+<li><strong>host_permissions (API domains):</strong> Send generation requests to OpenAI, Google Gemini, and Anthropic APIs when configured by the user.</li>
+</ul>
+
+<h2>Analytics &amp; Tracking</h2>
+<p>LinkedComment does not include any analytics, tracking pixels, telemetry, or crash reporting. We do not track your browsing activity, extension usage, or LinkedIn engagement.</p>
+
+<h2>Children's Privacy</h2>
+<p>LinkedComment is not directed at children under the age of 13 and does not knowingly collect any personal information from children.</p>
+
+<h2>Changes to This Policy</h2>
+<p>We may update this policy as the extension evolves. Any changes will be reflected on this page with an updated effective date.</p>
+
+<h2>Contact</h2>
+<p>Questions about this policy? Reach out at <a href="mailto:rohitsainier@gmail.com">rohitsainier@gmail.com</a>.</p>
+
+<a href="index.html" class="back-link">&larr; Back to LinkedComment</a>
+</div>
+
+<footer>&copy; 2026 LinkedComment. All rights reserved.</footer>
+</body>
+</html>
