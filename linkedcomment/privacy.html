@@ -31,55 +31,144 @@ footer{padding:40px 24px;border-top:1px solid #27272a;text-align:center;font-siz
 <nav><div class="container"><div class="nav-logo">Lc</div><span>LinkedComment</span></div></nav>
 <div class="policy">
 <h1>Privacy Policy</h1>
-<p class="date">Effective: April 5, 2026</p>
+<p class="date">Effective: April 8, 2026 &middot; Last updated: April 8, 2026</p>
 
 <h2>Overview</h2>
-<p>LinkedComment is a Chrome extension that detects trending LinkedIn posts and generates AI-powered comments. Your privacy is important to us. This policy explains what data LinkedComment accesses and how it is handled.</p>
+<p>LinkedComment ("the Extension", "we", "our") is a Chrome browser extension that detects trending LinkedIn posts and generates AI-powered comments. This privacy policy comprehensively describes how the Extension collects, uses, stores, and shares user data. By installing and using LinkedComment, you agree to the practices described in this policy.</p>
 
-<h2>Data Collection</h2>
-<p>LinkedComment does <strong>not</strong> collect, store, or transmit any personal data, browsing history, or webpage content to our servers. The extension operates entirely on your local machine. We have <strong>no servers, no analytics, and no tracking</strong>.</p>
+<h2>1. Data Collection</h2>
+<p>The following is a complete list of all user data that LinkedComment collects or accesses:</p>
 
-<h2>What the Extension Accesses</h2>
+<p><strong>a) Website Content (LinkedIn Post Text)</strong></p>
+<p>When you click "Generate Comment" on a LinkedIn post, the Extension reads the text content of that specific post from the active LinkedIn tab. This data is collected temporarily in your browser's memory solely for the purpose of generating a comment.</p>
+
+<p><strong>b) User-Provided Settings</strong></p>
+<p>The Extension collects and stores the following settings that you explicitly provide through the Extension popup:</p>
 <ul>
-<li><strong>Active Tab (LinkedIn only):</strong> LinkedComment reads post content on LinkedIn pages to extract text for comment generation. This data is processed locally and sent only to the AI provider you configure.</li>
-<li><strong>Clipboard:</strong> When you click "Copy", the generated comment is written to your clipboard. No data is sent externally.</li>
-<li><strong>Local Storage:</strong> Your settings (AI provider, model selection, thresholds, dark mode preference) are saved using Chrome's local storage. No personal information is stored.</li>
+<li>AI provider selection (Ollama, OpenAI, Google Gemini, or Anthropic Claude)</li>
+<li>AI model name selection</li>
+<li>API keys for your chosen AI provider (entered by you)</li>
+<li>Ollama server URL (if using Ollama)</li>
+<li>Trending post detection thresholds (reactions, comments, reposts numbers)</li>
+<li>Dark mode preference</li>
+<li>Trending post detector on/off toggle</li>
 </ul>
 
-<h2>AI Provider Communication</h2>
-<p>When you generate a comment, the post text is sent to the AI provider <strong>you choose and configure</strong>:</p>
-<ul>
-<li><strong>Ollama:</strong> Runs entirely on your local machine. No data leaves your device.</li>
-<li><strong>OpenAI:</strong> Post text is sent to OpenAI's API using your personal API key. See <a href="https://openai.com/privacy" target="_blank">OpenAI's Privacy Policy</a>.</li>
-<li><strong>Google Gemini:</strong> Post text is sent to Google's Generative AI API using your personal API key. See <a href="https://ai.google.dev/terms" target="_blank">Google AI Terms</a>.</li>
-<li><strong>Anthropic Claude:</strong> Post text is sent to Anthropic's API using your personal API key. See <a href="https://www.anthropic.com/privacy" target="_blank">Anthropic's Privacy Policy</a>.</li>
-</ul>
-<p>LinkedComment does <strong>not</strong> store, log, or intercept any data sent to these providers. Communication happens directly between your browser and the provider's API.</p>
+<p><strong>c) Generated Comments</strong></p>
+<p>AI-generated comments are held temporarily in browser memory while displayed in the Extension widget. They are not persisted after the widget is closed.</p>
 
-<h2>API Keys</h2>
-<p>Your API keys are stored locally in Chrome's extension storage on your device. They are <strong>never</strong> transmitted to our servers or any third party other than the respective AI provider during API calls. We do not have access to your API keys.</p>
-
-<h2>Permissions Explained</h2>
+<p><strong>d) Data NOT Collected</strong></p>
+<p>LinkedComment does <strong>not</strong> collect:</p>
 <ul>
-<li><strong>activeTab:</strong> Access the current LinkedIn tab to read post content for comment generation.</li>
-<li><strong>clipboardWrite / clipboardRead:</strong> Copy generated comments to your clipboard.</li>
-<li><strong>storage:</strong> Save your settings (provider, model, thresholds) locally.</li>
-<li><strong>declarativeNetRequest:</strong> Modify request headers for local Ollama server communication (removes Origin header to bypass CORS restrictions on localhost only).</li>
-<li><strong>host_permissions (localhost):</strong> Communicate with local Ollama instance.</li>
-<li><strong>host_permissions (API domains):</strong> Send generation requests to OpenAI, Google Gemini, and Anthropic APIs when configured by the user.</li>
+<li>Personally identifiable information (name, email, address, etc.)</li>
+<li>LinkedIn account credentials or login information</li>
+<li>Browsing history or activity outside of LinkedIn</li>
+<li>Analytics, telemetry, or usage statistics</li>
+<li>Cookies or tracking identifiers</li>
+<li>Location data</li>
+<li>Financial or payment information</li>
+<li>Health information</li>
+<li>Communications or messages</li>
 </ul>
 
-<h2>Analytics &amp; Tracking</h2>
-<p>LinkedComment does not include any analytics, tracking pixels, telemetry, or crash reporting. We do not track your browsing activity, extension usage, or LinkedIn engagement.</p>
+<h2>2. How Data Is Used</h2>
+<p>Each type of collected data is used exclusively for the following purposes:</p>
+<ul>
+<li><strong>LinkedIn post text:</strong> Sent to your configured AI provider as part of a prompt to generate a relevant comment. Used only at the moment you click "Generate Comment" and not retained afterward.</li>
+<li><strong>User settings (provider, model, thresholds, dark mode):</strong> Used to configure the Extension's behavior according to your preferences. Read each time the Extension loads or you interact with the widget.</li>
+<li><strong>API keys:</strong> Used solely to authenticate requests to the AI provider you have selected. Sent only to the specific AI provider's API endpoint during comment generation.</li>
+<li><strong>Generated comments:</strong> Displayed to you in the widget. Available for you to copy to clipboard or insert into LinkedIn's comment box. Not used for any other purpose.</li>
+</ul>
+<p>We do <strong>not</strong> use any collected data for advertising, marketing, analytics, profiling, or any purpose other than the core functionality described above.</p>
 
-<h2>Children's Privacy</h2>
-<p>LinkedComment is not directed at children under the age of 13 and does not knowingly collect any personal information from children.</p>
+<h2>3. Data Storage</h2>
+<p><strong>a) Local Storage Only</strong></p>
+<p>All user settings and API keys are stored exclusively in <strong>Chrome's local extension storage</strong> (<code>chrome.storage.local</code>) on your device. This storage is:</p>
+<ul>
+<li>Accessible only to the LinkedComment extension</li>
+<li>Stored locally on your computer</li>
+<li>Not synced to any cloud service or external server</li>
+<li>Removed when you uninstall the Extension</li>
+</ul>
 
-<h2>Changes to This Policy</h2>
-<p>We may update this policy as the extension evolves. Any changes will be reflected on this page with an updated effective date.</p>
+<p><strong>b) No External Storage</strong></p>
+<p>LinkedComment does <strong>not</strong> operate any servers, databases, or cloud storage. We have no backend infrastructure. No user data is stored outside of your local browser environment.</p>
 
-<h2>Contact</h2>
-<p>Questions about this policy? Reach out at <a href="mailto:rohitsainier@gmail.com">rohitsainier@gmail.com</a>.</p>
+<p><strong>c) Temporary Memory</strong></p>
+<p>LinkedIn post text and generated comments are held in your browser's working memory only during active use. This data is automatically cleared when you close the widget or navigate away from the page. It is never written to disk or persistent storage.</p>
+
+<p><strong>d) Data Retention</strong></p>
+<p>User settings and API keys persist in Chrome's local storage until you either change them, clear extension data, or uninstall the Extension. Temporary data (post text, generated comments) is not retained beyond the active browser session.</p>
+
+<h2>4. Data Sharing</h2>
+<p>The following is a complete list of <strong>all third parties</strong> that user data may be shared with, and what data is shared:</p>
+
+<p><strong>a) AI Service Providers (only when you generate a comment)</strong></p>
+<p>When you click "Generate Comment", the text of the LinkedIn post is sent to the AI provider you have configured. The specific provider depends entirely on your choice in the Extension settings:</p>
+<ul>
+<li><strong>Ollama (local):</strong> If you select Ollama, post text is sent to a server running on your own computer (localhost). <strong>No data leaves your device.</strong></li>
+<li><strong>OpenAI (api.openai.com):</strong> If you select OpenAI, post text and your API key are sent to OpenAI's API servers. OpenAI processes this data according to their <a href="https://openai.com/policies/privacy-policy" target="_blank">Privacy Policy</a> and <a href="https://openai.com/policies/terms-of-use" target="_blank">Terms of Use</a>.</li>
+<li><strong>Google Gemini (generativelanguage.googleapis.com):</strong> If you select Gemini, post text and your API key are sent to Google's Generative AI API servers. Google processes this data according to their <a href="https://ai.google.dev/gemini-api/terms" target="_blank">Gemini API Terms of Service</a> and <a href="https://policies.google.com/privacy" target="_blank">Privacy Policy</a>.</li>
+<li><strong>Anthropic Claude (api.anthropic.com):</strong> If you select Claude, post text and your API key are sent to Anthropic's API servers. Anthropic processes this data according to their <a href="https://www.anthropic.com/legal/privacy" target="_blank">Privacy Policy</a> and <a href="https://www.anthropic.com/legal/consumer-terms" target="_blank">Terms of Service</a>.</li>
+</ul>
+<p><strong>Important:</strong> Data is sent to only <strong>one</strong> provider at a time — the one you have actively selected. You control which provider receives your data. Communication occurs directly between your browser and the provider's API. LinkedComment does not route, intercept, log, or store any data in transit.</p>
+
+<p><strong>b) No Other Third Parties</strong></p>
+<p>Beyond the AI provider you explicitly configure, LinkedComment does <strong>not</strong> share, sell, rent, trade, or transfer user data to any other third party, including:</p>
+<ul>
+<li>No advertising networks</li>
+<li>No analytics services</li>
+<li>No data brokers</li>
+<li>No social media platforms (other than LinkedIn via your direct interaction)</li>
+<li>No affiliated or parent companies</li>
+<li>No government entities (unless required by law)</li>
+</ul>
+
+<p><strong>c) We Do Not Sell User Data</strong></p>
+<p>We do not sell, license, or monetize user data in any form.</p>
+
+<h2>5. Permissions Explained</h2>
+<p>The Extension requires the following Chrome permissions, each justified below:</p>
+<ul>
+<li><strong>activeTab:</strong> Allows the Extension to read content on the current LinkedIn tab when you interact with it. Used to extract post text for comment generation. Only active on linkedin.com pages.</li>
+<li><strong>clipboardWrite:</strong> Allows the "Copy" button to write the generated comment to your system clipboard.</li>
+<li><strong>clipboardRead:</strong> Used alongside clipboardWrite to support clipboard operations for generated comments.</li>
+<li><strong>storage:</strong> Allows the Extension to save your settings (AI provider, model, thresholds, API keys) locally using Chrome's extension storage API.</li>
+<li><strong>declarativeNetRequest:</strong> Used to modify HTTP request headers (removes the Origin header) for requests to localhost and 127.0.0.1 only. This is required for communication with local Ollama AI servers, which enforce CORS restrictions. No external traffic is modified.</li>
+<li><strong>Host permissions — localhost/127.0.0.1:</strong> Required to send AI generation requests to a local Ollama server running on your machine.</li>
+<li><strong>Host permissions — api.openai.com:</strong> Required to send AI generation requests to OpenAI's API when you select OpenAI as your provider.</li>
+<li><strong>Host permissions — generativelanguage.googleapis.com:</strong> Required to send AI generation requests to Google's Gemini API when you select Gemini as your provider.</li>
+<li><strong>Host permissions — api.anthropic.com:</strong> Required to send AI generation requests to Anthropic's Claude API when you select Claude as your provider.</li>
+</ul>
+
+<h2>6. User Controls and Data Deletion</h2>
+<p>You have full control over your data:</p>
+<ul>
+<li><strong>Change or remove API keys:</strong> Open the Extension popup, clear the API key field, and click Save Settings.</li>
+<li><strong>Switch providers:</strong> Change your AI provider at any time in the Extension popup. Only the active provider receives data.</li>
+<li><strong>Delete all data:</strong> Uninstalling the Extension from Chrome automatically removes all stored settings and API keys from your device.</li>
+<li><strong>Clear extension data manually:</strong> Go to chrome://extensions, click "Details" on LinkedComment, then "Clear data" to remove all stored settings without uninstalling.</li>
+</ul>
+
+<h2>7. Security</h2>
+<p>API keys are stored in Chrome's local extension storage, which is sandboxed and accessible only to the LinkedComment extension. All communication with cloud AI providers occurs over HTTPS (TLS-encrypted connections). We do not transmit API keys or user data over unencrypted connections. However, no method of electronic storage is 100% secure, and we cannot guarantee absolute security.</p>
+
+<h2>8. Analytics, Tracking &amp; Advertising</h2>
+<p>LinkedComment contains <strong>zero</strong> analytics, tracking, telemetry, crash reporting, advertising, or third-party scripts of any kind. We do not track your browsing activity, extension usage patterns, LinkedIn engagement metrics, or any other behavioral data.</p>
+
+<h2>9. Children's Privacy</h2>
+<p>LinkedComment is not directed at children under the age of 13. We do not knowingly collect any personal information from children under 13. If you believe a child under 13 has provided data through the Extension, please contact us so we can address the concern.</p>
+
+<h2>10. International Users</h2>
+<p>If you use a cloud AI provider (OpenAI, Google Gemini, or Anthropic Claude), the LinkedIn post text you send for comment generation may be processed on servers located outside your country of residence. Please refer to each provider's privacy policy (linked in Section 4) for details about their data processing locations.</p>
+
+<h2>11. Changes to This Policy</h2>
+<p>We may update this privacy policy from time to time. When we make changes, we will update the "Last updated" date at the top of this policy. If we make material changes to how we handle user data, we will update the Extension description on the Chrome Web Store. We encourage you to review this policy periodically. Your continued use of the Extension after changes are posted constitutes acceptance of the updated policy.</p>
+
+<h2>12. Contact</h2>
+<p>If you have questions, concerns, or requests regarding this privacy policy or the Extension's data practices, please contact us at:</p>
+<p><strong>Email:</strong> <a href="mailto:rohitsainier@gmail.com">rohitsainier@gmail.com</a></p>
+<p><strong>Developer:</strong> Rohit Sainier</p>
 
 <a href="index.html" class="back-link">&larr; Back to LinkedComment</a>
 </div>
