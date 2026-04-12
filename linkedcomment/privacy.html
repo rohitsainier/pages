@@ -31,16 +31,16 @@ footer{padding:40px 24px;border-top:1px solid #27272a;text-align:center;font-siz
 <nav><div class="container"><div class="nav-logo">Lc</div><span>LinkedComment</span></div></nav>
 <div class="policy">
 <h1>Privacy Policy</h1>
-<p class="date">Effective: April 8, 2026 &middot; Last updated: April 8, 2026</p>
+<p class="date">Effective: April 8, 2026 &middot; Last updated: April 12, 2026</p>
 
 <h2>Overview</h2>
-<p>LinkedComment ("the Extension", "we", "our") is a Chrome browser extension that detects trending LinkedIn posts and generates AI-powered comments. This privacy policy comprehensively describes how the Extension collects, uses, stores, and shares user data. By installing and using LinkedComment, you agree to the practices described in this policy.</p>
+<p>LinkedComment ("the Extension", "we", "our") is a Chrome browser extension that detects trending posts on LinkedIn and X.com (Twitter) and generates AI-powered comments and replies. This privacy policy comprehensively describes how the Extension collects, uses, stores, and shares user data. By installing and using LinkedComment, you agree to the practices described in this policy.</p>
 
 <h2>1. Data Collection</h2>
 <p>The following is a complete list of all user data that LinkedComment collects or accesses:</p>
 
-<p><strong>a) Website Content (LinkedIn Post Text)</strong></p>
-<p>When you click "Generate Comment" on a LinkedIn post, the Extension reads the text content of that specific post from the active LinkedIn tab. This data is collected temporarily in your browser's memory solely for the purpose of generating a comment.</p>
+<p><strong>a) Website Content (Post Text from LinkedIn and X.com)</strong></p>
+<p>When you click "Generate Comment" or "Generate Reply" on a post, the Extension reads the text content of that specific post from the active LinkedIn or X.com tab. This data is collected temporarily in your browser's memory solely for the purpose of generating a comment or reply.</p>
 
 <p><strong>b) User-Provided Settings</strong></p>
 <p>The Extension collects and stores the following settings that you explicitly provide through the Extension popup:</p>
@@ -104,7 +104,7 @@ footer{padding:40px 24px;border-top:1px solid #27272a;text-align:center;font-siz
 <p>The following is a complete list of <strong>all third parties</strong> that user data may be shared with, and what data is shared:</p>
 
 <p><strong>a) AI Service Providers (only when you generate a comment)</strong></p>
-<p>When you click "Generate Comment", the text of the LinkedIn post is sent to the AI provider you have configured. The specific provider depends entirely on your choice in the Extension settings:</p>
+<p>When you click "Generate Comment", the text of the LinkedIn or X.com post is sent to the AI provider you have configured. The specific provider depends entirely on your choice in the Extension settings:</p>
 <ul>
 <li><strong>Ollama (local):</strong> If you select Ollama, post text is sent to a server running on your own computer (localhost). <strong>No data leaves your device.</strong></li>
 <li><strong>OpenAI (api.openai.com):</strong> If you select OpenAI, post text and your API key are sent to OpenAI's API servers. OpenAI processes this data according to their <a href="https://openai.com/policies/privacy-policy" target="_blank">Privacy Policy</a> and <a href="https://openai.com/policies/terms-of-use" target="_blank">Terms of Use</a>.</li>
@@ -130,7 +130,7 @@ footer{padding:40px 24px;border-top:1px solid #27272a;text-align:center;font-siz
 <h2>5. Permissions Explained</h2>
 <p>The Extension requires the following Chrome permissions, each justified below:</p>
 <ul>
-<li><strong>activeTab:</strong> Allows the Extension to read content on the current LinkedIn tab when you interact with it. Used to extract post text for comment generation. Only active on linkedin.com pages.</li>
+<li><strong>activeTab:</strong> Allows the Extension to read content on the current LinkedIn or X.com tab when you interact with it. Used to extract post text for comment or reply generation. Only active on linkedin.com and x.com pages.</li>
 <li><strong>clipboardWrite:</strong> Allows the "Copy" button to write the generated comment to your system clipboard.</li>
 <li><strong>clipboardRead:</strong> Used alongside clipboardWrite to support clipboard operations for generated comments.</li>
 <li><strong>storage:</strong> Allows the Extension to save your settings (AI provider, model, thresholds, API keys) locally using Chrome's extension storage API.</li>
@@ -160,7 +160,7 @@ footer{padding:40px 24px;border-top:1px solid #27272a;text-align:center;font-siz
 <p>LinkedComment is not directed at children under the age of 13. We do not knowingly collect any personal information from children under 13. If you believe a child under 13 has provided data through the Extension, please contact us so we can address the concern.</p>
 
 <h2>10. International Users</h2>
-<p>If you use a cloud AI provider (OpenAI, Google Gemini, or Anthropic Claude), the LinkedIn post text you send for comment generation may be processed on servers located outside your country of residence. Please refer to each provider's privacy policy (linked in Section 4) for details about their data processing locations.</p>
+<p>If you use a cloud AI provider (OpenAI, Google Gemini, or Anthropic Claude), the post text you send for comment or reply generation may be processed on servers located outside your country of residence. Please refer to each provider's privacy policy (linked in Section 4) for details about their data processing locations.</p>
 
 <h2>11. Changes to This Policy</h2>
 <p>We may update this privacy policy from time to time. When we make changes, we will update the "Last updated" date at the top of this policy. If we make material changes to how we handle user data, we will update the Extension description on the Chrome Web Store. We encourage you to review this policy periodically. Your continued use of the Extension after changes are posted constitutes acceptance of the updated policy.</p>
