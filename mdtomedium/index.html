@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MD to Medium — Convert Markdown or HTML to Medium Articles</title>
+<meta name="description" content="A clean, free tool to write Medium articles in Markdown or HTML. Live preview, rich-text copy, paste into Medium with all formatting preserved." />
+<meta name="author" content="Rohit Sainier" />
+<meta name="keywords" content="markdown, html, medium, converter, editor, blog, writing, formatter, rich text" />
+<meta name="theme-color" content="#0f0f10" />
+<meta name="color-scheme" content="dark" />
+
+<meta property="og:title" content="MD to Medium — Markdown to Medium Article Converter" />
+<meta property="og:description" content="Write Medium articles in Markdown with live preview. Paste into Medium with formatting preserved." />
+<meta property="og:type" content="website" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="MD to Medium" />
+<meta name="twitter:description" content="Write Medium articles in Markdown with live preview." />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23f5f5f5'/%3E%3Ctext x='50' y='72' font-family='Georgia,serif' font-size='62' font-style='italic' fill='%230a0a0a' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:           #0f0f10;
+    --surface:      #18181a;
+    --surface-2:    #232326;
+    --surface-3:    #2c2c30;
+    --border:       #2a2a2e;
+    --border-2:     #3a3a40;
+    --text:         #f5f5f5;
+    --text-2:       #b8b8b8;
+    --text-3:       #888888;
+    --text-4:       #555558;
+    --prose:        #d8d6d2;
+    --prose-2:      #b3b0aa;
+    --accent:       #4ade80;
+    --accent-hover: #22c55e;
+    --accent-bg:    rgba(74, 222, 128, 0.12);
+    --accent-text:  #86efac;
+    --accent-border:rgba(74, 222, 128, 0.30);
+    --danger:       #f87171;
+    --danger-bg:    rgba(248, 113, 113, 0.12);
+    --danger-border:rgba(248, 113, 113, 0.32);
+    --warning:      #fbbf24;
+    --warning-bg:   rgba(251, 191, 36, 0.12);
+    --code-bg:      #0a0a0c;
+    --code-text:    #e2e8f0;
+    --inline-code:  #fda4af;
+
+    --font-sans:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    --font-serif:   'Instrument Serif', Georgia, 'Times New Roman', serif;
+    --font-mono:    'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+    --header-h:     56px;
+    --pane-h:       40px;
+    --footer-h:     56px;
+
+    --radius-sm:    6px;
+    --radius:       8px;
+    --radius-lg:    12px;
+
+    --shadow-sm:    0 1px 2px rgba(0, 0, 0, 0.30);
+    --shadow-md:    0 4px 12px rgba(0, 0, 0, 0.36);
+    --shadow-lg:    0 12px 32px rgba(0, 0, 0, 0.50);
+    --shadow-pop:   0 8px 24px rgba(0, 0, 0, 0.55), 0 1px 4px rgba(0, 0, 0, 0.30);
+  }
+
+  html { font-size: 15px; height: 100%; -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    background: var(--bg);
+    color: var(--text);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
+  }
+
+  ::selection { background: var(--accent-bg); color: var(--accent-text); }
+
+  /* ── HEADER ── */
+  header {
+    height: var(--header-h);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 20;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text);
+    flex-shrink: 0;
+  }
+  .brand-mark {
+    width: 30px;
+    height: 30px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 18px;
+    color: #0a0a0a;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+  .brand-name {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .brand-name small {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .pill {
+    background: var(--accent-bg);
+    color: var(--accent-text);
+    border: 1px solid var(--accent-border);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .pill-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .header-spacer { flex: 1; min-width: 0; }
+  .header-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--text-2);
+    cursor: pointer;
+    transition: background 120ms, color 120ms, border-color 120ms;
+  }
+  .icon-btn:hover { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+  .icon-btn:active { transform: scale(0.96); }
+  .icon-btn svg { width: 16px; height: 16px; }
+
+  /* ── MAIN ── */
+  main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 0;
+    position: relative;
+  }
+
+  /* ── MOBILE TABS (hidden on desktop) ── */
+  .tabs {
+    display: none;
+    height: 44px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 6px;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .tab {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--text-2);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 120ms, color 120ms;
+  }
+  .tab.active {
+    background: var(--surface-2);
+    color: var(--text);
+    box-shadow: var(--shadow-sm);
+  }
+
+  /* ── PANES ── */
+  .pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    background: var(--surface);
+  }
+  .pane-header {
+    height: var(--pane-h);
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+  .pane-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  /* ── INPUT MODE TOGGLE ── */
+  .mode-toggle {
+    display: inline-flex;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px;
+    gap: 1px;
+  }
+  .mode-btn {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 3px 9px;
+    border: none;
+    background: transparent;
+    color: var(--text-3);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 120ms, color 120ms;
+    line-height: 1.2;
+  }
+  .mode-btn:hover { color: var(--text-2); }
+  .mode-btn.active {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--border);
+  }
+  .pane-meta {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 500;
+  }
+  .pane-meta-item { display: inline-flex; align-items: center; gap: 5px; }
+  .pane-meta-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--text-4);
+    border-radius: 50%;
+  }
+  .save-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--text-3);
+    font-weight: 500;
+  }
+  .save-indicator.saved { color: var(--accent); }
+  .save-indicator-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-4);
+    transition: background 200ms;
+  }
+  .save-indicator.saved .save-indicator-dot { background: var(--accent); }
+
+  /* ── EDITOR ── */
+  .editor-pane { border-right: 1px solid var(--border); }
+  .editor-wrap { flex: 1; position: relative; min-height: 0; overflow: hidden; }
+  textarea#mdInput {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    border: none;
+    outline: none;
+    padding: 24px 26px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.75;
+    color: var(--text);
+    background: var(--surface);
+    tab-size: 2;
+    -moz-tab-size: 2;
+    caret-color: var(--accent);
+  }
+  textarea#mdInput::placeholder { color: var(--text-4); }
+
+  /* ── PREVIEW ── */
+  .preview-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 36px 80px;
+    background: var(--surface);
+  }
+  .preview-content { max-width: 680px; margin: 0 auto; }
+
+  /* Medium-style typography */
+  .preview-content h1 {
+    font-family: var(--font-serif);
+    font-size: 2.05rem;
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: -0.012em;
+    color: var(--text);
+    margin: 0 0 14px;
+  }
+  .preview-content h2 {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.28;
+    letter-spacing: -0.005em;
+    color: var(--text);
+    margin: 36px 0 12px;
+  }
+  .preview-content h3 {
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    color: var(--text);
+    margin: 28px 0 10px;
+  }
+  .preview-content p {
+    font-family: var(--font-serif);
+    font-size: 1.12rem;
+    line-height: 1.78;
+    color: var(--prose);
+    margin-bottom: 20px;
+  }
+  .preview-content blockquote {
+    border-left: 3px solid var(--text);
+    padding: 4px 0 4px 22px;
+    margin: 26px 0;
+  }
+  .preview-content blockquote p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.18rem;
+    color: var(--text-2);
+    margin: 0;
+  }
+  .preview-content pre {
+    background: var(--code-bg);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin: 20px 0;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+  }
+  .preview-content pre code {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: var(--code-text);
+    background: none;
+    border: none;
+    padding: 0;
+    white-space: pre;
+  }
+  .preview-content p code,
+  .preview-content li code {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--inline-code);
+  }
+  .preview-content ul, .preview-content ol {
+    padding-left: 26px;
+    margin-bottom: 20px;
+  }
+  .preview-content li {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    line-height: 1.78;
+    color: var(--prose);
+    margin-bottom: 6px;
+  }
+  .preview-content li > ul, .preview-content li > ol { margin-top: 6px; margin-bottom: 6px; }
+  .preview-content hr {
+    border: none;
+    text-align: center;
+    margin: 32px 0;
+    color: var(--text-3);
+    font-size: 1rem;
+    letter-spacing: 0.5em;
+  }
+  .preview-content hr::after { content: '· · ·'; }
+  .preview-content strong { font-weight: 700; color: var(--text); }
+  .preview-content em { font-style: italic; }
+  .preview-content a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--text-3);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition: text-decoration-color 120ms;
+  }
+  .preview-content a:hover { text-decoration-color: var(--text); }
+  .preview-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+  .preview-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+  }
+  .preview-content th, .preview-content td {
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .preview-content th { background: var(--surface-2); font-weight: 600; }
+
+  /* Empty state */
+  .preview-empty {
+    text-align: center;
+    color: var(--text-3);
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-style: italic;
+    padding: 80px 20px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    height: var(--footer-h);
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 15;
+  }
+  .footer-status {
+    font-size: 12px;
+    color: var(--text-3);
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .footer-status.ok { color: var(--accent); }
+  .footer-status.err { color: var(--danger); }
+
+  .kbd {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-2);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-bottom-width: 2px;
+    border-radius: 4px;
+    line-height: 1.4;
+  }
+
+  .footer-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-2);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: background 120ms, border-color 120ms, color 120ms, transform 80ms;
+    white-space: nowrap;
+  }
+  .btn:hover { background: var(--surface-2); border-color: var(--border-2); }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn:disabled:hover { background: var(--surface); }
+  .btn svg { width: 14px; height: 14px; }
+
+  .btn-ghost { border-color: transparent; color: var(--text-2); }
+  .btn-ghost:hover { background: var(--surface-2); color: var(--text); }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #052e16;
+    border-color: var(--accent);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.40);
+  }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); color: #052e16; }
+
+  .btn-success {
+    background: var(--accent-bg) !important;
+    color: var(--accent-text) !important;
+    border-color: var(--accent-border) !important;
+  }
+  .btn-error {
+    background: var(--danger-bg) !important;
+    color: var(--danger) !important;
+    border-color: var(--danger-border) !important;
+  }
+
+  /* ── DROPDOWN ── */
+  .dropdown { position: relative; }
+  .dropdown-menu {
+    position: absolute;
+    bottom: calc(100% + 6px);
+    right: 0;
+    min-width: 200px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-pop);
+    padding: 6px;
+    z-index: 50;
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    transition: opacity 140ms, transform 140ms;
+  }
+  .dropdown.open .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 100ms;
+    font-family: inherit;
+  }
+  .dropdown-item:hover { background: var(--surface-2); }
+  .dropdown-item svg { width: 14px; height: 14px; color: var(--text-2); flex-shrink: 0; }
+  .dropdown-item-shortcut {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-3);
+  }
+  .dropdown-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 2px;
+  }
+  .dropdown-item.danger { color: var(--danger); }
+  .dropdown-item.danger svg { color: var(--danger); }
+  .dropdown-item.danger:hover { background: var(--danger-bg); }
+
+  /* ── CHEATSHEET MODAL ── */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 160ms ease;
+  }
+  .modal-backdrop.open { display: flex; }
+  .modal {
+    background: var(--surface);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 580px;
+    max-height: min(80vh, 720px);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 200ms ease;
+  }
+  .modal-header {
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .modal-title {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+  .modal-body {
+    padding: 18px 22px 22px;
+    overflow-y: auto;
+  }
+  .cheat-section {
+    margin-bottom: 18px;
+  }
+  .cheat-section:last-child { margin-bottom: 0; }
+  .cheat-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+    margin-bottom: 10px;
+  }
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 18px;
+  }
+  .cheat-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cheat-row:last-child { border-bottom: none; }
+  .cheat-md {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--inline-code);
+    flex-shrink: 0;
+    background: var(--surface-2);
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+  .cheat-result {
+    font-size: 12.5px;
+    color: var(--text-2);
+  }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: calc(var(--footer-h) + 16px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--surface-3);
+    color: var(--text);
+    border: 1px solid var(--border-2);
+    padding: 11px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    z-index: 80;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms, transform 200ms;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 90vw;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .toast.success { background: var(--accent); color: #052e16; border-color: var(--accent); }
+  .toast.error   { background: var(--danger); color: #2c0a0a; border-color: var(--danger); }
+  .toast svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: transparent;
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+  *:hover > ::-webkit-scrollbar-thumb,
+  *:focus-within > ::-webkit-scrollbar-thumb { background: var(--border-2); background-clip: content-box; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-3) !important; background-clip: content-box !important; }
+
+  /* ── FOCUS RINGS ── */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  textarea:focus-visible, .icon-btn:focus-visible, .btn:focus-visible { outline-offset: -2px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 820px) {
+    .header-meta-text { display: none; }
+    .footer-status { font-size: 11px; }
+    .btn-label-md { display: none; }
+  }
+
+  @media (max-width: 720px) {
+    .tabs { display: flex; }
+    main {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
+    .pane { display: none; }
+    .pane.active { display: flex; }
+    .editor-pane { border-right: none; }
+    .preview-scroll { padding: 24px 22px 60px; }
+    .preview-content h1 { font-size: 1.7rem; }
+    .preview-content h2 { font-size: 1.3rem; }
+    .preview-content p { font-size: 1.05rem; }
+    .preview-content li { font-size: 1.02rem; }
+    textarea#mdInput { padding: 18px 18px; font-size: 13px; }
+    .pane-header { height: 36px; padding: 0 14px; }
+    .pane-meta { gap: 8px; }
+    .pane-meta-item { font-size: 10.5px; }
+    .footer-actions .btn-label-sm { display: none; }
+    header { padding: 0 12px; }
+    footer { padding: 0 12px; }
+    .pill { display: none; }
+    .cheat-grid { grid-template-columns: 1fr; gap: 0; }
+  }
+
+  @media (max-width: 460px) {
+    .brand-name { font-size: 13px; }
+    .brand-name small { display: none; }
+    .footer-status .kbd { display: none; }
+    .footer-status .footer-status-text { font-size: 11px; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    header, footer, .tabs, .editor-pane { display: none !important; }
+    main { grid-template-columns: 1fr; }
+    .preview-scroll { overflow: visible; padding: 0; }
+    body { overflow: visible; height: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─── -->
+<header>
+  <a class="brand" href="../" aria-label="Back to all projects">
+    <div class="brand-mark" aria-hidden="true">M</div>
+    <div class="brand-name">
+      MD to Medium
+      <small>Markdown editor</small>
+    </div>
+  </a>
+
+  <span class="pill header-meta-text"><span class="pill-dot"></span>Rich-text copy</span>
+
+  <div class="header-spacer"></div>
+
+  <div class="header-actions">
+    <button class="icon-btn" id="cheatBtn" aria-label="Markdown reference" title="Markdown reference">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </button>
+    <a class="icon-btn" href="https://github.com/rohitsainier" target="_blank" rel="noopener" aria-label="GitHub" title="View on GitHub">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.4 3-.405 1.02.005 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ─── MOBILE TABS ─── -->
+<div class="tabs" role="tablist" aria-label="Switch view">
+  <button class="tab active" id="tabEditor" role="tab" aria-selected="true">Edit</button>
+  <button class="tab" id="tabPreview" role="tab" aria-selected="false">Preview</button>
+</div>
+
+<!-- ─── MAIN ─── -->
+<main>
+  <!-- Editor pane -->
+  <section class="pane editor-pane active" id="paneEditor" aria-label="Source editor">
+    <div class="pane-header">
+      <div class="mode-toggle" role="tablist" aria-label="Input format">
+        <button class="mode-btn active" id="modeMd" data-mode="md" role="tab" aria-selected="true" title="Markdown input">MD</button>
+        <button class="mode-btn" id="modeHtml" data-mode="html" role="tab" aria-selected="false" title="HTML input">HTML</button>
+      </div>
+      <div class="pane-meta">
+        <span class="pane-meta-item" id="wordCount">0 words</span>
+        <span class="pane-meta-dot" aria-hidden="true"></span>
+        <span class="pane-meta-item" id="readTime">0 min</span>
+        <span class="pane-meta-dot" aria-hidden="true"></span>
+        <span class="save-indicator" id="saveIndicator">
+          <span class="save-indicator-dot"></span>
+          <span class="save-indicator-text">Idle</span>
+        </span>
+      </div>
+    </div>
+    <div class="editor-wrap">
+      <textarea
+        id="mdInput"
+        spellcheck="false"
+        autocomplete="off"
+        autocapitalize="off"
+        autocorrect="off"
+        aria-label="Source input"
+        placeholder="# Start writing your article…&#10;&#10;## A section heading&#10;&#10;Write your paragraphs here. Use **bold** and *italic* freely.&#10;&#10;> Blockquotes become beautiful pull quotes in Medium.&#10;&#10;```&#10;paste code blocks like this&#10;```&#10;&#10;- Bullet lists work too&#10;- Just like this&#10;&#10;---"
+      ></textarea>
+    </div>
+  </section>
+
+  <!-- Preview pane -->
+  <section class="pane preview-pane" id="panePreview" aria-label="Medium preview">
+    <div class="pane-header">
+      <span class="pane-title">Medium preview</span>
+      <div class="pane-meta">
+        <span class="pane-meta-item">Live</span>
+      </div>
+    </div>
+    <div class="preview-scroll" id="previewScroll">
+      <article class="preview-content" id="preview"></article>
+    </div>
+  </section>
+</main>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-status" id="status">
+    <span class="footer-status-text">Ready — write your article, then click Copy for Medium</span>
+    <span class="kbd">⌘⇧C</span>
+  </div>
+
+  <div class="footer-actions">
+    <div class="dropdown" id="moreDropdown">
+      <button class="btn btn-ghost" id="moreBtn" aria-haspopup="menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg>
+        <span class="btn-label-md">More</span>
+      </button>
+      <div class="dropdown-menu" role="menu">
+        <button class="dropdown-item" id="copyMdBtn" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy as Markdown
+          <span class="dropdown-item-shortcut">⌘⇧M</span>
+        </button>
+        <button class="dropdown-item" id="copyHtmlBtn" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Copy as HTML
+        </button>
+        <button class="dropdown-item" id="downloadMdBtn" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download .md
+          <span class="dropdown-item-shortcut">⌘S</span>
+        </button>
+        <div class="dropdown-divider"></div>
+        <button class="dropdown-item" id="loadSampleBtn" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Load sample article
+        </button>
+        <button class="dropdown-item danger" id="clearBtn" role="menuitem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+          Clear editor
+        </button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="copyBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span>Copy for Medium</span>
+    </button>
+  </div>
+</footer>
+
+<!-- ─── CHEATSHEET MODAL ─── -->
+<div class="modal-backdrop" id="cheatModal" role="dialog" aria-modal="true" aria-labelledby="cheatTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="cheatTitle">Markdown reference</div>
+      <button class="icon-btn" id="cheatClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="cheat-section">
+        <div class="cheat-label">Headings</div>
+        <div class="cheat-row"><code class="cheat-md"># Title</code><span class="cheat-result">H1 — large serif heading</span></div>
+        <div class="cheat-row"><code class="cheat-md">## Section</code><span class="cheat-result">H2 — section heading</span></div>
+        <div class="cheat-row"><code class="cheat-md">### Sub</code><span class="cheat-result">H3 — sub-heading</span></div>
+      </div>
+
+      <div class="cheat-section">
+        <div class="cheat-label">Inline formatting</div>
+        <div class="cheat-row"><code class="cheat-md">**bold**</code><span class="cheat-result">Bold text</span></div>
+        <div class="cheat-row"><code class="cheat-md">*italic*</code><span class="cheat-result">Italic text</span></div>
+        <div class="cheat-row"><code class="cheat-md">`code`</code><span class="cheat-result">Inline code</span></div>
+        <div class="cheat-row"><code class="cheat-md">[text](url)</code><span class="cheat-result">Hyperlink</span></div>
+      </div>
+
+      <div class="cheat-section">
+        <div class="cheat-label">Blocks</div>
+        <div class="cheat-row"><code class="cheat-md">&gt; quote</code><span class="cheat-result">Pull quote</span></div>
+        <div class="cheat-row"><code class="cheat-md">``` code ```</code><span class="cheat-result">Code block</span></div>
+        <div class="cheat-row"><code class="cheat-md">- item</code><span class="cheat-result">Bullet list</span></div>
+        <div class="cheat-row"><code class="cheat-md">1. item</code><span class="cheat-result">Numbered list</span></div>
+        <div class="cheat-row"><code class="cheat-md">---</code><span class="cheat-result">Section divider · · ·</span></div>
+      </div>
+
+      <div class="cheat-section">
+        <div class="cheat-label">Keyboard shortcuts</div>
+        <div class="cheat-row"><span class="kbd">⌘⇧C</span><span class="cheat-result" style="margin-left:8px">Copy for Medium</span></div>
+        <div class="cheat-row"><span class="kbd">⌘⇧M</span><span class="cheat-result" style="margin-left:8px">Copy as Markdown</span></div>
+        <div class="cheat-row"><span class="kbd">⌘S</span><span class="cheat-result" style="margin-left:8px">Download .md file</span></div>
+        <div class="cheat-row"><span class="kbd">Esc</span><span class="cheat-result" style="margin-left:8px">Close modals / dropdown</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.0/marked.min.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  // ── Elements ──────────────────────────────────────────
+  const $ = (id) => document.getElementById(id);
+  const ta            = $('mdInput');
+  const preview       = $('preview');
+  const previewScroll = $('previewScroll');
+  const statusEl      = $('status');
+  const statusText    = statusEl.querySelector('.footer-status-text');
+  const wordCount     = $('wordCount');
+  const readTime      = $('readTime');
+  const saveIndicator = $('saveIndicator');
+  const saveText      = saveIndicator.querySelector('.save-indicator-text');
+  const copyBtn       = $('copyBtn');
+  const moreBtn       = $('moreBtn');
+  const moreDropdown  = $('moreDropdown');
+  const cheatModal    = $('cheatModal');
+  const tabEditor     = $('tabEditor');
+  const tabPreview    = $('tabPreview');
+  const paneEditor    = $('paneEditor');
+  const panePreview   = $('panePreview');
+  const toast         = $('toast');
+  const modeMdBtn     = $('modeMd');
+  const modeHtmlBtn   = $('modeHtml');
+  const copyMdItem    = $('copyMdBtn');
+  const copyHtmlItem  = $('copyHtmlBtn');
+  const downloadItem  = $('downloadMdBtn');
+
+  // ── Placeholders ──────────────────────────────────────
+  const PLACEHOLDER_MD = `# Start writing your article…\n\n## A section heading\n\nWrite your paragraphs here. Use **bold** and *italic* freely.\n\n> Blockquotes become beautiful pull quotes in Medium.\n\n\`\`\`\npaste code blocks like this\n\`\`\`\n\n- Bullet lists work too\n- Just like this\n\n---`;
+  const PLACEHOLDER_HTML = `<h1>Start writing your article…</h1>\n\n<h2>A section heading</h2>\n\n<p>Paste HTML from anywhere — blog post, Notion export, AI output. We strip styles and keep only Medium-friendly tags.</p>\n\n<blockquote>Blockquotes become beautiful pull quotes in Medium.</blockquote>\n\n<pre><code>paste code blocks like this</code></pre>\n\n<ul>\n  <li>Bullet lists</li>\n  <li>Just like this</li>\n</ul>\n\n<hr>`;
+
+  // ── Sample article ────────────────────────────────────
+  const SAMPLE_MD = `# How I Notarized My macOS App and Finally Sold It on Gumroad
+
+A field guide for indie developers shipping outside the App Store — with code, war stories, and a working shell script.
+
+---
+
+It was a Tuesday night. The app had been in the works for three months — a clean little YouTube downloader for macOS, the kind of tool you build because you need it yourself and later think, *maybe others need this too.*
+
+## Why Gatekeeper will block your app
+
+Since macOS Catalina (10.15), Apple enforces a hard rule: any app distributed outside the Mac App Store must be notarized. Skip this step and your users see this:
+
+> "YouTube Downloader" cannot be opened because Apple cannot check it for malicious software.
+
+There is no "open anyway." The file is quarantined, most users delete it, and they never come back.
+
+## Step 1 — Find your signing identity
+
+\`\`\`
+security find-identity -v -p codesigning
+# Output: "Developer ID Application: Your Name (ABCD123456)"
+\`\`\`
+
+The ten-character code in parentheses is your **Team ID**. You'll need it in every command.
+
+## Step 2 — Sign your app
+
+The \`--options runtime\` flag is non-negotiable — without it, Apple rejects your submission immediately.
+
+\`\`\`
+codesign --deep --force --verify --verbose \\
+  --options runtime \\
+  --timestamp \\
+  --sign "$IDENTITY" \\
+  "MyApp.app"
+\`\`\`
+
+## The script that does it all
+
+After six failed attempts, I wrote a shell script that handles the entire pipeline — signing, submitting, stapling, and packaging a DMG in one command.
+
+\`\`\`
+./notarize.sh --app-path "~/Downloads/MyApp.app"
+\`\`\`
+
+The app launched. It sold. No Gatekeeper warnings, no angry support emails — just the notarization ticket sitting quietly inside the DMG, doing its job.`;
+
+  const SAMPLE_HTML = `<h1>How I Notarized My macOS App and Finally Sold It on Gumroad</h1>
+
+<p>A field guide for indie developers shipping outside the App Store — with code, war stories, and a working shell script.</p>
+
+<hr>
+
+<p>It was a Tuesday night. The app had been in the works for three months — a clean little YouTube downloader for macOS, the kind of tool you build because you need it yourself and later think, <em>maybe others need this too.</em></p>
+
+<h2>Why Gatekeeper will block your app</h2>
+
+<p>Since macOS Catalina (10.15), Apple enforces a hard rule: any app distributed outside the Mac App Store must be notarized. Skip this step and your users see this:</p>
+
+<blockquote>"YouTube Downloader" cannot be opened because Apple cannot check it for malicious software.</blockquote>
+
+<p>There is no "open anyway." The file is quarantined, most users delete it, and they never come back.</p>
+
+<h2>Step 1 — Find your signing identity</h2>
+
+<pre><code>security find-identity -v -p codesigning
+# Output: "Developer ID Application: Your Name (ABCD123456)"</code></pre>
+
+<p>The ten-character code in parentheses is your <strong>Team ID</strong>. You'll need it in every command.</p>
+
+<h2>The script that does it all</h2>
+
+<p>After six failed attempts, I wrote a shell script that handles the entire pipeline — signing, submitting, stapling, and packaging a DMG in one command.</p>
+
+<pre><code>./notarize.sh --app-path "~/Downloads/MyApp.app"</code></pre>
+
+<p>The app launched. It sold. No Gatekeeper warnings, no angry support emails — just the notarization ticket sitting quietly inside the DMG, doing its job.</p>`;
+
+  // ── Marked configuration ─────────────────────────────
+  if (window.marked) {
+    marked.setOptions({ breaks: true, gfm: true });
+  }
+
+  // ── Input mode state ──────────────────────────────────
+  const MODE_KEY = 'mdtomedium.mode';
+  let inputMode = 'md'; // 'md' | 'html'
+  try {
+    const saved = localStorage.getItem(MODE_KEY);
+    if (saved === 'html' || saved === 'md') inputMode = saved;
+  } catch (e) {}
+
+  // ── localStorage ──────────────────────────────────────
+  const DRAFT_KEYS = { md: 'mdtomedium.draft', html: 'mdtomedium.draft.html' };
+  let saveTimer = null;
+  let saveStateTimer = null;
+
+  function currentDraftKey() { return DRAFT_KEYS[inputMode]; }
+
+  function loadDraft() {
+    try {
+      const saved = localStorage.getItem(currentDraftKey());
+      if (saved !== null && saved.length > 0) return saved;
+    } catch (e) {}
+    return inputMode === 'html' ? SAMPLE_HTML : SAMPLE_MD;
+  }
+
+  function saveDraft(value) {
+    try {
+      localStorage.setItem(currentDraftKey(), value);
+      setSaveState('saved');
+    } catch (e) {
+      setSaveState('error');
+    }
+  }
+
+  function setSaveState(state) {
+    clearTimeout(saveStateTimer);
+    if (state === 'saving') {
+      saveText.textContent = 'Saving…';
+      saveIndicator.classList.remove('saved');
+    } else if (state === 'saved') {
+      saveText.textContent = 'Saved';
+      saveIndicator.classList.add('saved');
+      saveStateTimer = setTimeout(() => {
+        saveText.textContent = 'Saved';
+      }, 1200);
+    } else if (state === 'error') {
+      saveText.textContent = 'Save failed';
+      saveIndicator.classList.remove('saved');
+    } else {
+      saveText.textContent = 'Idle';
+      saveIndicator.classList.remove('saved');
+    }
+  }
+
+  function debouncedSave(value) {
+    clearTimeout(saveTimer);
+    setSaveState('saving');
+    saveTimer = setTimeout(() => saveDraft(value), 600);
+  }
+
+  // ── HTML sanitizer for Medium output ──────────────────
+  const ALLOWED_TAGS = new Set([
+    'h1','h2','h3','h4','h5','h6',
+    'p','br','hr','strong','b','em','i','u','s','del',
+    'code','pre','blockquote',
+    'ul','ol','li',
+    'a','img',
+    'table','thead','tbody','tr','th','td','figure','figcaption'
+  ]);
+  const REMOVE_ENTIRELY = new Set([
+    'script','style','noscript','iframe','object','embed','form','input','button','select','textarea','meta','link','head','svg','canvas','video','audio','source','track'
+  ]);
+  const ALLOWED_ATTRS = {
+    a: ['href','title'],
+    img: ['src','alt','title'],
+    th: ['colspan','rowspan'],
+    td: ['colspan','rowspan']
+  };
+
+  function sanitizeHtmlForMedium(htmlString) {
+    const temp = document.createElement('div');
+    temp.innerHTML = htmlString;
+
+    function walk(node) {
+      const children = Array.from(node.childNodes);
+      for (const child of children) walk(child);
+
+      if (node.nodeType !== 1) return; // only process element nodes
+
+      const tag = node.tagName.toLowerCase();
+
+      if (REMOVE_ENTIRELY.has(tag)) {
+        node.remove();
+        return;
+      }
+
+      // Strip unknown attributes
+      const allowed = ALLOWED_ATTRS[tag] || [];
+      for (const attr of Array.from(node.attributes || [])) {
+        const name = attr.name.toLowerCase();
+        if (name.startsWith('on') || !allowed.includes(name)) {
+          node.removeAttribute(attr.name);
+        }
+      }
+
+      // Validate href / src to block javascript: and data: schemes
+      if (tag === 'a') {
+        const href = (node.getAttribute('href') || '').trim();
+        if (href && !/^(https?:|mailto:|#|\/)/i.test(href)) node.removeAttribute('href');
+      }
+      if (tag === 'img') {
+        const src = (node.getAttribute('src') || '').trim();
+        if (src && !/^(https?:|\/)/i.test(src)) node.removeAttribute('src');
+      }
+
+      if (!ALLOWED_TAGS.has(tag)) {
+        // Unwrap: replace node with its (already-sanitized) children
+        const parent = node.parentNode;
+        if (!parent) return;
+        while (node.firstChild) parent.insertBefore(node.firstChild, node);
+        parent.removeChild(node);
+      }
+    }
+
+    walk(temp);
+    return temp.innerHTML.trim();
+  }
+
+  function htmlToPlainText(htmlString) {
+    const temp = document.createElement('div');
+    temp.innerHTML = htmlString;
+    return temp.textContent || '';
+  }
+
+  // ── Render ────────────────────────────────────────────
+  function render() {
+    const value = ta.value;
+    if (!value.trim()) {
+      preview.innerHTML = '<div class="preview-empty">Start typing to see your Medium-style preview here.</div>';
+    } else if (inputMode === 'html') {
+      preview.innerHTML = sanitizeHtmlForMedium(value);
+    } else if (window.marked) {
+      preview.innerHTML = marked.parse(value);
+    } else {
+      preview.textContent = value;
+    }
+    updateMeta(value);
+  }
+
+  function updateMeta(value) {
+    const text = inputMode === 'html' ? htmlToPlainText(value).trim() : value.trim();
+    const words = text ? text.split(/\s+/).filter(Boolean).length : 0;
+    const minutes = Math.max(1, Math.round(words / 230));
+    wordCount.textContent = words.toLocaleString() + (words === 1 ? ' word' : ' words');
+    readTime.textContent = words === 0 ? '0 min' : minutes + ' min read';
+  }
+
+  // ── Status ────────────────────────────────────────────
+  function setStatus(type, msg, kbd) {
+    statusEl.classList.remove('ok', 'err');
+    if (type) statusEl.classList.add(type);
+    statusText.textContent = msg;
+    const kbdEl = statusEl.querySelector('.kbd');
+    if (kbdEl) kbdEl.style.display = kbd ? '' : 'none';
+  }
+
+  // ── Toast ─────────────────────────────────────────────
+  let toastTimer = null;
+  function showToast(msg, type = '') {
+    clearTimeout(toastTimer);
+    toast.className = 'toast' + (type ? ' ' + type : '');
+    toast.innerHTML = (
+      type === 'success'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+        : type === 'error'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+        : ''
+    ) + '<span>' + msg + '</span>';
+    requestAnimationFrame(() => toast.classList.add('show'));
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+  }
+
+  // ── Custom HTML builder for Medium-friendly output ──
+  function buildMediumHTML() {
+    if (inputMode === 'html') {
+      return sanitizeHtmlForMedium(ta.value);
+    }
+    const lines = ta.value.split('\n');
+    let html = '';
+    let inCode = false, codeAcc = [];
+    let inUL = false, inOL = false;
+
+    const closeUL = () => { if (inUL) { html += '</ul>'; inUL = false; } };
+    const closeOL = () => { if (inOL) { html += '</ol>'; inOL = false; } };
+    const closeLists = () => { closeUL(); closeOL(); };
+
+    for (let i = 0; i < lines.length; i++) {
+      const raw = lines[i];
+
+      if (raw.startsWith('```')) {
+        if (!inCode) {
+          closeLists();
+          inCode = true;
+          codeAcc = [];
+        } else {
+          html += '<pre><code>' + escHtml(codeAcc.join('\n')) + '</code></pre>';
+          inCode = false;
+          codeAcc = [];
+        }
+        continue;
+      }
+      if (inCode) { codeAcc.push(raw); continue; }
+
+      const line = raw.trimEnd();
+
+      if (/^# /.test(line))   { closeLists(); html += '<h1>' + inline(line.slice(2)) + '</h1>'; continue; }
+      if (/^## /.test(line))  { closeLists(); html += '<h2>' + inline(line.slice(3)) + '</h2>'; continue; }
+      if (/^### /.test(line)) { closeLists(); html += '<h3>' + inline(line.slice(4)) + '</h3>'; continue; }
+
+      if (/^> /.test(line)) {
+        closeLists();
+        html += '<blockquote><p>' + inline(line.slice(2)) + '</p></blockquote>';
+        continue;
+      }
+
+      if (/^[-*_]{3,}\s*$/.test(line.trim())) {
+        closeLists();
+        html += '<hr>';
+        continue;
+      }
+
+      const ulM = line.match(/^[-*] (.+)/);
+      if (ulM) {
+        closeOL();
+        if (!inUL) { html += '<ul>'; inUL = true; }
+        html += '<li>' + inline(ulM[1]) + '</li>';
+        continue;
+      }
+
+      const olM = line.match(/^\d+\. (.+)/);
+      if (olM) {
+        closeUL();
+        if (!inOL) { html += '<ol>'; inOL = true; }
+        html += '<li>' + inline(olM[1]) + '</li>';
+        continue;
+      }
+
+      closeLists();
+
+      if (line.trim() === '') continue;
+      html += '<p>' + inline(line) + '</p>';
+    }
+    closeLists();
+    return html;
+  }
+
+  function inline(t) {
+    return t
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/__(.+?)__/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/(^|[^_])_(?!_)([^_]+?)_(?!_)/g, '$1<em>$2</em>')
+      .replace(/`(.+?)`/g, '<code>$1</code>');
+  }
+
+  function escHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  // ── Copy operations ───────────────────────────────────
+  async function copyForMedium() {
+    if (!ta.value.trim()) {
+      setStatus('err', 'Nothing to copy — write something first.', false);
+      showToast('Nothing to copy', 'error');
+      return;
+    }
+    const html = buildMediumHTML();
+    const plain = ta.value;
+
+    try {
+      const item = new ClipboardItem({
+        'text/html':  new Blob([html],  { type: 'text/html' }),
+        'text/plain': new Blob([plain], { type: 'text/plain' })
+      });
+      await navigator.clipboard.write([item]);
+      onCopySuccess();
+    } catch (e) {
+      // fallback with execCommand
+      try {
+        const el = document.createElement('div');
+        el.innerHTML = html;
+        el.setAttribute('contenteditable', 'true');
+        el.style.cssText = 'position:fixed;top:-9999px;left:0;opacity:0;';
+        document.body.appendChild(el);
+        const sel = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        const ok = document.execCommand('copy');
+        sel.removeAllRanges();
+        document.body.removeChild(el);
+        if (!ok) throw new Error('execCommand failed');
+        onCopySuccess();
+      } catch (e2) {
+        copyBtn.classList.add('btn-error');
+        copyBtn.querySelector('span').textContent = 'Blocked';
+        setStatus('err', 'Clipboard blocked. Please use Chrome over HTTPS.', false);
+        showToast('Clipboard access blocked', 'error');
+        setTimeout(resetCopyBtn, 3500);
+      }
+    }
+  }
+
+  function onCopySuccess() {
+    copyBtn.classList.remove('btn-primary');
+    copyBtn.classList.add('btn-success');
+    copyBtn.querySelector('span').textContent = 'Copied!';
+    setStatus('ok', 'Rich text copied. Open Medium → New Story → Cmd/Ctrl+V to paste.', false);
+    showToast('Copied — paste into Medium', 'success');
+    setTimeout(resetCopyBtn, 2600);
+  }
+
+  function resetCopyBtn() {
+    copyBtn.classList.remove('btn-success', 'btn-error');
+    copyBtn.classList.add('btn-primary');
+    copyBtn.querySelector('span').textContent = 'Copy for Medium';
+    setStatus('', 'Ready — write your article, then click Copy for Medium', true);
+  }
+
+  async function copySource() {
+    if (!ta.value.trim()) { showToast('Nothing to copy', 'error'); return; }
+    try {
+      await navigator.clipboard.writeText(ta.value);
+      showToast(inputMode === 'html' ? 'HTML source copied' : 'Markdown copied', 'success');
+    } catch (e) {
+      showToast('Copy failed', 'error');
+    }
+  }
+
+  async function copyHtml() {
+    if (!ta.value.trim()) { showToast('Nothing to copy', 'error'); return; }
+    try {
+      await navigator.clipboard.writeText(buildMediumHTML());
+      showToast('Clean HTML copied', 'success');
+    } catch (e) {
+      showToast('Copy failed', 'error');
+    }
+  }
+
+  // ── Download ──────────────────────────────────────────
+  function downloadSource() {
+    if (!ta.value.trim()) { showToast('Nothing to download', 'error'); return; }
+    let firstHeading = '';
+    if (inputMode === 'html') {
+      const m = ta.value.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
+      if (m) firstHeading = htmlToPlainText(m[1]);
+    } else {
+      const line = ta.value.split('\n').find((l) => /^# /.test(l));
+      if (line) firstHeading = line.replace(/^#+\s*/, '');
+    }
+    const slug = (firstHeading || 'article')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 50) || 'article';
+    const ext = inputMode === 'html' ? 'html' : 'md';
+    const mime = inputMode === 'html' ? 'text/html;charset=utf-8' : 'text/markdown;charset=utf-8';
+    const blob = new Blob([ta.value], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = slug + '.' + ext;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Downloaded ' + slug + '.' + ext, 'success');
+  }
+
+  // ── Clear ─────────────────────────────────────────────
+  function clearEditor() {
+    if (ta.value && !confirm('Clear the editor? This cannot be undone.')) return;
+    ta.value = '';
+    saveDraft('');
+    render();
+    setStatus('', 'Editor cleared. Start writing your article.', true);
+    ta.focus();
+  }
+
+  function loadSample() {
+    if (ta.value && !confirm('Replace current content with the sample article?')) return;
+    ta.value = inputMode === 'html' ? SAMPLE_HTML : SAMPLE_MD;
+    debouncedSave(ta.value);
+    render();
+    showToast('Sample loaded', 'success');
+    ta.focus();
+    ta.scrollTop = 0;
+  }
+
+  // ── Input mode switching ──────────────────────────────
+  function applyModeUI() {
+    modeMdBtn.classList.toggle('active', inputMode === 'md');
+    modeHtmlBtn.classList.toggle('active', inputMode === 'html');
+    modeMdBtn.setAttribute('aria-selected', String(inputMode === 'md'));
+    modeHtmlBtn.setAttribute('aria-selected', String(inputMode === 'html'));
+    ta.placeholder = inputMode === 'html' ? PLACEHOLDER_HTML : PLACEHOLDER_MD;
+
+    // Update dropdown labels for current mode
+    const copyMdLabel = copyMdItem.childNodes;
+    copyMdItem.innerHTML = inputMode === 'html'
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy HTML source <span class="dropdown-item-shortcut">⌘⇧M</span>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy as Markdown <span class="dropdown-item-shortcut">⌘⇧M</span>';
+
+    copyHtmlItem.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg> Copy clean HTML';
+
+    downloadItem.innerHTML = (inputMode === 'html'
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download .html'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download .md')
+      + '<span class="dropdown-item-shortcut">⌘S</span>';
+  }
+
+  function setMode(newMode) {
+    if (newMode !== 'md' && newMode !== 'html') return;
+    if (newMode === inputMode) return;
+
+    // Save current draft before switching
+    if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+    saveDraft(ta.value);
+
+    inputMode = newMode;
+    try { localStorage.setItem(MODE_KEY, inputMode); } catch (e) {}
+
+    ta.value = loadDraft();
+    applyModeUI();
+    render();
+    setSaveState('saved');
+    setStatus('', inputMode === 'html'
+      ? 'HTML mode — paste HTML, get a Medium-clean version on copy.'
+      : 'Ready — write your article, then click Copy for Medium', true);
+    ta.focus();
+  }
+
+  // ── Cheatsheet modal ──────────────────────────────────
+  function openCheat() {
+    cheatModal.classList.add('open');
+    document.addEventListener('keydown', escCloseCheat);
+  }
+  function closeCheat() {
+    cheatModal.classList.remove('open');
+    document.removeEventListener('keydown', escCloseCheat);
+  }
+  function escCloseCheat(e) { if (e.key === 'Escape') closeCheat(); }
+
+  // ── Dropdown ──────────────────────────────────────────
+  function toggleDropdown(force) {
+    const open = force !== undefined ? force : !moreDropdown.classList.contains('open');
+    moreDropdown.classList.toggle('open', open);
+    moreBtn.setAttribute('aria-expanded', String(open));
+  }
+
+  document.addEventListener('click', (e) => {
+    if (!moreDropdown.contains(e.target)) toggleDropdown(false);
+  });
+
+  // ── Tabs (mobile) ─────────────────────────────────────
+  function activateTab(which) {
+    if (which === 'editor') {
+      tabEditor.classList.add('active'); tabEditor.setAttribute('aria-selected', 'true');
+      tabPreview.classList.remove('active'); tabPreview.setAttribute('aria-selected', 'false');
+      paneEditor.classList.add('active'); panePreview.classList.remove('active');
+    } else {
+      tabPreview.classList.add('active'); tabPreview.setAttribute('aria-selected', 'true');
+      tabEditor.classList.remove('active'); tabEditor.setAttribute('aria-selected', 'false');
+      panePreview.classList.add('active'); paneEditor.classList.remove('active');
+    }
+  }
+
+  // ── Tab key in textarea inserts 2 spaces ──────────────
+  ta.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const value = ta.value;
+      ta.value = value.slice(0, start) + '  ' + value.slice(end);
+      ta.selectionStart = ta.selectionEnd = start + 2;
+      handleInput();
+    }
+  });
+
+  // ── Handle input ──────────────────────────────────────
+  function handleInput() {
+    render();
+    debouncedSave(ta.value);
+  }
+
+  // ── Bindings ──────────────────────────────────────────
+  ta.addEventListener('input', handleInput);
+  copyBtn.addEventListener('click', copyForMedium);
+  $('cheatBtn').addEventListener('click', openCheat);
+  $('cheatClose').addEventListener('click', closeCheat);
+  cheatModal.addEventListener('click', (e) => { if (e.target === cheatModal) closeCheat(); });
+  moreBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleDropdown(); });
+  copyMdItem.addEventListener('click', () => { toggleDropdown(false); copySource(); });
+  copyHtmlItem.addEventListener('click', () => { toggleDropdown(false); copyHtml(); });
+  downloadItem.addEventListener('click', () => { toggleDropdown(false); downloadSource(); });
+  $('loadSampleBtn').addEventListener('click', () => { toggleDropdown(false); loadSample(); });
+  $('clearBtn').addEventListener('click', () => { toggleDropdown(false); clearEditor(); });
+  tabEditor.addEventListener('click', () => activateTab('editor'));
+  tabPreview.addEventListener('click', () => activateTab('preview'));
+  modeMdBtn.addEventListener('click', () => setMode('md'));
+  modeHtmlBtn.addEventListener('click', () => setMode('html'));
+
+  // ── Keyboard shortcuts ────────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    const meta = e.metaKey || e.ctrlKey;
+    if (meta && e.shiftKey && (e.key === 'c' || e.key === 'C')) {
+      e.preventDefault(); copyForMedium();
+    } else if (meta && e.shiftKey && (e.key === 'm' || e.key === 'M')) {
+      e.preventDefault(); copySource();
+    } else if (meta && !e.shiftKey && (e.key === 's' || e.key === 'S')) {
+      e.preventDefault(); downloadSource();
+    } else if (e.key === 'Escape') {
+      toggleDropdown(false);
+    }
+  });
+
+  // ── Initialize ────────────────────────────────────────
+  applyModeUI();
+  ta.value = loadDraft();
+  render();
+  setSaveState('saved');
+  if (inputMode === 'html') {
+    setStatus('', 'HTML mode — paste HTML, get a Medium-clean version on copy.', true);
+  }
+
+  // Focus editor unless on mobile
+  if (window.matchMedia('(min-width: 720px)').matches) {
+    setTimeout(() => ta.focus(), 100);
+  }
+
+  // Warn before unload only if there's unsaved content (saving is debounced)
+  window.addEventListener('beforeunload', () => {
+    if (saveTimer) saveDraft(ta.value);
+  });
+})();
+</script>
+
+</body>
+</html>
