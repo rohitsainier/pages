@@ -176,6 +176,228 @@
     background-size: 3px 3px, 7px 7px;
     background-position: 0 0, 1px 2px;
   }
+
+  /* ============== Launch countdown ==============
+     Apple-style: tabular-numeric digits in glass cards,
+     subtle slide-down + fade on each tick. Built so the
+     timer can age gracefully to a "LIVE NOW" state. */
+  .countdown {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 560px;
+  }
+  .countdown-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--fg-48);
+    text-transform: uppercase;
+  }
+  .countdown-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  /* Mute toggle — small inline button next to "Launching in". */
+  .countdown-sound-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 0.5px solid var(--line);
+    color: var(--fg-48);
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+  }
+  .countdown-sound-btn:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--fg-72);
+    border-color: var(--line-strong);
+  }
+  .countdown-sound-btn[aria-pressed="true"] {
+    color: var(--cyan);
+    background: rgba(79,200,255,0.10);
+    border-color: rgba(79,200,255,0.30);
+  }
+  .countdown-sound-btn svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+  }
+  .countdown-sound-btn .slash {
+    opacity: 1;
+    transition: opacity 0.18s ease;
+  }
+  .countdown-sound-btn[aria-pressed="true"] .slash {
+    opacity: 0;
+  }
+  /* Brief flicker on the cell when the seconds tick — synced with the audio.
+     Audio is opt-in; this animation runs regardless and is harmless. */
+  .countdown-cell.flash::after {
+    content: "";
+    position: absolute; inset: 0;
+    pointer-events: none;
+    border-radius: 14px;
+    background: radial-gradient(ellipse at top, rgba(79,200,255,0.14), transparent 60%);
+    animation: cdFlash 0.32s ease-out;
+  }
+  @keyframes cdFlash {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .countdown-pulse {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(79,200,255,0.18), 0 0 14px 1px rgba(79,200,255,0.6);
+    animation: cdPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes cdPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.25); opacity: 0.72; }
+  }
+  .countdown-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+  .countdown-cell {
+    position: relative;
+    padding: 18px 10px 14px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)) , var(--panel);
+    border: 0.5px solid var(--line);
+    text-align: center;
+    overflow: hidden;
+  }
+  /* very faint inner top hairline highlight, like the .panel treatment */
+  .countdown-cell::before {
+    content: "";
+    position: absolute; inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
+  }
+  .countdown-digit {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum","ss01";
+    font-size: clamp(36px, 5.4vw, 56px);
+    line-height: 1;
+    letter-spacing: -1.6px;
+    font-weight: 600;
+    color: var(--fg);
+    display: block;
+  }
+  .countdown-digit.tick {
+    animation: cdTick 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes cdTick {
+    0%   { transform: translateY(-14px); opacity: 0; filter: blur(2px); }
+    60%  { transform: translateY(0);     opacity: 1; filter: blur(0); }
+    100% { transform: translateY(0);     opacity: 1; }
+  }
+  .countdown-cell-label {
+    margin-top: 8px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--fg-48);
+    text-transform: uppercase;
+  }
+  .countdown-foot {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--fg-72);
+  }
+  .countdown-foot .fg-32 { color: var(--fg-32); }
+
+  /* Compact variant used in the bottom CTA strip */
+  .countdown-compact {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 18px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--fg-72);
+  }
+  .countdown-compact .num {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.5px;
+    transition: opacity 0.3s ease;
+  }
+  .countdown-compact .num.tick {
+    animation: cdTick 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .countdown-compact .lbl {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--fg-48);
+    text-transform: uppercase;
+    margin-left: 4px;
+  }
+
+  /* Tiny inline countdown for the nav bar */
+  .countdown-nav {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--fg-72);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 0.5px solid var(--line);
+    background: rgba(255,255,255,0.02);
+  }
+  .countdown-nav .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--cyan);
+    box-shadow: 0 0 8px rgba(79,200,255,0.7);
+    animation: cdPulse 1.6s ease-in-out infinite;
+  }
+
+  /* LIVE state — shown when the timer hits zero */
+  .live-block {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(40,200,64,0.12);
+    border: 0.5px solid rgba(40,200,64,0.40);
+    color: #4ade80;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .live-badge::before {
+    content: "";
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #4ade80;
+    box-shadow: 0 0 10px rgba(40,200,64,0.9);
+    animation: cdPulse 1.4s ease-in-out infinite;
+  }
 </style>
 </head>
 <body class="min-h-screen">
@@ -198,8 +420,11 @@
         <a href="#scope" class="hover:text-white transition">What it doesn't do</a>
       </nav>
       <div class="flex items-center gap-3">
-        <span class="hidden sm:inline text-[12px] fg-48 font-mono">v1.2 · macOS 14+</span>
-        <a href="#" class="btn-primary text-[13px] font-medium px-3.5 py-1.5 rounded-[10px]">Download</a>
+        <span class="hidden sm:inline text-[12px] fg-48 font-mono">v1.0 · macOS 14+ / iOS 17+</span>
+        <span class="countdown-nav" id="cd-nav">
+          <span class="dot"></span>
+          <span id="cd-nav-text">Launching soon</span>
+        </span>
       </div>
     </div>
   </div>
@@ -243,15 +468,50 @@
       </ul>
 
       <div class="md:col-span-5 lg:col-span-6 flex md:justify-end">
-        <div class="flex flex-col sm:flex-row md:flex-col lg:flex-row gap-3 w-full md:w-auto">
-          <a href="#" class="btn-primary px-5 py-3.5 rounded-[14px] text-[15px] font-medium flex items-center justify-center gap-2.5 whitespace-nowrap">
-            <svg viewBox="0 0 16 20" class="w-3.5 h-4" fill="currentColor"><path d="M11.04 10.62c-.02-2.14 1.75-3.17 1.83-3.22-1-1.46-2.55-1.66-3.1-1.68-1.32-.13-2.57.78-3.24.78-.68 0-1.7-.76-2.79-.74-1.43.02-2.76.83-3.5 2.11-1.5 2.6-.38 6.45 1.07 8.57.71 1.04 1.55 2.2 2.65 2.16 1.07-.04 1.47-.69 2.76-.69 1.28 0 1.65.69 2.78.66 1.15-.02 1.88-1.05 2.58-2.1.82-1.2 1.15-2.37 1.17-2.43-.03-.01-2.24-.86-2.26-3.42z"/></svg>
-            Download for Mac
-          </a>
-          <a href="#" class="btn-ghost px-5 py-3.5 rounded-[14px] text-[15px] font-medium flex items-center justify-center gap-2.5 whitespace-nowrap">
-            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20" fill="currentColor"/></svg>
-            Watch the 60-second tour
-          </a>
+        <!-- Launch countdown — replaces the (yet-to-work) Download buttons
+             until the App Store listing is live. JS at the bottom of the
+             file binds the digits to the LAUNCH_AT target. -->
+        <div class="countdown" id="cd-hero" role="timer" aria-label="Time until CuePair launches">
+          <div class="countdown-head">
+            <span class="countdown-eyebrow"><span class="countdown-pulse"></span>Launching in</span>
+            <button
+              id="cd-sound-btn"
+              class="countdown-sound-btn"
+              type="button"
+              aria-label="Toggle countdown tick sound"
+              aria-pressed="false"
+              title="Toggle countdown tick sound"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M11 5L6 9H2v6h4l5 4z" fill="currentColor" />
+                <path d="M15.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none" />
+                <path d="M18.5 5.5a9 9 0 0 1 0 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none" />
+                <line class="slash" x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </button>
+          </div>
+          <div class="countdown-row">
+            <div class="countdown-cell">
+              <span class="countdown-digit" data-cd="days">00</span>
+              <div class="countdown-cell-label">Days</div>
+            </div>
+            <div class="countdown-cell">
+              <span class="countdown-digit" data-cd="hours">00</span>
+              <div class="countdown-cell-label">Hours</div>
+            </div>
+            <div class="countdown-cell">
+              <span class="countdown-digit" data-cd="minutes">00</span>
+              <div class="countdown-cell-label">Min</div>
+            </div>
+            <div class="countdown-cell">
+              <span class="countdown-digit" data-cd="seconds">00</span>
+              <div class="countdown-cell-label">Sec</div>
+            </div>
+          </div>
+          <div class="countdown-foot">
+            Coming to the App Store <span class="fg-32">·</span>
+            <span id="cd-date">—</span>
+          </div>
         </div>
       </div>
     </div>
@@ -737,14 +997,20 @@
       Press record.<br/>
       <span class="fg-48">Get back to your day.</span>
     </h2>
-    <div class="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-      <a href="#" class="btn-primary px-6 py-4 rounded-[14px] text-[15px] font-medium flex items-center justify-center gap-2.5">
-        <svg viewBox="0 0 16 20" class="w-3.5 h-4" fill="currentColor"><path d="M11.04 10.62c-.02-2.14 1.75-3.17 1.83-3.22-1-1.46-2.55-1.66-3.1-1.68-1.32-.13-2.57.78-3.24.78-.68 0-1.7-.76-2.79-.74-1.43.02-2.76.83-3.5 2.11-1.5 2.6-.38 6.45 1.07 8.57.71 1.04 1.55 2.2 2.65 2.16 1.07-.04 1.47-.69 2.76-.69 1.28 0 1.65.69 2.78.66 1.15-.02 1.88-1.05 2.58-2.1.82-1.2 1.15-2.37 1.17-2.43-.03-.01-2.24-.86-2.26-3.42z"/></svg>
-        Download CuePair 1.2 · 14 MB
-      </a>
-      <a href="#" class="btn-ghost px-6 py-4 rounded-[14px] text-[15px] font-medium flex items-center justify-center gap-2.5">Read the release notes →</a>
+    <div class="mt-12 flex flex-col items-center gap-5">
+      <span class="countdown-eyebrow"><span class="countdown-pulse"></span>Launching in</span>
+      <div class="countdown-compact" id="cd-compact">
+        <span><span class="num" data-cd="days">00</span><span class="lbl">D</span></span>
+        <span><span class="num" data-cd="hours">00</span><span class="lbl">H</span></span>
+        <span><span class="num" data-cd="minutes">00</span><span class="lbl">M</span></span>
+        <span><span class="num" data-cd="seconds">00</span><span class="lbl">S</span></span>
+      </div>
+      <div class="text-[13px] fg-72 font-mono">
+        Available on the App Store <span class="fg-32">·</span>
+        <span id="cd-date-bottom">—</span>
+      </div>
     </div>
-    <div class="mt-6 text-[12px] fg-48 font-mono">REQUIRES macOS 14 SONOMA OR LATER · APPLE SILICON OR INTEL · 200 MB FREE</div>
+    <div class="mt-6 text-[12px] fg-48 font-mono">macOS 14 SONOMA · iOS 17 · UNIVERSAL PURCHASE</div>
   </div>
 </section>
 
@@ -800,7 +1066,7 @@
     </div>
     <div class="mt-12 pt-6 border-t hairline flex items-center justify-between text-[11px] font-mono fg-32">
       <span>© 2026 CUEPAIR</span>
-      <span>v1.2 (build 41) · SIGNED & NOTARIZED</span>
+      <span>v1.0 · MAC + iPHONE · SIGNED & NOTARIZED</span>
     </div>
   </div>
 </footer>
@@ -826,6 +1092,239 @@
       }
       tick();
     });
+  })();
+
+  // ──────────────────────────────────────────────────────────────
+  // Launch countdown
+  //
+  // EDIT THIS to the exact moment CuePair goes live. ISO 8601 with
+  // an explicit offset so it behaves identically for every visitor
+  // regardless of their local timezone. Example:
+  //   '2026-05-16T10:00:00-04:00'  → May 16 2026, 10:00 AM Eastern
+  // ──────────────────────────────────────────────────────────────
+  (function () {
+    const LAUNCH_AT = new Date('2026-05-16T10:00:00-04:00').getTime();
+    // App Store URL to swap in once the listing is live.
+    // Leave as '#' until you have the real URL.
+    const APP_STORE_URL = '#';
+
+    // Bind every [data-cd] node we find, keyed by which field.
+    const nodes = {
+      days:    document.querySelectorAll('[data-cd="days"]'),
+      hours:   document.querySelectorAll('[data-cd="hours"]'),
+      minutes: document.querySelectorAll('[data-cd="minutes"]'),
+      seconds: document.querySelectorAll('[data-cd="seconds"]'),
+    };
+    const navText = document.getElementById('cd-nav-text');
+    const dateNodes = [
+      document.getElementById('cd-date'),
+      document.getElementById('cd-date-bottom'),
+    ].filter(Boolean);
+    const heroCells = document.querySelectorAll('#cd-hero .countdown-cell');
+
+    // ──────── Tick sound (Web Audio, opt-in) ─────────
+    // Synthesizes a watch-style tick: short bandpass-filtered noise
+    // burst with a fast envelope. No external audio file needed.
+    // Browsers block AudioContext creation until a user gesture, so
+    // we lazily build it inside the sound-button click handler.
+    let audioCtx = null;
+    let soundOn = false;
+    const soundBtn = document.getElementById('cd-sound-btn');
+
+    function ensureAudio() {
+      if (!audioCtx) {
+        const Ctor = window.AudioContext || window.webkitAudioContext;
+        if (!Ctor) return false;
+        try { audioCtx = new Ctor(); }
+        catch (e) { return false; }
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return true;
+    }
+
+    // accent: 'second' | 'minute' | 'hour'
+    function playTick(accent) {
+      if (!soundOn || !audioCtx) return;
+      const t = audioCtx.currentTime;
+      const level = accent === 'hour' ? 2 : accent === 'minute' ? 1 : 0;
+
+      // Body: short noise burst with sharp attack, exponential decay
+      const dur = 0.055 + level * 0.02;
+      const sampleCount = Math.max(1, Math.floor(audioCtx.sampleRate * dur));
+      const buf = audioCtx.createBuffer(1, sampleCount, audioCtx.sampleRate);
+      const ch = buf.getChannelData(0);
+      for (let i = 0; i < sampleCount; i++) {
+        const env = Math.pow(1 - i / sampleCount, 3);
+        ch[i] = (Math.random() * 2 - 1) * env;
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buf;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 1800 + level * 600;
+      filter.Q.value = 1.4;
+
+      const gain = audioCtx.createGain();
+      const peak = level === 0 ? 0.07 : level === 1 ? 0.12 : 0.16;
+      gain.gain.setValueAtTime(peak, t);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+      noise.start(t);
+      noise.stop(t + dur);
+
+      // Hour rollover: brief tonal shimmer over the noise burst
+      if (level === 2) {
+        const osc = audioCtx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, t);
+        osc.frequency.exponentialRampToValueAtTime(900, t + 0.12);
+        const oscGain = audioCtx.createGain();
+        oscGain.gain.setValueAtTime(0.045, t);
+        oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+        osc.connect(oscGain);
+        oscGain.connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + 0.13);
+      }
+    }
+
+    function flashCells(accent) {
+      heroCells.forEach((c) => {
+        c.classList.remove('flash');
+        // force reflow so the animation restarts
+        void c.offsetWidth;
+        c.classList.add('flash');
+      });
+    }
+
+    function setSoundOn(on) {
+      soundOn = on;
+      if (soundBtn) soundBtn.setAttribute('aria-pressed', String(on));
+    }
+
+    if (soundBtn) {
+      soundBtn.addEventListener('click', () => {
+        const wantOn = !soundOn;
+        if (wantOn) {
+          if (!ensureAudio()) return;
+          setSoundOn(true);
+          // One immediate confirmation tick so the user hears what
+          // they just enabled.
+          playTick('minute');
+        } else {
+          setSoundOn(false);
+        }
+      });
+    }
+
+    function fmt(n) { return String(n).padStart(2, '0'); }
+
+    // Set a digit and replay the tick animation only if the value
+    // actually changed — avoids restarting the animation 60×/min on
+    // fields that haven't moved.
+    function setDigit(el, newText) {
+      if (el.textContent === newText) return;
+      el.classList.remove('tick');
+      // Force a reflow so the animation restarts cleanly.
+      void el.offsetWidth;
+      el.textContent = newText;
+      el.classList.add('tick');
+    }
+
+    function setAll(field, value) {
+      const text = fmt(value);
+      nodes[field].forEach(el => setDigit(el, text));
+    }
+
+    // Once the timer hits zero, swap each big-card countdown for a
+    // "LIVE NOW" block + App Store CTA.
+    let swapped = false;
+    function swapToLive() {
+      if (swapped) return;
+      swapped = true;
+      const hero = document.getElementById('cd-hero');
+      if (hero) {
+        hero.innerHTML = `
+          <div class="live-block">
+            <span class="live-badge">LIVE NOW</span>
+            <a href="${APP_STORE_URL}" class="btn-primary px-5 py-3.5 rounded-[14px] text-[15px] font-medium inline-flex items-center gap-2.5">
+              Get it on the App Store
+            </a>
+          </div>
+        `;
+      }
+      const compact = document.getElementById('cd-compact');
+      if (compact) {
+        compact.outerHTML = `
+          <a href="${APP_STORE_URL}" class="btn-primary px-6 py-4 rounded-[14px] text-[15px] font-medium inline-flex items-center justify-center gap-2.5">
+            Get it on the App Store
+          </a>
+        `;
+      }
+      if (navText) navText.textContent = 'Live now';
+    }
+
+    // Human-readable launch date — written once on load.
+    (function setDateLine() {
+      const d = new Date(LAUNCH_AT);
+      const fmtDate = d.toLocaleDateString('en-US', {
+        month: 'long', day: 'numeric', year: 'numeric',
+      });
+      dateNodes.forEach(n => { n.textContent = fmtDate; });
+    })();
+
+    // Track previous values so we can detect rollovers and only
+    // play a tick when the seconds digit actually advances (not on
+    // the initial render).
+    let prev = { seconds: -1, minutes: -1, hours: -1 };
+
+    function update() {
+      const delta = Math.max(0, LAUNCH_AT - Date.now());
+      if (delta === 0) { swapToLive(); return; }
+
+      const totalSeconds = Math.floor(delta / 1000);
+      const days    = Math.floor(totalSeconds / 86400);
+      const hours   = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      setAll('days',    days);
+      setAll('hours',   hours);
+      setAll('minutes', minutes);
+      setAll('seconds', seconds);
+
+      // Tick! Only fire when the seconds actually rolled over (skips
+      // the very first render). Hour and minute rollovers escalate
+      // the accent so the audio has structure.
+      if (prev.seconds !== -1 && seconds !== prev.seconds) {
+        const accent =
+          hours   !== prev.hours   ? 'hour'   :
+          minutes !== prev.minutes ? 'minute' : 'second';
+        playTick(accent);
+        flashCells(accent);
+      }
+      prev = { seconds, minutes, hours };
+
+      // Nav pill: terser readout that drops fields as the timer winds down
+      if (navText) {
+        if (days > 0)        navText.textContent = `${days}d ${fmt(hours)}h ${fmt(minutes)}m`;
+        else if (hours > 0)  navText.textContent = `${fmt(hours)}h ${fmt(minutes)}m ${fmt(seconds)}s`;
+        else                 navText.textContent = `${fmt(minutes)}m ${fmt(seconds)}s`;
+      }
+    }
+
+    update();
+    // Align ticks to the wall clock so the seconds digit changes
+    // at the same instant as the user's system clock.
+    const drift = 1000 - (Date.now() % 1000);
+    setTimeout(function once() {
+      update();
+      setInterval(update, 1000);
+    }, drift);
   })();
 </script>
 </body>
