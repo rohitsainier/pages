@@ -1562,23 +1562,30 @@
       }
     } catch (_) { /* localStorage disabled — proceed with live form */ }
 
+    // Mailto fallback — opens the user's mail client pre-addressed
+    // to NOTIFY_FALLBACK_EMAIL with their email + a friendly note.
+    // Used both when no Formspree endpoint is configured AND as a
+    // safety net whenever the Formspree POST fails (rate limit hit,
+    // form suspended, network error, CORS, etc.) so we never lose
+    // a signup.
+    async function submitViaMailto(email) {
+      const subject = 'Notify me about CuePair launch';
+      const body =
+        'Hi, please notify me at ' + email +
+        ' when CuePair goes live on the App Store.\n\nThanks!';
+      window.location.href =
+        'mailto:' + encodeURIComponent(NOTIFY_FALLBACK_EMAIL) +
+        '?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+      // Give the OS a moment to open the mail app before we
+      // optimistically claim success.
+      await new Promise(function (r) { setTimeout(r, 600); });
+      return { ok: true, viaFallback: true };
+    }
+
     async function submit(email) {
-      // No endpoint configured → mailto fallback. Opens user's mail
-      // client pre-addressed to NOTIFY_FALLBACK_EMAIL.
-      if (!NOTIFY_ENDPOINT) {
-        const subject = 'Notify me about CuePair launch';
-        const body =
-          'Hi, please notify me at ' + email +
-          ' when CuePair goes live on the App Store.\n\nThanks!';
-        window.location.href =
-          'mailto:' + encodeURIComponent(NOTIFY_FALLBACK_EMAIL) +
-          '?subject=' + encodeURIComponent(subject) +
-          '&body=' + encodeURIComponent(body);
-        // Optimistically show success after a short delay so the user
-        // sees confirmation even if their mail client opens in another app.
-        await new Promise(function (r) { setTimeout(r, 600); });
-        return { ok: true };
-      }
+      // No endpoint configured? Go straight to mailto.
+      if (!NOTIFY_ENDPOINT) return submitViaMailto(email);
 
       try {
         const res = await fetch(NOTIFY_ENDPOINT, {
@@ -1601,14 +1608,20 @@
           }),
         });
         if (res.ok) return { ok: true };
-        let detail = '';
-        try {
-          const j = await res.json();
-          detail = (j && (j.error || (j.errors && j.errors[0] && j.errors[0].message))) || '';
-        } catch (_) {}
-        return { ok: false, error: detail || ('Server responded ' + res.status) };
+
+        // Formspree responded but not 2xx. The most common cause on
+        // a launched waitlist form is the 50/mo free-tier limit
+        // (Formspree returns 403 with an error like
+        // "FORM_HAS_REACHED_THE_SUBMISSION_LIMIT"). Could also be a
+        // suspended form, validation rejection, or service issue.
+        // Either way — fall back to mailto so the signer can still
+        // reach us through their mail client.
+        console.warn('[notify] Formspree returned', res.status, '— falling back to mailto.');
+        return submitViaMailto(email);
       } catch (e) {
-        return { ok: false, error: 'Could not reach the server. Check your connection and try again.' };
+        // Network / CORS / DNS failure. Same fallback.
+        console.warn('[notify] Formspree request errored — falling back to mailto.', e);
+        return submitViaMailto(email);
       }
     }
 
