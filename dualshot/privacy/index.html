@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DualShot — Privacy Policy</title>
+<meta name="description" content="Privacy policy for DualShot. No data collection, no analytics, no cloud. Everything runs on-device." />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0A0A0C;
+    --bg-2: #0E0E12;
+    --panel: #13131A;
+    --panel-2: #1A1A22;
+    --line: rgba(255,255,255,0.10);
+    --line-strong: rgba(255,255,255,0.18);
+    --fg: #FFFFFF;
+    --fg-72: rgba(255,255,255,0.72);
+    --fg-48: rgba(255,255,255,0.48);
+    --fg-32: rgba(255,255,255,0.32);
+    --cyan: #4FC8FF;
+    --amber: #FFC74D;
+    --red: #FF5252;
+  }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+    letter-spacing: -0.011em;
+  }
+  .font-display {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", system-ui, sans-serif;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+  }
+  .font-mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-feature-settings: "tnum","ss01"; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  .hairline { border-color: var(--line); }
+  .fg-72 { color: var(--fg-72); }
+  .fg-48 { color: var(--fg-48); }
+  .fg-32 { color: var(--fg-32); }
+  .glass {
+    background: rgba(20,20,26,0.55);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 0.5px solid var(--line);
+  }
+  .panel {
+    background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0)) , var(--panel);
+    border: 0.5px solid var(--line);
+  }
+  .chip {
+    border: 0.5px solid var(--line);
+    color: var(--fg-72);
+    background: rgba(255,255,255,0.02);
+  }
+  .rule { height: 0.5px; background: var(--line); }
+  ::selection { background: rgba(79,200,255,0.35); }
+
+  .prose-spec h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .prose-spec p, .prose-spec li {
+    color: var(--fg-72);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .prose-spec ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose-spec ul li {
+    padding-left: 18px;
+    position: relative;
+    margin: 6px 0;
+  }
+  .prose-spec ul li::before {
+    content: "·";
+    color: var(--fg-32);
+    position: absolute;
+    left: 4px;
+    top: -2px;
+    font-size: 22px;
+    line-height: 1;
+  }
+  .prose-spec strong { color: #fff; font-weight: 500; }
+  .prose-spec a { color: var(--cyan); text-decoration: none; border-bottom: 0.5px solid rgba(79,200,255,0.4); }
+  .prose-spec a:hover { border-bottom-color: var(--cyan); }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ============== NAV ============== -->
+<header class="sticky top-0 z-40">
+  <div class="glass border-b border-white/10">
+    <div class="max-w-[1100px] mx-auto px-6 md:px-10 h-14 flex items-center justify-between">
+      <a href="../" class="flex items-center gap-2.5">
+        <span class="relative inline-block w-5 h-5">
+          <span class="absolute inset-0 rounded-[5px]" style="background:var(--cyan)"></span>
+          <span class="absolute inset-0 rounded-[5px] translate-x-1 translate-y-1 mix-blend-screen" style="background:var(--amber); opacity:.85"></span>
+        </span>
+        <span class="font-display text-[17px] tracking-tight">DualShot</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-[13px] fg-72">
+        <a href="../" class="hover:text-white transition">Home</a>
+        <a href="../#prompter" class="hover:text-white transition">Teleprompter</a>
+        <a href="#" class="hover:text-white transition text-white">Privacy</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <span class="hidden sm:inline text-[12px] fg-48 font-mono">v1.0 · macOS 14+ / iOS 17+</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============== HERO ============== -->
+<section class="relative">
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 pt-20 md:pt-28 pb-12 md:pb-16">
+    <div class="flex items-center gap-3 mb-8">
+      <span class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase">§ Privacy Policy</span>
+      <span class="hairline border-t flex-1"></span>
+      <span class="font-mono text-[11px] tnum fg-48">EFFECTIVE 2026-05-13</span>
+    </div>
+
+    <h1 class="font-display text-[56px] sm:text-[72px] md:text-[88px] leading-[0.95] tracking-[-0.04em] max-w-[940px]">
+      Nothing to collect.<br />
+      <span class="fg-48">Nothing to leak.</span>
+    </h1>
+
+    <p class="mt-10 text-[18px] md:text-[20px] leading-[1.55] fg-72 max-w-[720px]">
+      DualShot is a Mac and iPhone app for recording short-form video locally. It has no accounts, no
+      analytics, no cloud sync, no telemetry, no third-party SDKs, and no network calls. Every piece of
+      information the app handles — video, audio, transcripts, face position — stays on the device that
+      produced it. This page is the formal statement of that.
+    </p>
+
+    <div class="mt-10 flex flex-wrap gap-2">
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">NO ACCOUNTS</span>
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">NO ANALYTICS</span>
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">NO CLOUD</span>
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">NO NETWORK CALLS</span>
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">NO THIRD-PARTY SDKS</span>
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">APP SANDBOXED</span>
+    </div>
+  </div>
+</section>
+
+<div class="rule max-w-[1100px] mx-auto"></div>
+
+<!-- ============== BODY ============== -->
+<section class="relative">
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24">
+
+    <div class="grid md:grid-cols-12 gap-10">
+
+      <!-- Sidebar TOC -->
+      <aside class="md:col-span-3">
+        <div class="md:sticky md:top-24">
+          <div class="font-mono text-[10px] tracking-[0.18em] fg-48 uppercase mb-3">On this page</div>
+          <ul class="space-y-2 text-[13px] fg-72">
+            <li><a href="#summary" class="hover:text-white">1. Summary</a></li>
+            <li><a href="#data" class="hover:text-white">2. What data DualShot handles</a></li>
+            <li><a href="#permissions" class="hover:text-white">3. Permissions &amp; why</a></li>
+            <li><a href="#storage" class="hover:text-white">4. Where files live</a></li>
+            <li><a href="#third-parties" class="hover:text-white">5. Third parties</a></li>
+            <li><a href="#children" class="hover:text-white">6. Children</a></li>
+            <li><a href="#rights" class="hover:text-white">7. Your rights</a></li>
+            <li><a href="#changes" class="hover:text-white">8. Changes</a></li>
+            <li><a href="#contact" class="hover:text-white">9. Contact</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <div class="md:col-span-9 prose-spec space-y-14">
+
+        <!-- 1. Summary -->
+        <article id="summary">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 01</div>
+          <h2>Summary</h2>
+          <p>
+            DualShot does not collect, transmit, store, or share any personal information. The app
+            functions entirely on your device using Apple frameworks (AVFoundation, Vision, Speech,
+            AVKit, SwiftUI). It has no backend, no API endpoints, no analytics SDKs, and makes no
+            outbound network requests. There is no developer-side database, no logs, and nothing for
+            you to opt out of — because there is nothing collecting.
+          </p>
+        </article>
+
+        <!-- 2. Data -->
+        <article id="data">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 02</div>
+          <h2>What data DualShot handles</h2>
+          <p>
+            Although DualShot does not <em>collect</em> data, the app does handle the following on
+            your device to provide its features. None of it leaves the device.
+          </p>
+          <ul>
+            <li><strong>Camera frames.</strong> Used live for the camera preview and recorded into the
+              video file you choose to keep. Not transmitted.</li>
+            <li><strong>Microphone audio.</strong> Captured to drive the audio level meter, recorded
+              into the video, and fed (when you enable voice-paced teleprompter) into Apple's on-device
+              speech recognizer. Not transmitted.</li>
+            <li><strong>Face position.</strong> When face tracking is on, Apple's Vision framework
+              detects a bounding box per frame. DualShot keeps a smoothed horizontal-position trace
+              while recording so the portrait export can follow the subject. The trace is discarded
+              when the take finishes; only the rendered video is kept.</li>
+            <li><strong>Speech recognition results.</strong> When voice-paced teleprompter is on,
+              partial recognition results are used only to advance the script. They are not stored
+              and never leave the device. Recognition runs on-device where supported
+              (<span class="font-mono text-[12px]">requiresOnDeviceRecognition&nbsp;=&nbsp;true</span>).</li>
+            <li><strong>Device motion (iOS only).</strong> Used to detect how you're holding the
+              phone and to bias the portrait crop. Not transmitted.</li>
+            <li><strong>Recorded video and audio files.</strong> Saved to the app's sandboxed
+              <span class="font-mono text-[12px]">Documents/</span> directory and (if you choose) to
+              your Photos library or a folder you pick in Finder.</li>
+          </ul>
+        </article>
+
+        <!-- 3. Permissions -->
+        <article id="permissions">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 03</div>
+          <h2>Permissions and why DualShot asks for them</h2>
+          <p>
+            The operating system will prompt you before granting any of the following. You can
+            change or revoke any of them in <strong>System Settings → Privacy &amp; Security</strong>
+            (macOS) or <strong>Settings → DualShot</strong> (iOS).
+          </p>
+          <ul>
+            <li><strong>Camera</strong> — required. Used to capture video for recording.</li>
+            <li><strong>Microphone</strong> — required. Used to capture audio for recording and to
+              drive the live audio level meter.</li>
+            <li><strong>Photos (add only)</strong> — optional. Used only to save a finished
+              recording to your Photos library when you tap "Save to Photos". DualShot requests
+              add-only access, so the app cannot read your existing photo library.</li>
+            <li><strong>Speech Recognition</strong> — optional, requested only when you turn on the
+              voice-paced teleprompter. Used to advance the script at your speaking pace. The
+              recognizer runs on-device.</li>
+            <li><strong>Motion &amp; Fitness (iOS only)</strong> — optional. Used to detect device
+              orientation for the portrait/landscape framing.</li>
+          </ul>
+        </article>
+
+        <!-- 4. Storage -->
+        <article id="storage">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 04</div>
+          <h2>Where files live and how to delete them</h2>
+          <p>
+            All recordings are written inside the app's sandboxed container — under
+            <span class="font-mono text-[12px]">Documents/Masters/</span>,
+            <span class="font-mono text-[12px]">Documents/Derived/</span>, and
+            <span class="font-mono text-[12px]">Documents/Thumbnails/</span>. On Mac Catalyst the
+            full path is
+            <span class="font-mono text-[12px]">~/Library/Containers/com.dualshot.app/Data/Documents/</span>.
+            On iOS the files are accessible through the Files app under
+            <span class="font-mono text-[12px]">On My iPhone → DualShot</span>.
+          </p>
+          <p>
+            You can delete any recording from inside the app's Library view. You can also delete
+            them directly from the file system. Uninstalling the app permanently removes its
+            entire container, including every recording it created. Anything you explicitly saved
+            to Photos or to a folder you picked in Finder is outside the app and not removed
+            on uninstall.
+          </p>
+        </article>
+
+        <!-- 5. Third parties -->
+        <article id="third-parties">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 05</div>
+          <h2>Third parties</h2>
+          <p>
+            DualShot bundles no third-party SDKs, no advertising libraries, no analytics services,
+            no crash reporters, and no payment processors. The only frameworks it links against
+            ship with iOS and macOS themselves: AVFoundation, Vision, Speech, AVKit, SwiftUI,
+            CoreMotion. Nothing is shared with any third party because the app communicates with
+            no one.
+          </p>
+        </article>
+
+        <!-- 6. Children -->
+        <article id="children">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 06</div>
+          <h2>Children</h2>
+          <p>
+            DualShot is not directed at children under 13 and does not knowingly collect personal
+            information from anyone. Because the app does not collect data at all, COPPA and similar
+            children's-privacy regimes do not apply in practice. The app is rated 4+ on the App
+            Store; parents and guardians are welcome to use it with younger users at their
+            discretion.
+          </p>
+        </article>
+
+        <!-- 7. Rights -->
+        <article id="rights">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 07</div>
+          <h2>Your rights</h2>
+          <p>
+            Because DualShot does not collect personal data, there is no developer-held copy of
+            anything about you to access, port, correct, or delete. Your rights to control the
+            data the app produces are exercised by you directly on the device:
+          </p>
+          <ul>
+            <li><strong>Access</strong> — open the Files app (iOS) or the app's container in Finder
+              (macOS) to see every recording.</li>
+            <li><strong>Portability</strong> — use the in-app share sheet or copy files out manually.</li>
+            <li><strong>Deletion</strong> — delete recordings inside the app or uninstall the app.</li>
+            <li><strong>Withdrawal of consent</strong> — revoke any permission in System Settings
+              at any time. The app will continue to function with reduced capability.</li>
+          </ul>
+        </article>
+
+        <!-- 8. Changes -->
+        <article id="changes">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 08</div>
+          <h2>Changes to this policy</h2>
+          <p>
+            If this policy changes in a way that affects how the app behaves with respect to
+            user data, the updated version will be published at this URL with a new effective
+            date. Material changes will also be called out in the corresponding app release
+            notes.
+          </p>
+        </article>
+
+        <!-- 9. Contact -->
+        <article id="contact">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 09</div>
+          <h2>Contact</h2>
+          <p>
+            DualShot is built and maintained by <strong>Rohit Sainier</strong>. For privacy
+            questions, reach out at
+            <a href="mailto:gurlal050@gmail.com">gurlal050@gmail.com</a>
+            or open an issue at
+            <a href="https://github.com/rohitsainier" target="_blank" rel="noopener">github.com/rohitsainier</a>.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule max-w-[1100px] mx-auto"></div>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-10">
+    <div class="flex items-center justify-between text-[12px] font-mono fg-32">
+      <span>© 2026 DUALSHOT</span>
+      <span><a href="../" class="hover:text-white">← Back to dualshot.app</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
