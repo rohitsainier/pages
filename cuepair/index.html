@@ -370,6 +370,134 @@
     animation: cdPulse 1.6s ease-in-out infinite;
   }
 
+  /* ============== Notify form ============== */
+  .notify-form {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .notify-row {
+    display: flex;
+    gap: 6px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0)), var(--panel);
+    border: 0.5px solid var(--line);
+    border-radius: 14px;
+    padding: 6px;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .notify-row:focus-within {
+    border-color: rgba(79,200,255,0.45);
+    box-shadow: 0 0 0 3px rgba(79,200,255,0.10);
+  }
+  .notify-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    font-size: 15px;
+    color: var(--fg);
+    padding: 10px 14px;
+    letter-spacing: -0.011em;
+  }
+  .notify-input::placeholder { color: var(--fg-32); }
+  .notify-btn {
+    background: var(--fg);
+    color: #0A0A0C;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: transform 0.15s ease, background 0.2s ease, opacity 0.2s ease;
+    white-space: nowrap;
+    min-width: 110px;
+  }
+  .notify-btn:hover:not(:disabled) {
+    background: #ECECEE;
+    transform: translateY(-1px);
+  }
+  .notify-btn:disabled { opacity: 0.55; cursor: wait; transform: none; }
+  .notify-btn-spinner {
+    display: none;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(10,10,12,0.18);
+    border-top-color: #0A0A0C;
+    border-radius: 50%;
+    animation: notifySpin 0.7s linear infinite;
+  }
+  .notify-form.is-loading .notify-btn-label { display: none; }
+  .notify-form.is-loading .notify-btn-spinner { display: inline-block; }
+  @keyframes notifySpin { to { transform: rotate(360deg); } }
+  .notify-foot {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--fg-48);
+    padding: 0 4px;
+    min-height: 16px;
+  }
+  .notify-foot.error { color: #ff7676; }
+
+  /* Success state */
+  .notify-success {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: linear-gradient(180deg, rgba(40,200,64,0.06), rgba(40,200,64,0.02)),
+                linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0)), var(--panel);
+    border: 0.5px solid rgba(40,200,64,0.32);
+    border-radius: 14px;
+    max-width: 480px;
+    animation: notifyIn 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes notifyIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .notify-check {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(40,200,64,0.18);
+    color: #4ade80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .notify-success-text {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+    line-height: 1.4;
+  }
+  .notify-success-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--fg);
+  }
+  .notify-success-sub {
+    font-size: 13px;
+    color: var(--fg-72);
+    margin-top: 2px;
+  }
+  .notify-success-sub strong {
+    color: var(--fg);
+    font-weight: 500;
+  }
+  @media (max-width: 520px) {
+    .notify-row { flex-direction: column; }
+    .notify-btn { width: 100%; }
+  }
+
   /* LIVE state — shown when the timer hits zero */
   .live-block {
     display: flex;
@@ -511,6 +639,35 @@
           <div class="countdown-foot">
             Coming to the App Store <span class="fg-32">·</span>
             <span id="cd-date">—</span>
+          </div>
+
+          <!-- Notify-me waitlist. POSTs to a Formspree endpoint when
+               configured; falls back to mailto: if the endpoint string
+               is left blank. localStorage persists the success state
+               so revisits don't re-prompt. -->
+          <div id="notify-slot">
+            <form class="notify-form" id="notify-form" novalidate>
+              <div class="notify-row">
+                <input
+                  type="email"
+                  class="notify-input"
+                  id="notify-email"
+                  name="email"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  inputmode="email"
+                  required
+                  aria-label="Your email address"
+                />
+                <button type="submit" class="notify-btn" id="notify-submit">
+                  <span class="notify-btn-label">Notify me</span>
+                  <span class="notify-btn-spinner" aria-hidden="true"></span>
+                </button>
+              </div>
+              <div class="notify-foot" id="notify-foot" role="status" aria-live="polite">
+                Just one email — when CuePair hits the App Store.
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -1009,6 +1166,12 @@
         Available on the App Store <span class="fg-32">·</span>
         <span id="cd-date-bottom">—</span>
       </div>
+      <a href="#notify-form" class="btn-ghost px-5 py-3 rounded-[12px] text-[14px] font-medium inline-flex items-center gap-2 mt-2">
+        Get notified at launch
+        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
     </div>
     <div class="mt-6 text-[12px] fg-48 font-mono">macOS 14 SONOMA · iOS 17 · UNIVERSAL PURCHASE</div>
   </div>
@@ -1325,6 +1488,168 @@
       update();
       setInterval(update, 1000);
     }, drift);
+  })();
+
+  // ──────────────────────────────────────────────────────────────
+  // Notify-me waitlist
+  //
+  // SETUP (one time, ~2 minutes):
+  //   1. Sign up at https://formspree.io (free tier: 50/mo submissions).
+  //   2. Create a new form, point it at the email you want to receive
+  //      submissions at (rohitsainier@gmail.com).
+  //   3. Copy the form endpoint that looks like:
+  //      https://formspree.io/f/xxxxxxxx
+  //   4. Paste it into NOTIFY_ENDPOINT below and push.
+  //
+  // If you leave NOTIFY_ENDPOINT blank, the form falls back to opening
+  // the user's mail client (mailto:) — works on day one with no setup,
+  // but UX is worse and many users don't have a mail client configured.
+  // ──────────────────────────────────────────────────────────────
+  (function () {
+    const NOTIFY_ENDPOINT = 'https://formspree.io/f/xvzlyjyz';
+    const NOTIFY_FALLBACK_EMAIL = 'rohitsainier@gmail.com';
+    const STORAGE_KEY = 'cuepair-notify-email';
+
+    const slot = document.getElementById('notify-slot');
+    const form = document.getElementById('notify-form');
+    if (!slot || !form) return;
+
+    const emailInput  = document.getElementById('notify-email');
+    const submitBtn   = document.getElementById('notify-submit');
+    const footEl      = document.getElementById('notify-foot');
+    const DEFAULT_FOOT = footEl ? footEl.textContent : '';
+
+    function isValidEmail(value) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((value || '').trim());
+    }
+
+    function setFootMessage(text, kind) {
+      if (!footEl) return;
+      footEl.textContent = text;
+      footEl.className = 'notify-foot' + (kind ? ' ' + kind : '');
+    }
+
+    function showSuccess(email) {
+      slot.innerHTML =
+        '<div class="notify-success" role="status">' +
+          '<div class="notify-check">' +
+            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">' +
+              '<path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
+            '</svg>' +
+          '</div>' +
+          '<div class="notify-success-text">' +
+            '<div class="notify-success-title">You&rsquo;re on the list.</div>' +
+            '<div class="notify-success-sub">We&rsquo;ll email <strong>' + escapeHtml(email) + '</strong> the moment CuePair goes live on the App Store.</div>' +
+          '</div>' +
+        '</div>';
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // Restore: if user already submitted on this device, skip the form.
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved && isValidEmail(saved)) {
+        showSuccess(saved);
+        return;
+      }
+    } catch (_) { /* localStorage disabled — proceed with live form */ }
+
+    async function submit(email) {
+      // No endpoint configured → mailto fallback. Opens user's mail
+      // client pre-addressed to NOTIFY_FALLBACK_EMAIL.
+      if (!NOTIFY_ENDPOINT) {
+        const subject = 'Notify me about CuePair launch';
+        const body =
+          'Hi, please notify me at ' + email +
+          ' when CuePair goes live on the App Store.\n\nThanks!';
+        window.location.href =
+          'mailto:' + encodeURIComponent(NOTIFY_FALLBACK_EMAIL) +
+          '?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body);
+        // Optimistically show success after a short delay so the user
+        // sees confirmation even if their mail client opens in another app.
+        await new Promise(function (r) { setTimeout(r, 600); });
+        return { ok: true };
+      }
+
+      try {
+        const res = await fetch(NOTIFY_ENDPOINT, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+          },
+          body: JSON.stringify({
+            email: email,
+            // Formspree-special fields: makes incoming emails easier
+            // to scan in your inbox and lets you hit Reply to write
+            // back to the signer directly.
+            _subject: 'CuePair waitlist — new signup',
+            _replyto: email,
+            // Extra context for triage
+            source: 'cuepair-landing-countdown',
+            submitted_at: new Date().toISOString(),
+            user_agent: navigator.userAgent,
+          }),
+        });
+        if (res.ok) return { ok: true };
+        let detail = '';
+        try {
+          const j = await res.json();
+          detail = (j && (j.error || (j.errors && j.errors[0] && j.errors[0].message))) || '';
+        } catch (_) {}
+        return { ok: false, error: detail || ('Server responded ' + res.status) };
+      } catch (e) {
+        return { ok: false, error: 'Could not reach the server. Check your connection and try again.' };
+      }
+    }
+
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      const email = (emailInput.value || '').trim();
+
+      if (!isValidEmail(email)) {
+        setFootMessage('Please enter a valid email address.', 'error');
+        emailInput.focus();
+        return;
+      }
+
+      form.classList.add('is-loading');
+      submitBtn.disabled = true;
+      emailInput.disabled = true;
+      setFootMessage('Sending…', '');
+
+      const result = await submit(email);
+
+      if (result.ok) {
+        try { localStorage.setItem(STORAGE_KEY, email); } catch (_) {}
+        showSuccess(email);
+      } else {
+        form.classList.remove('is-loading');
+        submitBtn.disabled = false;
+        emailInput.disabled = false;
+        setFootMessage(result.error || 'Something went wrong. Please try again.', 'error');
+      }
+    });
+
+    // If the user navigates to #notify-form, gently focus the email
+    // field so they can start typing immediately.
+    if (window.location.hash === '#notify-form') {
+      setTimeout(function () { emailInput && emailInput.focus(); }, 300);
+    }
+    document.querySelectorAll('a[href="#notify-form"]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        setTimeout(function () { emailInput && emailInput.focus(); }, 500);
+      });
+    });
   })();
 </script>
 </body>
