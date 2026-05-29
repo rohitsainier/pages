@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CreatorCut — Support</title>
+<meta name="description" content="Help, FAQ, and contact for CreatorCut — record once, publish everywhere." />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0A0A0C;
+    --bg-2: #0E0E12;
+    --panel: #13131A;
+    --panel-2: #1A1A22;
+    --line: rgba(255,255,255,0.10);
+    --line-strong: rgba(255,255,255,0.18);
+    --fg: #FFFFFF;
+    --fg-72: rgba(255,255,255,0.72);
+    --fg-48: rgba(255,255,255,0.48);
+    --fg-32: rgba(255,255,255,0.32);
+    --cyan: #4FC8FF;
+    --amber: #FFC74D;
+    --red: #FF5252;
+  }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+    letter-spacing: -0.011em;
+  }
+  .font-display {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", system-ui, sans-serif;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+  }
+  .font-mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-feature-settings: "tnum","ss01"; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  .hairline { border-color: var(--line); }
+  .fg-72 { color: var(--fg-72); }
+  .fg-48 { color: var(--fg-48); }
+  .fg-32 { color: var(--fg-32); }
+  .glass {
+    background: rgba(20,20,26,0.55);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 0.5px solid var(--line);
+  }
+  .panel {
+    background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0)) , var(--panel);
+    border: 0.5px solid var(--line);
+  }
+  .chip {
+    border: 0.5px solid var(--line);
+    color: var(--fg-72);
+    background: rgba(255,255,255,0.02);
+  }
+  .rule { height: 0.5px; background: var(--line); }
+  ::selection { background: rgba(79,200,255,0.35); }
+
+  .prose-spec h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 19px;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+  .prose-spec p, .prose-spec li {
+    color: var(--fg-72);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .prose-spec ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose-spec ul li {
+    padding-left: 18px;
+    position: relative;
+    margin: 6px 0;
+  }
+  .prose-spec ul li::before {
+    content: "·";
+    color: var(--fg-32);
+    position: absolute;
+    left: 4px;
+    top: -2px;
+    font-size: 22px;
+    line-height: 1;
+  }
+  .prose-spec strong { color: #fff; font-weight: 500; }
+  .prose-spec a { color: var(--cyan); text-decoration: none; border-bottom: 0.5px solid rgba(79,200,255,0.4); }
+  .prose-spec a:hover { border-bottom-color: var(--cyan); }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ============== NAV ============== -->
+<header class="sticky top-0 z-40">
+  <div class="glass border-b border-white/10">
+    <div class="max-w-[1100px] mx-auto px-6 md:px-10 h-14 flex items-center justify-between">
+      <a href="../" class="flex items-center gap-2.5">
+        <span class="relative inline-block w-5 h-5">
+          <span class="absolute inset-0 rounded-[5px]" style="background:var(--cyan)"></span>
+          <span class="absolute inset-0 rounded-[5px] translate-x-1 translate-y-1 mix-blend-screen" style="background:var(--amber); opacity:.85"></span>
+        </span>
+        <span class="font-display text-[17px] tracking-tight">CreatorCut</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-[13px] fg-72">
+        <a href="../" class="hover:text-white transition">Home</a>
+        <a href="../privacy/" class="hover:text-white transition">Privacy</a>
+        <a href="../terms/" class="hover:text-white transition">Terms</a>
+        <a href="#" class="hover:text-white transition text-white">Support</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <span class="hidden sm:inline text-[12px] fg-48 font-mono">v1.0 · macOS 14+ / iOS 17+</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============== HERO ============== -->
+<section class="relative">
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 pt-20 md:pt-28 pb-12 md:pb-16">
+    <div class="flex items-center gap-3 mb-8">
+      <span class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase">§ Support</span>
+      <span class="hairline border-t flex-1"></span>
+      <span class="font-mono text-[11px] tnum fg-48">v1.0 · iOS 17+ / macOS 14+</span>
+    </div>
+
+    <h1 class="font-display text-[56px] sm:text-[72px] md:text-[88px] leading-[0.95] tracking-[-0.04em] max-w-[940px]">
+      How can<br />
+      <span class="fg-48">we help?</span>
+    </h1>
+
+    <p class="mt-10 text-[18px] md:text-[20px] leading-[1.55] fg-72 max-w-[720px]">
+      CreatorCut is a small, focused app made by one person. There are no accounts and nothing to log
+      into — so most questions are about permissions, purchases, or where your files went. Check the
+      FAQ below, and if you're still stuck, email us. We read every message.
+    </p>
+
+    <!-- Contact cards -->
+    <div class="mt-12 grid sm:grid-cols-3 gap-4">
+      <div class="panel rounded-[14px] p-6">
+        <div class="font-mono text-[10px] tracking-[0.18em] fg-48 uppercase mb-3">Email us</div>
+        <a href="mailto:rohitsainier@gmail.com?subject=CreatorCut%20Support" class="font-display text-[18px] text-white hover:text-[var(--cyan)] transition break-all">rohitsainier@gmail.com</a>
+        <p class="mt-3 text-[13px] fg-48 leading-[1.5]">We usually reply within 1–2 business days.</p>
+      </div>
+      <div class="panel rounded-[14px] p-6">
+        <div class="font-mono text-[10px] tracking-[0.18em] fg-48 uppercase mb-3">Refunds &amp; billing</div>
+        <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener" class="font-display text-[18px] text-white hover:text-[var(--cyan)] transition">reportaproblem.apple.com</a>
+        <p class="mt-3 text-[13px] fg-48 leading-[1.5]">Purchases are handled by Apple. Refunds go through Apple's portal.</p>
+      </div>
+      <div class="panel rounded-[14px] p-6">
+        <div class="font-mono text-[10px] tracking-[0.18em] fg-48 uppercase mb-3">Manage subscription</div>
+        <span class="font-display text-[18px] text-white">App Store → Account</span>
+        <p class="mt-3 text-[13px] fg-48 leading-[1.5]">Tap your name in Settings → Subscriptions to change or cancel.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule max-w-[1100px] mx-auto"></div>
+
+<!-- ============== BODY ============== -->
+<section class="relative">
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24">
+
+    <div class="grid md:grid-cols-12 gap-10">
+
+      <!-- Sidebar TOC -->
+      <aside class="md:col-span-3">
+        <div class="md:sticky md:top-24">
+          <div class="font-mono text-[10px] tracking-[0.18em] fg-48 uppercase mb-3">Frequently asked</div>
+          <ul class="space-y-2 text-[13px] fg-72">
+            <li><a href="#preview" class="hover:text-white">Black / empty preview</a></li>
+            <li><a href="#dual" class="hover:text-white">Portrait + landscape</a></li>
+            <li><a href="#4k" class="hover:text-white">Recording in 4K</a></li>
+            <li><a href="#pro" class="hover:text-white">What CreatorCut Pro unlocks</a></li>
+            <li><a href="#restore" class="hover:text-white">Restoring a purchase</a></li>
+            <li><a href="#cancel" class="hover:text-white">Cancelling / refunds</a></li>
+            <li><a href="#files" class="hover:text-white">Where recordings are saved</a></li>
+            <li><a href="#teleprompter" class="hover:text-white">Teleprompter &amp; voice-pace</a></li>
+            <li><a href="#popout" class="hover:text-white">Pop-out window (Mac)</a></li>
+            <li><a href="#watermark" class="hover:text-white">Removing the watermark</a></li>
+            <li><a href="#privacy" class="hover:text-white">Privacy &amp; uploads</a></li>
+            <li><a href="#requirements" class="hover:text-white">System requirements</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <div class="md:col-span-9 prose-spec space-y-12">
+
+        <article id="preview">
+          <h2>The camera preview is black or empty</h2>
+          <p>
+            First, make sure CreatorCut has camera and microphone permission: <strong>Settings →
+            CreatorCut</strong> on iPhone/iPad, or <strong>System Settings → Privacy &amp; Security →
+            Camera / Microphone</strong> on Mac. If you're testing in the iOS Simulator, the preview
+            will always be blank — the Simulator can't drive a real camera. Use a physical device. On
+            Mac, if you have multiple cameras (including a Continuity Camera iPhone), pick the one you
+            want in Settings.
+          </p>
+        </article>
+
+        <article id="dual">
+          <h2>How do I get both a portrait and a landscape video?</h2>
+          <p>
+            That's the whole idea — record one take, get both cuts. Set the output format to
+            <strong>Both</strong> and CreatorCut saves a face-tracked 9:16 portrait version and the full
+            16:9 landscape version from the same recording. On iPhone, tap the format chip in the top
+            toolbar to cycle Both → Portrait → Landscape. On Mac, choose it in Settings. Pick Portrait
+            only or Landscape only and the other render is skipped.
+          </p>
+        </article>
+
+        <article id="4k">
+          <h2>Why can't I record in 4K?</h2>
+          <p>
+            Two things have to be true. First, 4K is a <strong>Pro</strong> feature. Second, the camera
+            you're using has to actually support 4K — CreatorCut only shows resolutions your current
+            camera can deliver. The Mac's built-in FaceTime camera tops out at 1080p, and an iPhone used
+            as a <strong>Continuity Camera</strong> on a Mac is capped at 1080p by macOS itself, even
+            though the same iPhone shoots 4K when you run CreatorCut directly on it. For 4K, run
+            CreatorCut on a 4K-capable iPhone.
+          </p>
+        </article>
+
+        <article id="pro">
+          <h2>What does CreatorCut Pro unlock?</h2>
+          <p>
+            The free tier already includes dual portrait + landscape capture and face-tracked framing.
+            Pro adds:
+          </p>
+          <ul>
+            <li>Unlimited recording length (free is capped at 60 seconds per take);</li>
+            <li>Up to 4K capture, where your camera supports it;</li>
+            <li>The full teleprompter — overlay, pop-out window (Mac), and voice-paced scrolling;</li>
+            <li>Watermark control — move it, restyle it, or turn it off.</li>
+          </ul>
+          <p>
+            Pro is available monthly, yearly (both with a 7-day free trial), or as a one-time, family-
+            shareable Lifetime purchase. See the <a href="../terms/#subscriptions">Terms</a> for pricing
+            and billing details.
+          </p>
+        </article>
+
+        <article id="restore">
+          <h2>I paid before — how do I get Pro back?</h2>
+          <p>
+            On a new device or after reinstalling, tap <strong>Restore Purchases</strong>. It's on the
+            paywall and in <strong>Settings → Subscription</strong>. Make sure you're signed in with the
+            same Apple Account you used to buy. Restoring is free and re-activates your subscription or
+            Lifetime purchase.
+          </p>
+        </article>
+
+        <article id="cancel">
+          <h2>How do I cancel my subscription or get a refund?</h2>
+          <p>
+            Subscriptions are managed by Apple. To cancel or turn off auto-renew, open
+            <strong>Settings → [your name] → Subscriptions → CreatorCut</strong> on your device and
+            choose Cancel. You keep Pro until the end of the period you already paid for. For refunds,
+            use Apple's portal at
+            <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">reportaproblem.apple.com</a>
+            — we can't issue refunds directly because we never process the payment.
+          </p>
+        </article>
+
+        <article id="files">
+          <h2>Where are my recordings saved?</h2>
+          <p>
+            On <strong>iPhone/iPad</strong>, finished videos save straight to your Photos library (and
+            are also accessible in the Files app under On My iPhone → CreatorCut). On <strong>Mac</strong>,
+            you choose a folder when you save and CreatorCut writes the portrait, landscape, and thumbnail
+            into it. Recordings also live inside the app until you delete them from the in-app Library.
+            Uninstalling the app removes anything still inside it, but not what you already exported to
+            Photos or a folder.
+          </p>
+        </article>
+
+        <article id="teleprompter">
+          <h2>The teleprompter won't scroll with my voice</h2>
+          <p>
+            Voice-paced scrolling needs the <strong>Speech Recognition</strong> permission, which
+            CreatorCut requests the first time you enable voice-pace. Turn on the voice-pace toggle in the
+            teleprompter settings and grant the prompt. The script advances as you speak and pauses when
+            you pause; recognition runs on-device. If it still won't move, check that the microphone isn't
+            muted and that Speech Recognition is allowed in system Settings. The teleprompter is a Pro
+            feature.
+          </p>
+        </article>
+
+        <article id="popout">
+          <h2>The pop-out teleprompter window won't open (Mac)</h2>
+          <p>
+            The floating teleprompter is a Mac feature that opens in its own window — handy on a second
+            display positioned under your lens. If it won't open, make sure you're on the latest version
+            and that the teleprompter is enabled. On iPhone/iPad there's no pop-out window; the script
+            overlays directly on the preview instead.
+          </p>
+        </article>
+
+        <article id="watermark">
+          <h2>How do I remove the watermark?</h2>
+          <p>
+            The CreatorCut watermark is on by default for free users. Upgrade to <strong>Pro</strong> to
+            move it to any corner, restyle it, or turn it off entirely. Watermark settings apply to your
+            next take, not ones you've already recorded.
+          </p>
+        </article>
+
+        <article id="privacy">
+          <h2>Does my video or voice get uploaded anywhere?</h2>
+          <p>
+            No. CreatorCut has no servers, no accounts, and makes no network calls. Recording, face
+            tracking, rendering, and speech recognition all run on your device, and nothing leaves it.
+            Read the full <a href="../privacy/">Privacy Policy</a> for specifics.
+          </p>
+        </article>
+
+        <article id="requirements">
+          <h2>System requirements</h2>
+          <ul>
+            <li><strong>iPhone &amp; iPad</strong> — iOS / iPadOS 17 or later.</li>
+            <li><strong>Mac</strong> — macOS 14 Sonoma or later (Apple silicon or Intel).</li>
+            <li>A working camera and microphone. The iOS Simulator can't drive a camera, so test capture
+              on real hardware.</li>
+          </ul>
+        </article>
+
+        <div class="panel rounded-[14px] p-6 mt-4">
+          <p class="!text-white">Still stuck?</p>
+          <p>
+            Email <a href="mailto:rohitsainier@gmail.com?subject=CreatorCut%20Support">rohitsainier@gmail.com</a>
+            with your device model, OS version, and what you were doing when it happened. The more detail,
+            the faster we can help.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule max-w-[1100px] mx-auto"></div>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-10">
+    <div class="flex items-center justify-between text-[12px] font-mono fg-32">
+      <span>© 2026 CREATORCUT</span>
+      <span><a href="../" class="hover:text-white">← Back to creatorcut.app</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

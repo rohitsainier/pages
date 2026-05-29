@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CreatorCut — Terms of Use</title>
+<meta name="description" content="Terms of Use and End User License Agreement for CreatorCut, including subscription and billing terms." />
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root {
+    --bg: #0A0A0C;
+    --bg-2: #0E0E12;
+    --panel: #13131A;
+    --panel-2: #1A1A22;
+    --line: rgba(255,255,255,0.10);
+    --line-strong: rgba(255,255,255,0.18);
+    --fg: #FFFFFF;
+    --fg-72: rgba(255,255,255,0.72);
+    --fg-48: rgba(255,255,255,0.48);
+    --fg-32: rgba(255,255,255,0.32);
+    --cyan: #4FC8FF;
+    --amber: #FFC74D;
+    --red: #FF5252;
+  }
+  html, body { background: var(--bg); color: var(--fg); }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "ss01", "cv11";
+    letter-spacing: -0.011em;
+  }
+  .font-display {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", system-ui, sans-serif;
+    letter-spacing: -0.035em;
+    font-weight: 600;
+  }
+  .font-mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-feature-settings: "tnum","ss01"; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  .hairline { border-color: var(--line); }
+  .fg-72 { color: var(--fg-72); }
+  .fg-48 { color: var(--fg-48); }
+  .fg-32 { color: var(--fg-32); }
+  .glass {
+    background: rgba(20,20,26,0.55);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 0.5px solid var(--line);
+  }
+  .panel {
+    background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0)) , var(--panel);
+    border: 0.5px solid var(--line);
+  }
+  .chip {
+    border: 0.5px solid var(--line);
+    color: var(--fg-72);
+    background: rgba(255,255,255,0.02);
+  }
+  .rule { height: 0.5px; background: var(--line); }
+  ::selection { background: rgba(79,200,255,0.35); }
+
+  .prose-spec h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .prose-spec p, .prose-spec li {
+    color: var(--fg-72);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .prose-spec ul {
+    list-style: none;
+    padding: 0;
+  }
+  .prose-spec ul li {
+    padding-left: 18px;
+    position: relative;
+    margin: 6px 0;
+  }
+  .prose-spec ul li::before {
+    content: "·";
+    color: var(--fg-32);
+    position: absolute;
+    left: 4px;
+    top: -2px;
+    font-size: 22px;
+    line-height: 1;
+  }
+  .prose-spec strong { color: #fff; font-weight: 500; }
+  .prose-spec a { color: var(--cyan); text-decoration: none; border-bottom: 0.5px solid rgba(79,200,255,0.4); }
+  .prose-spec a:hover { border-bottom-color: var(--cyan); }
+</style>
+</head>
+<body class="min-h-screen">
+
+<!-- ============== NAV ============== -->
+<header class="sticky top-0 z-40">
+  <div class="glass border-b border-white/10">
+    <div class="max-w-[1100px] mx-auto px-6 md:px-10 h-14 flex items-center justify-between">
+      <a href="../" class="flex items-center gap-2.5">
+        <span class="relative inline-block w-5 h-5">
+          <span class="absolute inset-0 rounded-[5px]" style="background:var(--cyan)"></span>
+          <span class="absolute inset-0 rounded-[5px] translate-x-1 translate-y-1 mix-blend-screen" style="background:var(--amber); opacity:.85"></span>
+        </span>
+        <span class="font-display text-[17px] tracking-tight">CreatorCut</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-[13px] fg-72">
+        <a href="../" class="hover:text-white transition">Home</a>
+        <a href="../privacy/" class="hover:text-white transition">Privacy</a>
+        <a href="#" class="hover:text-white transition text-white">Terms</a>
+        <a href="../support/" class="hover:text-white transition">Support</a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <span class="hidden sm:inline text-[12px] fg-48 font-mono">v1.0 · macOS 14+ / iOS 17+</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============== HERO ============== -->
+<section class="relative">
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 pt-20 md:pt-28 pb-12 md:pb-16">
+    <div class="flex items-center gap-3 mb-8">
+      <span class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase">§ Terms of Use</span>
+      <span class="hairline border-t flex-1"></span>
+      <span class="font-mono text-[11px] tnum fg-48">EFFECTIVE 2026-05-28</span>
+    </div>
+
+    <h1 class="font-display text-[56px] sm:text-[72px] md:text-[88px] leading-[0.95] tracking-[-0.04em] max-w-[940px]">
+      The deal,<br />
+      <span class="fg-48">in plain language.</span>
+    </h1>
+
+    <p class="mt-10 text-[18px] md:text-[20px] leading-[1.55] fg-72 max-w-[720px]">
+      These Terms of Use ("Terms") are the agreement between you and the maker of CreatorCut for the
+      CreatorCut app on iPhone, iPad, and Mac. They cover the license to use the app, the optional
+      CreatorCut Pro subscription, and the usual legal housekeeping. By downloading or using
+      CreatorCut you accept these Terms.
+    </p>
+
+    <div class="mt-10 flex flex-wrap gap-2">
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">YOU OWN YOUR FILES</span>
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">CANCEL ANYTIME</span>
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">7-DAY FREE TRIAL</span>
+      <span class="chip rounded-[8px] px-3 py-1.5 text-[12px] font-mono">NO ACCOUNTS</span>
+    </div>
+  </div>
+</section>
+
+<div class="rule max-w-[1100px] mx-auto"></div>
+
+<!-- ============== BODY ============== -->
+<section class="relative">
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-16 md:py-24">
+
+    <div class="grid md:grid-cols-12 gap-10">
+
+      <!-- Sidebar TOC -->
+      <aside class="md:col-span-3">
+        <div class="md:sticky md:top-24">
+          <div class="font-mono text-[10px] tracking-[0.18em] fg-48 uppercase mb-3">On this page</div>
+          <ul class="space-y-2 text-[13px] fg-72">
+            <li><a href="#acceptance" class="hover:text-white">1. Acceptance</a></li>
+            <li><a href="#license" class="hover:text-white">2. Your license</a></li>
+            <li><a href="#subscriptions" class="hover:text-white">3. Subscriptions &amp; billing</a></li>
+            <li><a href="#trial" class="hover:text-white">4. Free trial</a></li>
+            <li><a href="#lifetime" class="hover:text-white">5. Lifetime purchase</a></li>
+            <li><a href="#restore" class="hover:text-white">6. Restore &amp; refunds</a></li>
+            <li><a href="#content" class="hover:text-white">7. Your content</a></li>
+            <li><a href="#acceptable-use" class="hover:text-white">8. Acceptable use</a></li>
+            <li><a href="#warranty" class="hover:text-white">9. Disclaimer</a></li>
+            <li><a href="#liability" class="hover:text-white">10. Liability</a></li>
+            <li><a href="#apple" class="hover:text-white">11. App Store &amp; Apple</a></li>
+            <li><a href="#changes" class="hover:text-white">12. Changes</a></li>
+            <li><a href="#law" class="hover:text-white">13. Governing law</a></li>
+            <li><a href="#contact" class="hover:text-white">14. Contact</a></li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <div class="md:col-span-9 prose-spec space-y-14">
+
+        <!-- 1 -->
+        <article id="acceptance">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 01</div>
+          <h2>Acceptance of these Terms</h2>
+          <p>
+            CreatorCut is a video-recording app for iPhone, iPad, and Mac. By downloading, installing,
+            or using the app you agree to these Terms and to the
+            <a href="../privacy/">Privacy Policy</a>. If you do not agree, do not use the app. If you
+            are using CreatorCut on behalf of an organization, you represent that you have authority to
+            accept these Terms on its behalf. You must be old enough to form a binding contract in your
+            jurisdiction (or have a parent or guardian's consent) to use CreatorCut.
+          </p>
+        </article>
+
+        <!-- 2 -->
+        <article id="license">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 02</div>
+          <h2>The license we grant you</h2>
+          <p>
+            We grant you a personal, limited, non-exclusive, non-transferable, revocable license to
+            download and use CreatorCut on Apple-branded devices that you own or control, as permitted
+            by the App Store Terms of Service. This is a license, not a sale — we retain all rights,
+            title, and interest in the app itself. You agree not to:
+          </p>
+          <ul>
+            <li>copy, modify, or create derivative works of the app;</li>
+            <li>reverse-engineer, decompile, or disassemble the app, except where that restriction is
+              prohibited by law;</li>
+            <li>rent, lease, lend, sell, redistribute, or sublicense the app;</li>
+            <li>remove or alter any proprietary notices; or</li>
+            <li>use the app in any way that violates applicable law.</li>
+          </ul>
+        </article>
+
+        <!-- 3 -->
+        <article id="subscriptions">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 03</div>
+          <h2>Subscriptions, billing &amp; auto-renewal</h2>
+          <p>
+            CreatorCut is free to download and use with a generous free tier. <strong>CreatorCut
+            Pro</strong> unlocks unlimited recording length, up to 4K capture (where the camera
+            supports it), the full teleprompter, and watermark control. Pro is offered through Apple's
+            In-App Purchase as:
+          </p>
+          <ul>
+            <li><strong>CreatorCut Pro Monthly</strong> — US $4.99 per month (auto-renewable).</li>
+            <li><strong>CreatorCut Pro Yearly</strong> — US $29.99 per year (auto-renewable).</li>
+            <li><strong>CreatorCut Pro Lifetime</strong> — US $79.99 one-time purchase (see §5).</li>
+          </ul>
+          <p>
+            Prices are in U.S. dollars and may vary by region; the exact price and currency are shown
+            in the App Store before you confirm. For the auto-renewable subscriptions:
+          </p>
+          <ul>
+            <li>Payment is charged to your Apple Account at confirmation of purchase.</li>
+            <li>The subscription <strong>renews automatically</strong> unless auto-renew is turned off
+              at least 24 hours before the end of the current period.</li>
+            <li>Your account is charged for renewal within 24 hours before the end of the current
+              period, at the then-current price for the plan.</li>
+            <li>You can manage or cancel your subscription, and turn off auto-renew, in your device's
+              <strong>App Store account settings</strong> after purchase. Apple also lets you manage
+              subscriptions from <em>Settings → CreatorCut → Subscription</em> inside the app.</li>
+          </ul>
+          <p>
+            Monthly and Yearly are part of a single subscription group, so you can switch between them
+            without paying twice for overlapping time. Cancelling stops future renewals; you keep Pro
+            access until the end of the period you already paid for.
+          </p>
+        </article>
+
+        <!-- 4 -->
+        <article id="trial">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 04</div>
+          <h2>Free trial</h2>
+          <p>
+            The Monthly and Yearly plans each include a <strong>7-day free trial</strong> for eligible
+            new subscribers. Unless you cancel at least 24 hours before the trial ends, the trial
+            automatically converts to a paid subscription and your Apple Account is charged the plan
+            price. Any unused portion of a free trial is forfeited when you purchase a subscription to
+            the same group. Eligibility for trials is determined by Apple.
+          </p>
+        </article>
+
+        <!-- 5 -->
+        <article id="lifetime">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 05</div>
+          <h2>Lifetime purchase</h2>
+          <p>
+            CreatorCut Pro Lifetime is a one-time, non-consumable In-App Purchase — not a subscription.
+            It does not renew and is not billed again. It unlocks the same Pro features for as long as
+            the app remains available and functional on supported operating systems. It is Family
+            Shareable through Apple's Family Sharing, subject to Apple's rules. "Lifetime" refers to the
+            lifetime of the product, not a guarantee of perpetual updates or compatibility with future
+            hardware or OS versions.
+          </p>
+        </article>
+
+        <!-- 6 -->
+        <article id="restore">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 06</div>
+          <h2>Restore purchases &amp; refunds</h2>
+          <p>
+            If you reinstall the app or set up a new device, use <strong>Restore Purchases</strong> —
+            available on the paywall and in <em>Settings → Subscription</em> — to re-activate Pro at no
+            charge. All purchases and subscriptions are processed by Apple, not by us. Refund requests
+            are handled by Apple under its standard policy; we cannot issue refunds directly. To request
+            a refund, visit <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener">reportaproblem.apple.com</a>.
+          </p>
+        </article>
+
+        <!-- 7 -->
+        <article id="content">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 07</div>
+          <h2>Your content stays yours</h2>
+          <p>
+            CreatorCut records and renders video and audio on your device. <strong>You own everything
+            you record.</strong> We claim no rights to your recordings, scripts, or any other content
+            you create with the app. We have no servers and never receive, store, or transmit your
+            content — see the <a href="../privacy/">Privacy Policy</a> for the full picture. You are
+            solely responsible for what you record and for having the rights and consents needed to
+            record and share it, including the consent of anyone who appears or is heard in your videos
+            where the law requires it.
+          </p>
+        </article>
+
+        <!-- 8 -->
+        <article id="acceptable-use">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 08</div>
+          <h2>Acceptable use</h2>
+          <p>
+            You agree to use CreatorCut only for lawful purposes. You must not use the app to create or
+            distribute content that is illegal, that infringes someone else's intellectual property or
+            privacy rights, or that records people without a consent you are legally required to obtain.
+            You are responsible for complying with all laws that apply to your recordings, including
+            recording-consent, publicity, and copyright laws in your location.
+          </p>
+        </article>
+
+        <!-- 9 -->
+        <article id="warranty">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 09</div>
+          <h2>Disclaimer of warranties</h2>
+          <p>
+            CreatorCut is provided <strong>"as is" and "as available," without warranties of any
+            kind</strong>, whether express, implied, or statutory, including any implied warranties of
+            merchantability, fitness for a particular purpose, and non-infringement. We do not warrant
+            that the app will be uninterrupted, error-free, or that it will capture or render every take
+            without fault. You use the app at your own risk and are responsible for keeping your own
+            backups of important recordings.
+          </p>
+        </article>
+
+        <!-- 10 -->
+        <article id="liability">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 10</div>
+          <h2>Limitation of liability</h2>
+          <p>
+            To the maximum extent permitted by law, the maker of CreatorCut will not be liable for any
+            indirect, incidental, special, consequential, or punitive damages, or for any loss of data,
+            recordings, revenue, or profits, arising out of or related to your use of the app. Our total
+            liability for any claim relating to the app will not exceed the amount you paid for the app
+            and its In-App Purchases in the twelve months before the claim. Some jurisdictions do not
+            allow certain limitations, so some of the above may not apply to you.
+          </p>
+        </article>
+
+        <!-- 11 -->
+        <article id="apple">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 11</div>
+          <h2>App Store &amp; Apple terms</h2>
+          <p>
+            CreatorCut is licensed, not sold, to you, and your use is also governed by Apple's
+            <a href="https://www.apple.com/legal/internet-services/itunes/" target="_blank" rel="noopener">Media Services Terms</a>
+            (including the standard Licensed Application End User License Agreement). Where these Terms
+            conflict with Apple's, Apple's apply to the extent of the conflict. You acknowledge and agree
+            that:
+          </p>
+          <ul>
+            <li>These Terms are between you and the developer of CreatorCut only, not with Apple. The
+              developer — not Apple — is solely responsible for the app and its content.</li>
+            <li>Apple has no obligation to furnish any maintenance or support for the app.</li>
+            <li>If the app fails to conform to any applicable warranty, you may notify Apple and Apple
+              will refund the purchase price (if any); to the maximum extent permitted by law, Apple has
+              no other warranty obligation with respect to the app.</li>
+            <li>Apple is not responsible for addressing any claims by you or a third party relating to
+              the app, including product-liability, regulatory, or intellectual-property claims.</li>
+            <li>You represent that you are not located in a country subject to a U.S. Government embargo
+              or designated as "terrorist supporting," and that you are not on any U.S. Government list
+              of prohibited or restricted parties.</li>
+            <li>Apple and its subsidiaries are third-party beneficiaries of these Terms and may enforce
+              them against you.</li>
+          </ul>
+        </article>
+
+        <!-- 12 -->
+        <article id="changes">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 12</div>
+          <h2>Changes to these Terms</h2>
+          <p>
+            We may update these Terms from time to time. The current version always lives at this URL
+            with its effective date. Material changes will be reflected here and, where appropriate,
+            called out in the app's release notes. Continuing to use CreatorCut after an update means you
+            accept the revised Terms.
+          </p>
+        </article>
+
+        <!-- 13 -->
+        <article id="law">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 13</div>
+          <h2>Governing law</h2>
+          <p>
+            These Terms are governed by the laws of India, without regard to its conflict-of-laws rules,
+            except where local consumer-protection law gives you rights that cannot be waived. Nothing in
+            these Terms limits any mandatory statutory rights you have as a consumer.
+          </p>
+        </article>
+
+        <!-- 14 -->
+        <article id="contact">
+          <div class="font-mono text-[11px] tracking-[0.18em] fg-48 uppercase mb-3">§ 14</div>
+          <h2>Contact</h2>
+          <p>
+            CreatorCut is built and maintained by <strong>Rohit Sainier</strong>. Questions about these
+            Terms? Email
+            <a href="mailto:rohitsainier@gmail.com">rohitsainier@gmail.com</a>
+            or visit the <a href="../support/">support page</a>.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="rule max-w-[1100px] mx-auto"></div>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="max-w-[1100px] mx-auto px-6 md:px-10 py-10">
+    <div class="flex items-center justify-between text-[12px] font-mono fg-32">
+      <span>© 2026 CREATORCUT</span>
+      <span><a href="../" class="hover:text-white">← Back to creatorcut.app</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
