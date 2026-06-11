@@ -526,6 +526,72 @@
     box-shadow: 0 0 10px rgba(40,200,64,0.9);
     animation: cdPulse 1.4s ease-in-out infinite;
   }
+
+  /* ============== Live App Store CTA ============== */
+  .live-cta {
+    width: 100%;
+    max-width: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 26px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0)), var(--panel);
+    border: 0.5px solid var(--line);
+  }
+  .appstore-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 13px;
+    padding: 12px 22px;
+    border-radius: 14px;
+    background: var(--fg);
+    color: #0A0A0C;
+    text-decoration: none;
+    transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
+  }
+  .appstore-btn:hover {
+    background: #ECECEE;
+    transform: translateY(-1px);
+    box-shadow: 0 16px 34px -14px rgba(0,0,0,0.75);
+  }
+  .appstore-btn-logo { width: 24px; height: auto; flex: none; }
+  .appstore-btn-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    text-align: left;
+  }
+  .appstore-btn-sup {
+    font-size: 11px;
+    letter-spacing: 0.01em;
+    opacity: 0.66;
+    margin-bottom: 4px;
+  }
+  .appstore-btn-main {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Rounded", "SF Pro Display", system-ui, sans-serif;
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .appstore-btn-lg { padding: 15px 30px; gap: 15px; }
+  .appstore-btn-lg .appstore-btn-logo { width: 28px; }
+  .appstore-btn-lg .appstore-btn-main { font-size: 22px; }
+  .live-cta-foot {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--fg-48);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+  }
+  /* Nav pill, live variant — links to the store */
+  a.countdown-nav { text-decoration: none; transition: border-color .2s ease, background .2s ease; }
+  a.countdown-nav:hover { border-color: rgba(255,255,255,0.32); background: rgba(255,255,255,0.05); }
+  .countdown-nav.is-live .dot {
+    background: #4ade80;
+    box-shadow: 0 0 8px rgba(40,200,64,0.9);
+  }
 </style>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b200ddd4adab49139ddb22f935b6490a"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
@@ -549,11 +615,11 @@
         <a href="#scope" class="hover:text-white transition">What it doesn't do</a>
       </nav>
       <div class="flex items-center gap-3">
-        <span class="hidden sm:inline text-[12px] fg-48 font-mono">v1.0 · macOS 14+ / iOS 17+</span>
-        <span class="countdown-nav" id="cd-nav">
+        <span class="hidden sm:inline text-[12px] fg-48 font-mono">macOS 14+ / iOS 17+</span>
+        <a href="https://apps.apple.com/in/app/creatorcut/id6770961941" class="countdown-nav is-live" aria-label="Download CreatorCut on the App Store">
           <span class="dot"></span>
-          <span id="cd-nav-text">Launching soon</span>
-        </span>
+          <span>On the App Store</span>
+        </a>
       </div>
     </div>
   </div>
@@ -597,78 +663,22 @@
       </ul>
 
       <div class="md:col-span-5 lg:col-span-6 flex md:justify-end">
-        <!-- Launch countdown — replaces the (yet-to-work) Download buttons
-             until the App Store listing is live. JS at the bottom of the
-             file binds the digits to the LAUNCH_AT target. -->
-        <div class="countdown" id="cd-hero" role="timer" aria-label="Time until CreatorCut launches">
-          <div class="countdown-head">
-            <span class="countdown-eyebrow"><span class="countdown-pulse"></span>Launching in</span>
-            <button
-              id="cd-sound-btn"
-              class="countdown-sound-btn"
-              type="button"
-              aria-label="Toggle countdown tick sound"
-              aria-pressed="false"
-              title="Toggle countdown tick sound"
-            >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M11 5L6 9H2v6h4l5 4z" fill="currentColor" />
-                <path d="M15.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none" />
-                <path d="M18.5 5.5a9 9 0 0 1 0 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" fill="none" />
-                <line class="slash" x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-              </svg>
-            </button>
-          </div>
-          <div class="countdown-row">
-            <div class="countdown-cell">
-              <span class="countdown-digit" data-cd="days">00</span>
-              <div class="countdown-cell-label">Days</div>
-            </div>
-            <div class="countdown-cell">
-              <span class="countdown-digit" data-cd="hours">00</span>
-              <div class="countdown-cell-label">Hours</div>
-            </div>
-            <div class="countdown-cell">
-              <span class="countdown-digit" data-cd="minutes">00</span>
-              <div class="countdown-cell-label">Min</div>
-            </div>
-            <div class="countdown-cell">
-              <span class="countdown-digit" data-cd="seconds">00</span>
-              <div class="countdown-cell-label">Sec</div>
-            </div>
-          </div>
-          <div class="countdown-foot">
-            Coming to the App Store <span class="fg-32">·</span>
-            <span id="cd-date">—</span>
-          </div>
-
-          <!-- Notify-me waitlist. POSTs to a Formspree endpoint when
-               configured; falls back to mailto: if the endpoint string
-               is left blank. localStorage persists the success state
-               so revisits don't re-prompt. -->
-          <div id="notify-slot">
-            <form class="notify-form" id="notify-form" novalidate>
-              <div class="notify-row">
-                <input
-                  type="email"
-                  class="notify-input"
-                  id="notify-email"
-                  name="email"
-                  placeholder="you@example.com"
-                  autocomplete="email"
-                  inputmode="email"
-                  required
-                  aria-label="Your email address"
-                />
-                <button type="submit" class="notify-btn" id="notify-submit">
-                  <span class="notify-btn-label">Notify me</span>
-                  <span class="notify-btn-spinner" aria-hidden="true"></span>
-                </button>
-              </div>
-              <div class="notify-foot" id="notify-foot" role="status" aria-live="polite">
-                Just one email — when CreatorCut hits the App Store.
-              </div>
-            </form>
+        <!-- Live App Store CTA — the app shipped, so this replaces the
+             pre-launch countdown + waitlist that used to live here. -->
+        <div class="live-cta">
+          <span class="live-badge">Now on the App Store</span>
+          <a href="https://apps.apple.com/in/app/creatorcut/id6770961941" class="appstore-btn" aria-label="Download CreatorCut on the App Store">
+            <svg class="appstore-btn-logo" viewBox="0 0 384 512" aria-hidden="true">
+              <path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
+            </svg>
+            <span class="appstore-btn-text">
+              <span class="appstore-btn-sup">Download on the</span>
+              <span class="appstore-btn-main">App Store</span>
+            </span>
+          </a>
+          <div class="live-cta-foot">
+            Mac &amp; iPhone — one universal purchase.<br/>
+            macOS 14 Sonoma+ · iOS 17+
           </div>
         </div>
       </div>
@@ -1155,23 +1165,16 @@
       Press record.<br/>
       <span class="fg-48">Get back to your day.</span>
     </h2>
-    <div class="mt-12 flex flex-col items-center gap-5">
-      <span class="countdown-eyebrow"><span class="countdown-pulse"></span>Launching in</span>
-      <div class="countdown-compact" id="cd-compact">
-        <span><span class="num" data-cd="days">00</span><span class="lbl">D</span></span>
-        <span><span class="num" data-cd="hours">00</span><span class="lbl">H</span></span>
-        <span><span class="num" data-cd="minutes">00</span><span class="lbl">M</span></span>
-        <span><span class="num" data-cd="seconds">00</span><span class="lbl">S</span></span>
-      </div>
-      <div class="text-[13px] fg-72 font-mono">
-        Available on the App Store <span class="fg-32">·</span>
-        <span id="cd-date-bottom">—</span>
-      </div>
-      <a href="#notify-form" class="btn-ghost px-5 py-3 rounded-[12px] text-[14px] font-medium inline-flex items-center gap-2 mt-2">
-        Get notified at launch
-        <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none">
-          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    <div class="mt-12 flex flex-col items-center gap-6">
+      <span class="live-badge">Now on the App Store</span>
+      <a href="https://apps.apple.com/in/app/creatorcut/id6770961941" class="appstore-btn appstore-btn-lg" aria-label="Download CreatorCut on the App Store">
+        <svg class="appstore-btn-logo" viewBox="0 0 384 512" aria-hidden="true">
+          <path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/>
         </svg>
+        <span class="appstore-btn-text">
+          <span class="appstore-btn-sup">Download on the</span>
+          <span class="appstore-btn-main">App Store</span>
+        </span>
       </a>
     </div>
     <div class="mt-6 text-[12px] fg-48 font-mono">macOS 14 SONOMA · iOS 17 · UNIVERSAL PURCHASE</div>
@@ -1197,7 +1200,7 @@
         <div>
           <div class="font-mono text-[10px] tracking-[0.15em] fg-32 uppercase mb-3">Product</div>
           <ul class="space-y-2 fg-72">
-            <li><a href="#" class="hover:text-white">Download</a></li>
+            <li><a href="https://apps.apple.com/in/app/creatorcut/id6770961941" class="hover:text-white">Download</a></li>
             <li><a href="#" class="hover:text-white">Release notes</a></li>
             <li><a href="#" class="hover:text-white">Roadmap</a></li>
           </ul>
@@ -1258,413 +1261,6 @@
     });
   })();
 
-  // ──────────────────────────────────────────────────────────────
-  // Launch countdown
-  //
-  // EDIT THIS to the exact moment CreatorCut goes live. ISO 8601 with
-  // an explicit offset so it behaves identically for every visitor
-  // regardless of their local timezone. Example:
-  //   '2026-05-16T10:00:00-04:00'  → May 16 2026, 10:00 AM Eastern
-  // ──────────────────────────────────────────────────────────────
-  (function () {
-    const LAUNCH_AT = new Date('2026-05-25T10:00:00-04:00').getTime();
-    // App Store URL to swap in once the listing is live.
-    // Leave as '#' until you have the real URL.
-    const APP_STORE_URL = '#';
-
-    // Bind every [data-cd] node we find, keyed by which field.
-    const nodes = {
-      days:    document.querySelectorAll('[data-cd="days"]'),
-      hours:   document.querySelectorAll('[data-cd="hours"]'),
-      minutes: document.querySelectorAll('[data-cd="minutes"]'),
-      seconds: document.querySelectorAll('[data-cd="seconds"]'),
-    };
-    const navText = document.getElementById('cd-nav-text');
-    const dateNodes = [
-      document.getElementById('cd-date'),
-      document.getElementById('cd-date-bottom'),
-    ].filter(Boolean);
-    const heroCells = document.querySelectorAll('#cd-hero .countdown-cell');
-
-    // ──────── Tick sound (Web Audio, opt-in) ─────────
-    // Synthesizes a watch-style tick: short bandpass-filtered noise
-    // burst with a fast envelope. No external audio file needed.
-    // Browsers block AudioContext creation until a user gesture, so
-    // we lazily build it inside the sound-button click handler.
-    let audioCtx = null;
-    let soundOn = false;
-    const soundBtn = document.getElementById('cd-sound-btn');
-
-    function ensureAudio() {
-      if (!audioCtx) {
-        const Ctor = window.AudioContext || window.webkitAudioContext;
-        if (!Ctor) return false;
-        try { audioCtx = new Ctor(); }
-        catch (e) { return false; }
-      }
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      return true;
-    }
-
-    // accent: 'second' | 'minute' | 'hour'
-    function playTick(accent) {
-      if (!soundOn || !audioCtx) return;
-      const t = audioCtx.currentTime;
-      const level = accent === 'hour' ? 2 : accent === 'minute' ? 1 : 0;
-
-      // Body: short noise burst with sharp attack, exponential decay
-      const dur = 0.055 + level * 0.02;
-      const sampleCount = Math.max(1, Math.floor(audioCtx.sampleRate * dur));
-      const buf = audioCtx.createBuffer(1, sampleCount, audioCtx.sampleRate);
-      const ch = buf.getChannelData(0);
-      for (let i = 0; i < sampleCount; i++) {
-        const env = Math.pow(1 - i / sampleCount, 3);
-        ch[i] = (Math.random() * 2 - 1) * env;
-      }
-      const noise = audioCtx.createBufferSource();
-      noise.buffer = buf;
-
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'bandpass';
-      filter.frequency.value = 1800 + level * 600;
-      filter.Q.value = 1.4;
-
-      const gain = audioCtx.createGain();
-      const peak = level === 0 ? 0.07 : level === 1 ? 0.12 : 0.16;
-      gain.gain.setValueAtTime(peak, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + dur);
-
-      noise.connect(filter);
-      filter.connect(gain);
-      gain.connect(audioCtx.destination);
-      noise.start(t);
-      noise.stop(t + dur);
-
-      // Hour rollover: brief tonal shimmer over the noise burst
-      if (level === 2) {
-        const osc = audioCtx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(1200, t);
-        osc.frequency.exponentialRampToValueAtTime(900, t + 0.12);
-        const oscGain = audioCtx.createGain();
-        oscGain.gain.setValueAtTime(0.045, t);
-        oscGain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-        osc.connect(oscGain);
-        oscGain.connect(audioCtx.destination);
-        osc.start(t);
-        osc.stop(t + 0.13);
-      }
-    }
-
-    function flashCells(accent) {
-      heroCells.forEach((c) => {
-        c.classList.remove('flash');
-        // force reflow so the animation restarts
-        void c.offsetWidth;
-        c.classList.add('flash');
-      });
-    }
-
-    function setSoundOn(on) {
-      soundOn = on;
-      if (soundBtn) soundBtn.setAttribute('aria-pressed', String(on));
-    }
-
-    if (soundBtn) {
-      soundBtn.addEventListener('click', () => {
-        const wantOn = !soundOn;
-        if (wantOn) {
-          if (!ensureAudio()) return;
-          setSoundOn(true);
-          // One immediate confirmation tick so the user hears what
-          // they just enabled.
-          playTick('minute');
-        } else {
-          setSoundOn(false);
-        }
-      });
-    }
-
-    function fmt(n) { return String(n).padStart(2, '0'); }
-
-    // Set a digit and replay the tick animation only if the value
-    // actually changed — avoids restarting the animation 60×/min on
-    // fields that haven't moved.
-    function setDigit(el, newText) {
-      if (el.textContent === newText) return;
-      el.classList.remove('tick');
-      // Force a reflow so the animation restarts cleanly.
-      void el.offsetWidth;
-      el.textContent = newText;
-      el.classList.add('tick');
-    }
-
-    function setAll(field, value) {
-      const text = fmt(value);
-      nodes[field].forEach(el => setDigit(el, text));
-    }
-
-    // Once the timer hits zero, swap each big-card countdown for a
-    // "LIVE NOW" block + App Store CTA.
-    let swapped = false;
-    function swapToLive() {
-      if (swapped) return;
-      swapped = true;
-      const hero = document.getElementById('cd-hero');
-      if (hero) {
-        hero.innerHTML = `
-          <div class="live-block">
-            <span class="live-badge">LIVE NOW</span>
-            <a href="${APP_STORE_URL}" class="btn-primary px-5 py-3.5 rounded-[14px] text-[15px] font-medium inline-flex items-center gap-2.5">
-              Get it on the App Store
-            </a>
-          </div>
-        `;
-      }
-      const compact = document.getElementById('cd-compact');
-      if (compact) {
-        compact.outerHTML = `
-          <a href="${APP_STORE_URL}" class="btn-primary px-6 py-4 rounded-[14px] text-[15px] font-medium inline-flex items-center justify-center gap-2.5">
-            Get it on the App Store
-          </a>
-        `;
-      }
-      if (navText) navText.textContent = 'Live now';
-    }
-
-    // Human-readable launch date — written once on load.
-    (function setDateLine() {
-      const d = new Date(LAUNCH_AT);
-      const fmtDate = d.toLocaleDateString('en-US', {
-        month: 'long', day: 'numeric', year: 'numeric',
-      });
-      dateNodes.forEach(n => { n.textContent = fmtDate; });
-    })();
-
-    // Track previous values so we can detect rollovers and only
-    // play a tick when the seconds digit actually advances (not on
-    // the initial render).
-    let prev = { seconds: -1, minutes: -1, hours: -1 };
-
-    function update() {
-      const delta = Math.max(0, LAUNCH_AT - Date.now());
-      if (delta === 0) { swapToLive(); return; }
-
-      const totalSeconds = Math.floor(delta / 1000);
-      const days    = Math.floor(totalSeconds / 86400);
-      const hours   = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-
-      setAll('days',    days);
-      setAll('hours',   hours);
-      setAll('minutes', minutes);
-      setAll('seconds', seconds);
-
-      // Tick! Only fire when the seconds actually rolled over (skips
-      // the very first render). Hour and minute rollovers escalate
-      // the accent so the audio has structure.
-      if (prev.seconds !== -1 && seconds !== prev.seconds) {
-        const accent =
-          hours   !== prev.hours   ? 'hour'   :
-          minutes !== prev.minutes ? 'minute' : 'second';
-        playTick(accent);
-        flashCells(accent);
-      }
-      prev = { seconds, minutes, hours };
-
-      // Nav pill: terser readout that drops fields as the timer winds down
-      if (navText) {
-        if (days > 0)        navText.textContent = `${days}d ${fmt(hours)}h ${fmt(minutes)}m`;
-        else if (hours > 0)  navText.textContent = `${fmt(hours)}h ${fmt(minutes)}m ${fmt(seconds)}s`;
-        else                 navText.textContent = `${fmt(minutes)}m ${fmt(seconds)}s`;
-      }
-    }
-
-    update();
-    // Align ticks to the wall clock so the seconds digit changes
-    // at the same instant as the user's system clock.
-    const drift = 1000 - (Date.now() % 1000);
-    setTimeout(function once() {
-      update();
-      setInterval(update, 1000);
-    }, drift);
-  })();
-
-  // ──────────────────────────────────────────────────────────────
-  // Notify-me waitlist
-  //
-  // SETUP (one time, ~2 minutes):
-  //   1. Sign up at https://formspree.io (free tier: 50/mo submissions).
-  //   2. Create a new form, point it at the email you want to receive
-  //      submissions at (rohitsainier@gmail.com).
-  //   3. Copy the form endpoint that looks like:
-  //      https://formspree.io/f/xxxxxxxx
-  //   4. Paste it into NOTIFY_ENDPOINT below and push.
-  //
-  // If you leave NOTIFY_ENDPOINT blank, the form falls back to opening
-  // the user's mail client (mailto:) — works on day one with no setup,
-  // but UX is worse and many users don't have a mail client configured.
-  // ──────────────────────────────────────────────────────────────
-  (function () {
-    const NOTIFY_ENDPOINT = 'https://formspree.io/f/xvzlyjyz';
-    const NOTIFY_FALLBACK_EMAIL = 'rohitsainier@gmail.com';
-    const STORAGE_KEY = 'creatorcut-notify-email';
-
-    const slot = document.getElementById('notify-slot');
-    const form = document.getElementById('notify-form');
-    if (!slot || !form) return;
-
-    const emailInput  = document.getElementById('notify-email');
-    const submitBtn   = document.getElementById('notify-submit');
-    const footEl      = document.getElementById('notify-foot');
-    const DEFAULT_FOOT = footEl ? footEl.textContent : '';
-
-    function isValidEmail(value) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((value || '').trim());
-    }
-
-    function setFootMessage(text, kind) {
-      if (!footEl) return;
-      footEl.textContent = text;
-      footEl.className = 'notify-foot' + (kind ? ' ' + kind : '');
-    }
-
-    function showSuccess(email) {
-      slot.innerHTML =
-        '<div class="notify-success" role="status">' +
-          '<div class="notify-check">' +
-            '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">' +
-              '<path d="M5 12l5 5L20 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>' +
-            '</svg>' +
-          '</div>' +
-          '<div class="notify-success-text">' +
-            '<div class="notify-success-title">You&rsquo;re on the list.</div>' +
-            '<div class="notify-success-sub">We&rsquo;ll email <strong>' + escapeHtml(email) + '</strong> the moment CreatorCut goes live on the App Store.</div>' +
-          '</div>' +
-        '</div>';
-    }
-
-    function escapeHtml(s) {
-      return String(s)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-    }
-
-    // Restore: if user already submitted on this device, skip the form.
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved && isValidEmail(saved)) {
-        showSuccess(saved);
-        return;
-      }
-    } catch (_) { /* localStorage disabled — proceed with live form */ }
-
-    // Mailto fallback — opens the user's mail client pre-addressed
-    // to NOTIFY_FALLBACK_EMAIL with their email + a friendly note.
-    // Used both when no Formspree endpoint is configured AND as a
-    // safety net whenever the Formspree POST fails (rate limit hit,
-    // form suspended, network error, CORS, etc.) so we never lose
-    // a signup.
-    async function submitViaMailto(email) {
-      const subject = 'Notify me about CreatorCut launch';
-      const body =
-        'Hi, please notify me at ' + email +
-        ' when CreatorCut goes live on the App Store.\n\nThanks!';
-      window.location.href =
-        'mailto:' + encodeURIComponent(NOTIFY_FALLBACK_EMAIL) +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
-      // Give the OS a moment to open the mail app before we
-      // optimistically claim success.
-      await new Promise(function (r) { setTimeout(r, 600); });
-      return { ok: true, viaFallback: true };
-    }
-
-    async function submit(email) {
-      // No endpoint configured? Go straight to mailto.
-      if (!NOTIFY_ENDPOINT) return submitViaMailto(email);
-
-      try {
-        const res = await fetch(NOTIFY_ENDPOINT, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            // Formspree-special fields: makes incoming emails easier
-            // to scan in your inbox and lets you hit Reply to write
-            // back to the signer directly.
-            _subject: 'CreatorCut waitlist — new signup',
-            _replyto: email,
-            // Extra context for triage
-            source: 'creatorcut-landing-countdown',
-            submitted_at: new Date().toISOString(),
-            user_agent: navigator.userAgent,
-          }),
-        });
-        if (res.ok) return { ok: true };
-
-        // Formspree responded but not 2xx. The most common cause on
-        // a launched waitlist form is the 50/mo free-tier limit
-        // (Formspree returns 403 with an error like
-        // "FORM_HAS_REACHED_THE_SUBMISSION_LIMIT"). Could also be a
-        // suspended form, validation rejection, or service issue.
-        // Either way — fall back to mailto so the signer can still
-        // reach us through their mail client.
-        console.warn('[notify] Formspree returned', res.status, '— falling back to mailto.');
-        return submitViaMailto(email);
-      } catch (e) {
-        // Network / CORS / DNS failure. Same fallback.
-        console.warn('[notify] Formspree request errored — falling back to mailto.', e);
-        return submitViaMailto(email);
-      }
-    }
-
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-      const email = (emailInput.value || '').trim();
-
-      if (!isValidEmail(email)) {
-        setFootMessage('Please enter a valid email address.', 'error');
-        emailInput.focus();
-        return;
-      }
-
-      form.classList.add('is-loading');
-      submitBtn.disabled = true;
-      emailInput.disabled = true;
-      setFootMessage('Sending…', '');
-
-      const result = await submit(email);
-
-      if (result.ok) {
-        try { localStorage.setItem(STORAGE_KEY, email); } catch (_) {}
-        showSuccess(email);
-      } else {
-        form.classList.remove('is-loading');
-        submitBtn.disabled = false;
-        emailInput.disabled = false;
-        setFootMessage(result.error || 'Something went wrong. Please try again.', 'error');
-      }
-    });
-
-    // If the user navigates to #notify-form, gently focus the email
-    // field so they can start typing immediately.
-    if (window.location.hash === '#notify-form') {
-      setTimeout(function () { emailInput && emailInput.focus(); }, 300);
-    }
-    document.querySelectorAll('a[href="#notify-form"]').forEach(function (link) {
-      link.addEventListener('click', function () {
-        setTimeout(function () { emailInput && emailInput.focus(); }, 500);
-      });
-    });
-  })();
 </script>
 </body>
 </html>
