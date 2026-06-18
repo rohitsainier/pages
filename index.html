@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rohit Sainier — Projects</title>
-  <meta name="description" content="Open source + other tools by Rohit Sainier. CreatorCut, Flux Terminal, BharatLink, QuickKit, StyleSnap." />
+  <meta name="description" content="Apps & tools by Rohit Sainier — CreatorCut, Vista, MechKeys, InstaGrab, Inkling, Flux Terminal, BharatLink, QuickKit, LinkedComment, StyleSnap & more." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
@@ -231,6 +231,19 @@
       pointer-events: none;
     }
 
+    .project-card[data-project="vista"] .project-name { color: #38bdf8; }
+    .project-card[data-project="vista"]:hover { border-color: rgba(56, 189, 248, 0.3); box-shadow: 0 8px 40px rgba(56, 189, 248, 0.08); }
+
+    .project-card[data-project="mechkeys"] .project-name { color: #2dd4bf; }
+    .project-card[data-project="mechkeys"]:hover { border-color: rgba(45, 212, 191, 0.3); box-shadow: 0 8px 40px rgba(45, 212, 191, 0.08); }
+
+    .project-card[data-project="instagrab"] .project-name { color: #e1306c; }
+    .project-card[data-project="instagrab"]:hover { border-color: rgba(225, 48, 108, 0.3); box-shadow: 0 8px 40px rgba(225, 48, 108, 0.08); }
+
+    .project-card[data-project="inkling"] .project-name { color: #fb7185; }
+    .project-card[data-project="inkling"]:hover { border-color: rgba(251, 113, 133, 0.3); box-shadow: 0 8px 40px rgba(251, 113, 133, 0.08); }
+    .project-card[data-project="inkling"] .project-icon { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 24px; }
+
     /* ─── Footer ─── */
     footer {
       border-top: 1px solid var(--border);
@@ -285,9 +298,9 @@
   <!-- ─── Header ─── -->
   <div class="header">
     <div class="header-name">Rohit Sainier</div>
-    <h1>Open Source <span class="gradient">Tools</span></h1>
+    <h1>Apps &amp; <span class="gradient">Tools</span></h1>
     <p class="header-sub">
-      Developer tools, terminal emulators, and utilities — all open source, all built to ship.
+      Mac &amp; iOS apps, developer tools, and browser extensions — crafted with care, built to ship.
     </p>
   </div>
 
@@ -310,6 +323,70 @@
           <span class="project-tag">iOS</span>
           <span class="project-tag">SwiftUI</span>
           <span class="project-tag">Vision</span>
+        </div>
+      </a>
+
+      <!-- Vista -->
+      <a href="./vista/" class="project-card" data-project="vista">
+        <div class="project-top">
+          <div class="project-icon" style="background: linear-gradient(135deg, #38bdf8, #6366f1);">V</div>
+          <span class="project-arrow">&rarr;</span>
+        </div>
+        <div class="project-name">Vista</div>
+        <div class="project-desc">The macOS browser that's invisible to screen share. Flip one toggle and the window vanishes from Zoom, Meet, Teams, QuickTime &amp; Loom — while staying fully usable for you.</div>
+        <div class="project-tags">
+          <span class="project-tag">macOS</span>
+          <span class="project-tag">SwiftUI</span>
+          <span class="project-tag">Privacy</span>
+          <span class="project-tag">$19.99</span>
+        </div>
+      </a>
+
+      <!-- MechKeys -->
+      <a href="./mechkeys/" class="project-card" data-project="mechkeys">
+        <div class="project-top">
+          <div class="project-icon" style="background: linear-gradient(135deg, #2dd4bf, #14b8a6); color: #04201c;">MK</div>
+          <span class="project-arrow">&rarr;</span>
+        </div>
+        <div class="project-name">MechKeys</div>
+        <div class="project-desc">Mechanical keyboard sounds for your Mac — no hardware needed. A menu bar app with 47 sound packs, ultra-low latency, per-app profiles, and zero data collection.</div>
+        <div class="project-tags">
+          <span class="project-tag">macOS</span>
+          <span class="project-tag">Menu Bar</span>
+          <span class="project-tag">Audio</span>
+          <span class="project-tag">$4.99</span>
+        </div>
+      </a>
+
+      <!-- InstaGrab -->
+      <a href="./instagrab/" class="project-card" data-project="instagrab">
+        <div class="project-top">
+          <div class="project-icon" style="background: linear-gradient(135deg, #feda75, #fa7e1e 35%, #d62976 70%, #962fbf);">IG</div>
+          <span class="project-arrow">&rarr;</span>
+        </div>
+        <div class="project-name">InstaGrab</div>
+        <div class="project-desc">Instagram profile downloader for Mac. Archive public photos &amp; videos in original quality, auto-organized into folders with a full download history. Native, notarized, no terminal.</div>
+        <div class="project-tags">
+          <span class="project-tag">macOS</span>
+          <span class="project-tag">Apple Silicon</span>
+          <span class="project-tag">Native</span>
+          <span class="project-tag">$9</span>
+        </div>
+      </a>
+
+      <!-- Inkling -->
+      <a href="./inkling/" class="project-card" data-project="inkling">
+        <div class="project-top">
+          <div class="project-icon" style="background: linear-gradient(135deg, #fb7185, #f43f5e);">I</div>
+          <span class="project-arrow">&rarr;</span>
+        </div>
+        <div class="project-name">Inkling</div>
+        <div class="project-desc">A minimal app for saving and shaping quotes. Turn any line into a beautifully typeset card, refine it with on-device AI, and export it anywhere. No account, no feed, no tracking.</div>
+        <div class="project-tags">
+          <span class="project-tag">iOS</span>
+          <span class="project-tag">On-device AI</span>
+          <span class="project-tag">Privacy</span>
+          <span class="project-tag">$0.99</span>
         </div>
       </a>
 

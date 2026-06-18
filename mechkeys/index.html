@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MechKeys — Mechanical Keyboard Sounds for Mac</title>
+<meta name="description" content="MechKeys brings the satisfying sound of mechanical keyboards to your Mac — no hardware needed. A lightweight menu bar app with 47 sound packs, ultra-low latency, per-app profiles, and zero data collection." />
+<meta property="og:title" content="MechKeys — Mechanical Keyboard Sounds for Mac" />
+<meta property="og:description" content="47 built-in sound packs, ultra-low latency, per-app profiles, and total privacy. A lightweight menu bar app that makes any Mac keyboard sound mechanical." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #07100e;
+    --bg-subtle: #0d1714;
+    --bg-card: #101b18;
+    --border: #1c2c28;
+    --border-hover: #2c443e;
+    --text: #f1f9f6;
+    --text-muted: #9fb8b1;
+    --text-dim: #6a817b;
+    --accent: #2dd4bf;
+    --accent-2: #14b8a6;
+    --accent-soft: rgba(45, 212, 191, 0.12);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --max-w: 1000px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav { padding: 18px 0; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(7,16,14,0.8); backdrop-filter: blur(12px); z-index: 100; }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 17px; }
+  .nav-logo { width: 34px; height: 34px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: #04201c; }
+  .nav-links { display: flex; align-items: center; gap: 26px; }
+  .nav-links a { color: var(--text-muted); font-size: 14px; font-weight: 500; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #04201c !important; padding: 8px 18px; border-radius: 9px; font-weight: 700; }
+  .nav-cta:hover { opacity: 0.92; }
+  .nav-back { color: var(--text-dim) !important; font-size: 13px; }
+
+  /* Hero */
+  .hero { padding: 84px 0 64px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%); width: 820px; height: 520px; background: radial-gradient(ellipse, rgba(45,212,191,0.10) 0%, transparent 70%); pointer-events: none; }
+  .hero .container { position: relative; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 52px; align-items: center; }
+  .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 500; color: var(--accent); background: var(--accent-soft); border: 1px solid rgba(45,212,191,0.22); padding: 5px 13px; border-radius: 100px; margin-bottom: 22px; }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .hero h1 { font-size: clamp(34px, 4.8vw, 52px); font-weight: 800; letter-spacing: -0.035em; line-height: 1.07; margin-bottom: 20px; }
+  .hero h1 .grad { background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero p.sub { font-size: 18px; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px; max-width: 480px; }
+  .hero-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 9px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #04201c; padding: 14px 28px; border-radius: 12px; font-size: 15px; font-weight: 700; transition: transform 0.2s, box-shadow 0.2s; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 38px rgba(45,212,191,0.28); color: #04201c; }
+  .price-tag { font-size: 14px; color: var(--text-dim); }
+  .price-tag b { color: var(--text); font-size: 17px; font-weight: 700; }
+
+  /* Menu bar mockup */
+  .visual { display: flex; justify-content: center; }
+  .menubar-app { width: 100%; max-width: 320px; }
+  .menubar { display: flex; align-items: center; justify-content: flex-end; gap: 14px; padding: 7px 14px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-hover); border-radius: 10px 10px 0 0; font-size: 12px; color: var(--text-muted); }
+  .menubar .key-ic { color: var(--accent); display: flex; align-items: center; gap: 5px; font-weight: 600; }
+  .menubar .t { font-family: var(--mono); font-size: 11.5px; color: var(--text-dim); }
+  .dropdown { background: var(--bg-card); border: 1px solid var(--border-hover); border-top: none; border-radius: 0 0 14px 14px; box-shadow: 0 30px 70px rgba(0,0,0,0.6); overflow: hidden; }
+  .dd-head { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .dd-head .name { font-weight: 700; font-size: 14px; }
+  .dd-head .sw { width: 36px; height: 20px; border-radius: 100px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); position: relative; }
+  .dd-head .sw::after { content: ''; position: absolute; top: 2.5px; right: 2.5px; width: 15px; height: 15px; border-radius: 50%; background: #fff; }
+  .dd-row { padding: 11px 18px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--text-muted); border-bottom: 1px solid rgba(255,255,255,0.03); }
+  .dd-row .label { display: flex; align-items: center; gap: 9px; }
+  .dd-row .pack { color: var(--text); font-weight: 500; }
+  .dd-row .badge-sel { font-size: 11px; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 6px; font-family: var(--mono); }
+  .wave { display: flex; align-items: center; gap: 3px; height: 18px; }
+  .wave span { width: 3px; border-radius: 2px; background: var(--accent); opacity: 0.85; }
+  .dd-foot { padding: 12px 18px; font-size: 11.5px; color: var(--text-dim); font-family: var(--mono); display: flex; justify-content: space-between; }
+
+  /* Sections */
+  section.block { padding: 80px 0; border-top: 1px solid var(--border); }
+  .section-head { text-align: center; max-width: 580px; margin: 0 auto 52px; }
+  .section-head .eyebrow { font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 14px; }
+  .section-head h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 14px; }
+  .section-head p { font-size: 16px; color: var(--text-muted); }
+
+  /* Stat headline cards */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 64px; }
+  .stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px 28px; text-align: center; }
+  .stat .big { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 6px; }
+  .stat .lbl { font-size: 14px; color: var(--text-muted); }
+
+  /* Features */
+  .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .feature { display: flex; gap: 16px; align-items: flex-start; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.2s; }
+  .feature:hover { border-color: var(--border-hover); }
+  .feature .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; color: var(--accent); flex-shrink: 0; font-size: 19px; }
+  .feature h3 { font-size: 15.5px; font-weight: 700; margin-bottom: 5px; }
+  .feature p { font-size: 14px; color: var(--text-muted); line-height: 1.55; }
+  .feature code { font-family: var(--mono); font-size: 12px; color: var(--accent); background: var(--accent-soft); padding: 1px 6px; border-radius: 5px; }
+
+  /* Sound packs marquee */
+  .packs-wrap { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .packs { display: flex; gap: 12px; width: max-content; animation: scroll 38s linear infinite; }
+  .packs:hover { animation-play-state: paused; }
+  @keyframes scroll { to { transform: translateX(-50%); } }
+  .pack-chip { font-size: 14px; padding: 10px 18px; border-radius: 100px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); white-space: nowrap; }
+  .pack-chip b { color: var(--accent); font-weight: 600; }
+  @media (prefers-reduced-motion: reduce) { .packs { animation: none; flex-wrap: wrap; width: auto; justify-content: center; } }
+
+  /* Privacy callout */
+  .note-box { background: linear-gradient(160deg, var(--bg-card), var(--bg-subtle)); border: 1px solid var(--border-hover); border-radius: 20px; padding: 40px 44px; max-width: 820px; margin: 0 auto; text-align: center; }
+  .note-box h3 { font-size: 20px; font-weight: 800; margin-bottom: 14px; }
+  .note-box p { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 620px; margin: 0 auto; }
+  .note-box .tags { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+  .note-box .tags span { font-size: 12.5px; font-family: var(--mono); color: var(--accent); background: var(--accent-soft); border: 1px solid rgba(45,212,191,0.2); padding: 5px 13px; border-radius: 100px; }
+
+  /* Install + requirements */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .panel { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; }
+  .panel h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .panel ol { list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 14px; }
+  .panel ol li { font-size: 14.5px; color: var(--text-muted); padding-left: 36px; position: relative; line-height: 1.5; counter-increment: step; }
+  .panel ol li::before { content: counter(step); position: absolute; left: 0; top: -1px; width: 24px; height: 24px; border-radius: 7px; background: var(--accent-soft); color: var(--accent); font-weight: 800; font-size: 12px; font-family: var(--mono); display: flex; align-items: center; justify-content: center; }
+  .panel ul { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+  .panel ul li { font-size: 14.5px; color: var(--text-muted); padding-left: 24px; position: relative; line-height: 1.5; }
+  .panel ul li::before { content: '•'; position: absolute; left: 2px; color: var(--accent); font-size: 18px; top: -2px; }
+
+  /* CTA */
+  .cta { text-align: center; }
+  .cta-box { background: linear-gradient(160deg, var(--bg-card), var(--bg-subtle)); border: 1px solid var(--border-hover); border-radius: 24px; padding: 60px 32px; position: relative; overflow: hidden; }
+  .cta-box::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 300px; background: radial-gradient(ellipse, rgba(45,212,191,0.14), transparent 70%); }
+  .cta-box > * { position: relative; }
+  .cta-box h2 { font-size: clamp(26px, 3.6vw, 36px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; }
+  .cta-box p { font-size: 16px; color: var(--text-muted); margin-bottom: 30px; }
+  .cta-note { margin-top: 18px; font-size: 13px; color: var(--text-dim); }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 40px 0; }
+  footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-left { font-size: 13.5px; color: var(--text-dim); }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a { font-size: 13px; color: var(--text-dim); transition: color 0.15s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  @media (max-width: 760px) {
+    .hero .container { grid-template-columns: 1fr; gap: 44px; }
+    .stats { grid-template-columns: 1fr; }
+    .features-grid, .two-col { grid-template-columns: 1fr; }
+    .nav-links a:not(.nav-cta):not(.nav-back) { display: none; }
+  }
+  ::-webkit-scrollbar { width: 7px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-brand">
+      <div class="nav-logo"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></div>
+      MechKeys
+    </div>
+    <div class="nav-links">
+      <a href="../" class="nav-back">← All projects</a>
+      <a href="#features">Features</a>
+      <a href="#packs">Sound packs</a>
+      <a href="https://rohitsainier.gumroad.com/l/agdaac" class="nav-cta" target="_blank" rel="noopener">Get MechKeys</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <span class="badge"><span class="dot"></span> Menu bar app · Universal Binary</span>
+      <h1>Make your Mac sound <span class="grad">mechanical</span>.</h1>
+      <p class="sub">MechKeys brings the satisfying sound of mechanical keyboards to your Mac — no hardware needed. A lightweight menu bar app that plays realistic key sounds as you type, with ultra-low latency and zero configuration.</p>
+      <div class="hero-actions">
+        <a href="https://rohitsainier.gumroad.com/l/agdaac" class="btn-primary" target="_blank" rel="noopener">Get MechKeys →</a>
+        <span class="price-tag">Only <b>$4.99</b> · one-time</span>
+      </div>
+    </div>
+    <div class="visual">
+      <div class="menubar-app">
+        <div class="menubar">
+          <span class="t">100%</span>
+          <span class="t">Fri 9:41</span>
+          <span class="key-ic"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M7 14h10"/></svg></span>
+        </div>
+        <div class="dropdown">
+          <div class="dd-head">
+            <span class="name">MechKeys</span>
+            <span class="sw"></span>
+          </div>
+          <div class="dd-row">
+            <span class="label">Sound pack</span>
+            <span class="pack">Cherry MX Blue</span>
+          </div>
+          <div class="dd-row">
+            <span class="label">Active profile</span>
+            <span class="badge-sel">VS Code</span>
+          </div>
+          <div class="dd-row">
+            <span class="label">Output</span>
+            <div class="wave">
+              <span style="height:6px"></span><span style="height:14px"></span><span style="height:9px"></span><span style="height:18px"></span><span style="height:11px"></span><span style="height:7px"></span>
+            </div>
+          </div>
+          <div class="dd-foot"><span>⌘⇧K to toggle</span><span>47 packs</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="stats">
+      <div class="stat"><div class="big">47</div><div class="lbl">Built-in sound packs</div></div>
+      <div class="stat"><div class="big">150+</div><div class="lbl">WPM with zero lag</div></div>
+      <div class="stat"><div class="big">0</div><div class="lbl">Bytes of data collected</div></div>
+    </div>
+    <div class="section-head">
+      <div class="eyebrow">Key features</div>
+      <h2>Tiny app, serious sound engine</h2>
+      <p>A pre-buffered audio engine with 12 polyphonic player nodes means sounds play instantly — even when you're flying.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature"><div class="ic">🎚️</div><div><h3>Per-app profiles</h3><p>Mute in Zoom, a clicky switch in VS Code — different sound for every app.</p></div></div>
+      <div class="feature"><div class="ic">🖱️</div><div><h3>Mouse click sounds</h3><p>Optional click sounds for your mouse buttons, too.</p></div></div>
+      <div class="feature"><div class="ic">🎲</div><div><h3>Pitch &amp; volume randomization</h3><p>Every keystroke sounds a little different, so it never feels robotic.</p></div></div>
+      <div class="feature"><div class="ic">🔈</div><div><h3>Audio output routing</h3><p>Send key sounds to whichever output device you prefer.</p></div></div>
+      <div class="feature"><div class="ic">⌨️</div><div><h3>Global hotkey</h3><p>Toggle from anywhere with <code>⌘⇧K</code>. Launches silently at login if you want.</p></div></div>
+      <div class="feature"><div class="ic">📂</div><div><h3>Custom sound pack import</h3><p>Bring your own WAV packs and play whatever switches you like.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="packs">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">47 sound packs</div>
+      <h2>Every switch you've ever wanted</h2>
+      <p>From legendary Cherry MX switches to boutique builds and vintage typewriters.</p>
+    </div>
+  </div>
+  <div class="packs-wrap">
+    <div class="packs">
+      <span class="pack-chip"><b>Cherry MX</b> Blue</span>
+      <span class="pack-chip"><b>Cherry MX</b> Brown</span>
+      <span class="pack-chip"><b>Cherry MX</b> Red</span>
+      <span class="pack-chip"><b>Cherry MX</b> Black</span>
+      <span class="pack-chip">ABS &amp; PBT keycaps</span>
+      <span class="pack-chip"><b>Gateron</b></span>
+      <span class="pack-chip"><b>Topre</b></span>
+      <span class="pack-chip">Holy Pandas</span>
+      <span class="pack-chip">Tealios V2</span>
+      <span class="pack-chip">Box Jade</span>
+      <span class="pack-chip">Kailh Box White</span>
+      <span class="pack-chip">Glorious Panda</span>
+      <span class="pack-chip">Model F</span>
+      <span class="pack-chip">Alpaca</span>
+      <span class="pack-chip">Vintage typewriters</span>
+      <!-- duplicate for seamless loop -->
+      <span class="pack-chip"><b>Cherry MX</b> Blue</span>
+      <span class="pack-chip"><b>Cherry MX</b> Brown</span>
+      <span class="pack-chip"><b>Cherry MX</b> Red</span>
+      <span class="pack-chip"><b>Cherry MX</b> Black</span>
+      <span class="pack-chip">ABS &amp; PBT keycaps</span>
+      <span class="pack-chip"><b>Gateron</b></span>
+      <span class="pack-chip"><b>Topre</b></span>
+      <span class="pack-chip">Holy Pandas</span>
+      <span class="pack-chip">Tealios V2</span>
+      <span class="pack-chip">Box Jade</span>
+      <span class="pack-chip">Kailh Box White</span>
+      <span class="pack-chip">Glorious Panda</span>
+      <span class="pack-chip">Model F</span>
+      <span class="pack-chip">Alpaca</span>
+      <span class="pack-chip">Vintage typewriters</span>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="note-box">
+      <h3>🔒 Privacy first, always</h3>
+      <p>MechKeys detects <em>when</em> keys are pressed, never <em>which</em> keys. It's fully offline — zero data collection, zero analytics, zero network access. The Accessibility permission it asks for is only used to know that a key went down, so it can play a sound.</p>
+      <div class="tags"><span>Fully offline</span><span>No keylogging</span><span>No analytics</span><span>No network access</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Get set up in a minute</div>
+      <h2>Install &amp; requirements</h2>
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <h3>📦 Installation</h3>
+        <ol>
+          <li>Download and unzip <code style="font-family:var(--mono);color:var(--accent)">MechKeys.zip</code></li>
+          <li>Drag MechKeys.app to Applications</li>
+          <li>Launch and grant Accessibility permission</li>
+          <li>Click the keyboard icon in your menu bar — done!</li>
+        </ol>
+      </div>
+      <div class="panel">
+        <h3>💻 Requirements</h3>
+        <ul>
+          <li>macOS 14.0 (Sonoma) or later</li>
+          <li>Apple Silicon or Intel Mac — Universal Binary</li>
+          <li>Accessibility permission (to detect keystrokes)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block cta">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Type like it's a real board</h2>
+      <p>The thock, the clack, the satisfaction — on the keyboard you already own.</p>
+      <a href="https://rohitsainier.gumroad.com/l/agdaac" class="btn-primary" target="_blank" rel="noopener">Get MechKeys — $4.99 →</a>
+      <div class="cta-note">47 sound packs · Universal Binary · Fully offline</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-left">&copy; 2026 MechKeys · by Rohit Sainier</div>
+    <div class="footer-links">
+      <a href="../">All projects</a>
+      <a href="https://rohitsainier.gumroad.com/l/agdaac" target="_blank" rel="noopener">Gumroad</a>
+      <a href="https://github.com/rohitsainier" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b200ddd4adab49139ddb22f935b6490a"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

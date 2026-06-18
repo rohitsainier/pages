@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vista — The Mac browser that's invisible to screen share</title>
+<meta name="description" content="Flip one toggle and Vista vanishes from Zoom, Meet, Teams, QuickTime and Loom — while staying fully usable for you. A small, fast, native macOS browser. Signed, notarized, lifetime updates." />
+<meta property="og:title" content="Vista — Browse anything. Show only what you want." />
+<meta property="og:description" content="The macOS browser that's invisible to screen share. One toggle hides the window from every screen-capture tool. Native SwiftUI, private by default." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #08090c;
+    --bg-subtle: #11141b;
+    --bg-card: #141821;
+    --border: #1f2530;
+    --border-hover: #313a4a;
+    --text: #f5f8fc;
+    --text-muted: #9fb0c4;
+    --text-dim: #6b7888;
+    --accent: #38bdf8;
+    --accent-2: #6366f1;
+    --accent-soft: rgba(56, 189, 248, 0.12);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: 'JetBrains Mono', 'SF Mono', monospace;
+    --max-w: 1000px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  /* Nav */
+  nav { padding: 18px 0; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(8,9,12,0.8); backdrop-filter: blur(12px); z-index: 100; }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { display: flex; align-items: center; gap: 11px; font-weight: 700; font-size: 17px; }
+  .nav-logo { width: 34px; height: 34px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 17px; color: #fff; }
+  .nav-links { display: flex; align-items: center; gap: 26px; }
+  .nav-links a { color: var(--text-muted); font-size: 14px; font-weight: 500; transition: color 0.15s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff !important; padding: 8px 18px; border-radius: 9px; font-weight: 600; }
+  .nav-cta:hover { opacity: 0.92; }
+  .nav-back { color: var(--text-dim) !important; font-size: 13px; }
+
+  /* Hero */
+  .hero { padding: 84px 0 64px; position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -160px; left: 50%; transform: translateX(-50%); width: 820px; height: 520px; background: radial-gradient(ellipse, rgba(56,189,248,0.10) 0%, rgba(99,102,241,0.06) 45%, transparent 72%); pointer-events: none; }
+  .hero .container { position: relative; text-align: center; }
+  .badge { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 500; color: var(--accent); background: var(--accent-soft); border: 1px solid rgba(56,189,248,0.2); padding: 5px 13px; border-radius: 100px; margin-bottom: 24px; }
+  .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+  .hero h1 { font-size: clamp(36px, 5.4vw, 60px); font-weight: 800; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 22px; }
+  .hero h1 .grad { background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero p.sub { font-size: 19px; color: var(--text-muted); line-height: 1.6; margin: 0 auto 34px; max-width: 580px; }
+  .hero-actions { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 9px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; padding: 15px 30px; border-radius: 12px; font-size: 15px; font-weight: 600; transition: transform 0.2s, box-shadow 0.2s; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 38px rgba(56,189,248,0.25); color: #fff; }
+  .price-tag { font-size: 14px; color: var(--text-dim); }
+  .price-tag b { color: var(--text); font-size: 17px; font-weight: 700; }
+
+  /* Browser mockup */
+  .mock-wrap { margin-top: 60px; perspective: 1400px; }
+  .browser { max-width: 720px; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 1px solid var(--border-hover); background: var(--bg-card); box-shadow: 0 40px 90px rgba(0,0,0,0.6); }
+  .browser-bar { display: flex; align-items: center; gap: 14px; padding: 13px 16px; background: var(--bg-subtle); border-bottom: 1px solid var(--border); }
+  .traffic { display: flex; gap: 8px; }
+  .traffic span { width: 12px; height: 12px; border-radius: 50%; }
+  .traffic .r { background: #ff5f57; } .traffic .y { background: #febc2e; } .traffic .g { background: #28c840; }
+  .url { flex: 1; background: #0c0f15; border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-family: var(--mono); font-size: 12.5px; color: var(--text-dim); display: flex; align-items: center; gap: 8px; }
+  .url svg { flex-shrink: 0; }
+  .toggle { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 600; color: var(--accent); white-space: nowrap; }
+  .switch { width: 38px; height: 21px; border-radius: 100px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); position: relative; box-shadow: 0 0 14px rgba(56,189,248,0.5); }
+  .switch::after { content: ''; position: absolute; top: 2.5px; right: 2.5px; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+  .browser-body { padding: 40px 30px 46px; text-align: center; background: radial-gradient(ellipse at 50% 0%, rgba(56,189,248,0.06), transparent 60%); position: relative; }
+  .ghost-label { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-dim); font-family: var(--mono); margin-bottom: 22px; padding: 5px 12px; border: 1px dashed var(--border-hover); border-radius: 100px; }
+  .browser-search { max-width: 380px; margin: 0 auto 26px; background: #0c0f15; border: 1px solid var(--border-hover); border-radius: 12px; padding: 14px 18px; text-align: left; color: var(--text-dim); font-size: 14px; display: flex; align-items: center; gap: 10px; }
+  .tiles { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .tile { width: 56px; height: 56px; border-radius: 13px; background: var(--bg-subtle); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--text-muted); font-size: 18px; }
+
+  /* Sections */
+  section.block { padding: 80px 0; border-top: 1px solid var(--border); }
+  .section-head { text-align: center; max-width: 600px; margin: 0 auto 52px; }
+  .section-head .eyebrow { font-size: 12.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin-bottom: 14px; }
+  .section-head h2 { font-size: clamp(26px, 3.4vw, 36px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 14px; }
+  .section-head p { font-size: 16px; color: var(--text-muted); }
+
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .feature { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 26px; transition: border-color 0.2s, transform 0.2s; }
+  .feature:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .feature .ic { width: 40px; height: 40px; border-radius: 10px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; color: var(--accent); }
+  .feature h3 { font-size: 16px; font-weight: 700; margin-bottom: 7px; }
+  .feature p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .feature code { font-family: var(--mono); font-size: 12px; color: var(--accent); background: var(--accent-soft); padding: 1px 6px; border-radius: 5px; }
+
+  /* What you get */
+  .get-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; max-width: 760px; margin: 0 auto; }
+  .get-item { display: flex; gap: 14px; align-items: flex-start; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; }
+  .get-item .check { width: 24px; height: 24px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; flex-shrink: 0; }
+  .get-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+  .get-item p { font-size: 13.5px; color: var(--text-muted); }
+
+  /* How it works callout */
+  .how { background: linear-gradient(160deg, var(--bg-card), var(--bg-subtle)); border: 1px solid var(--border-hover); border-radius: 22px; padding: 48px 44px; max-width: 820px; margin: 0 auto; }
+  .how h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 16px; }
+  .how p { font-size: 15.5px; color: var(--text-muted); line-height: 1.7; margin-bottom: 14px; }
+  .how p:last-child { margin-bottom: 0; }
+  .how code { font-family: var(--mono); font-size: 13px; color: var(--accent); background: var(--accent-soft); padding: 2px 7px; border-radius: 6px; }
+
+  /* Audience */
+  .who-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .who { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 20px 22px; font-size: 14.5px; color: var(--text-muted); line-height: 1.55; }
+  .who b { color: var(--text); font-weight: 600; }
+
+  /* FAQ */
+  .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+  details.faq { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 24px; transition: border-color 0.2s; }
+  details.faq[open] { border-color: var(--border-hover); }
+  details.faq summary { cursor: pointer; list-style: none; padding: 20px 0; font-size: 16px; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::after { content: '+'; font-size: 22px; color: var(--accent); font-weight: 400; transition: transform 0.2s; }
+  details.faq[open] summary::after { transform: rotate(45deg); }
+  details.faq p { font-size: 14.5px; color: var(--text-muted); line-height: 1.7; padding: 0 0 22px; }
+
+  /* Requirements strip */
+  .req { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+  .req div { text-align: center; }
+  .req .k { font-family: var(--mono); font-size: 13px; color: var(--text-dim); margin-bottom: 4px; }
+  .req .v { font-size: 16px; font-weight: 600; }
+
+  /* CTA */
+  .cta { text-align: center; }
+  .cta-box { background: linear-gradient(160deg, var(--bg-card), var(--bg-subtle)); border: 1px solid var(--border-hover); border-radius: 24px; padding: 60px 32px; position: relative; overflow: hidden; }
+  .cta-box::before { content: ''; position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 600px; height: 300px; background: radial-gradient(ellipse, rgba(56,189,248,0.13), transparent 70%); }
+  .cta-box > * { position: relative; }
+  .cta-box h2 { font-size: clamp(26px, 3.6vw, 38px); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; }
+  .cta-box p { font-size: 16px; color: var(--text-muted); margin-bottom: 30px; }
+  .cta-note { margin-top: 18px; font-size: 13px; color: var(--text-dim); }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding: 40px 0; }
+  footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-left { font-size: 13.5px; color: var(--text-dim); }
+  .footer-links { display: flex; gap: 22px; }
+  .footer-links a { font-size: 13px; color: var(--text-dim); transition: color 0.15s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  @media (max-width: 860px) {
+    .features-grid, .who-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 640px) {
+    .features-grid, .who-grid, .get-grid { grid-template-columns: 1fr; }
+    .nav-links a:not(.nav-cta):not(.nav-back) { display: none; }
+    .how { padding: 36px 26px; }
+    .toggle span.tlabel { display: none; }
+  }
+  ::-webkit-scrollbar { width: 7px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="nav-brand">
+      <div class="nav-logo">V</div>
+      Vista
+    </div>
+    <div class="nav-links">
+      <a href="../" class="nav-back">← All projects</a>
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://rohitsainier.gumroad.com/l/clgbgx" class="nav-cta" target="_blank" rel="noopener">Get Vista</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <span class="badge"><span class="dot"></span> macOS · Apple Silicon + Intel</span>
+    <h1>The Mac browser that's <span class="grad">invisible to screen share</span>.</h1>
+    <p class="sub">Browse anything. Show only what you want. One toggle. Flip <em>“You Can't See Me Mode”</em> and the whole Vista window vanishes from your screen capture — while staying right there for you.</p>
+    <div class="hero-actions">
+      <a href="https://rohitsainier.gumroad.com/l/clgbgx" class="btn-primary" target="_blank" rel="noopener">Get Vista →</a>
+      <span class="price-tag"><b>$19.99</b> · one-time · lifetime updates</span>
+    </div>
+
+    <div class="mock-wrap">
+      <div class="browser">
+        <div class="browser-bar">
+          <div class="traffic"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+          <div class="url">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            vista://start
+          </div>
+          <div class="toggle">
+            <span class="tlabel">You Can't See Me</span>
+            <span class="switch"></span>
+          </div>
+        </div>
+        <div class="browser-body">
+          <div class="ghost-label">👻 Hidden from Zoom · Meet · Teams · QuickTime · Loom</div>
+          <div class="browser-search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            Search Google, DuckDuckGo, Brave or Kagi…
+          </div>
+          <div class="tiles">
+            <div class="tile">G</div><div class="tile">D</div><div class="tile">B</div><div class="tile">K</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="features">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">What it does well</div>
+      <h2>A real browser, with one quiet superpower</h2>
+      <p>Everything you'd expect from a native Mac browser — plus a window that screen-capture tools simply can't see.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21"/></svg></div>
+        <h3>Invisible-to-share toggle</h3>
+        <p>The headline feature. One switch removes the window from Zoom, Meet, Teams, QuickTime, Loom and the macOS recorder.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/></svg></div>
+        <h3>Tabs, just like you'd expect</h3>
+        <p>Real tabbed browsing with the shortcuts in your muscle memory — <code>⌘T</code>, <code>⌘W</code>, <code>⌘R</code>.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+        <h3>Four search engines</h3>
+        <p>Pick your default: Google, DuckDuckGo, Brave or Kagi. Switch any time.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2"/></svg></div>
+        <h3>Light, dark, or auto</h3>
+        <p>Follows your system appearance — or doesn't, if you'd rather pin it.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></svg></div>
+        <h3>A start page that respects your time</h3>
+        <p>Auto-focused search field, shortcut tiles, today's date. That's it — no junk, no feed.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg></div>
+        <h3>Private by default</h3>
+        <p>Local-only history, optional clear-on-quit, tracker blocking, always-private mode. App-sandboxed, network client only.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">What you get</div>
+      <h2>One download. Yours forever.</h2>
+    </div>
+    <div class="get-grid">
+      <div class="get-item"><div class="check">✓</div><div><h4>Vista.app</h4><p>Universal macOS binary — Apple Silicon + Intel.</p></div></div>
+      <div class="get-item"><div class="check">✓</div><div><h4>Lifetime updates</h4><p>Every future feature, free, forever.</p></div></div>
+      <div class="get-item"><div class="check">✓</div><div><h4>No accounts, no telemetry</h4><p>Your browsing is yours. Nothing leaves your Mac.</p></div></div>
+      <div class="get-item"><div class="check">✓</div><div><h4>Direct download</h4><p>Signed &amp; notarized DMG — drag to Applications.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <div class="container">
+    <div class="how">
+      <h3>Why it works — and why nothing can detect it</h3>
+      <p>Every <code>NSWindow</code> on macOS has a property called <code>sharingType</code>. Set it to <code>.none</code> and the window becomes a black hole to anything trying to capture pixels. It's been in Apple's SDK since Mavericks (2013) — almost nobody uses it.</p>
+      <p>There's no kernel extension, no hook, nothing for software to detect. The operating system itself removes the window from the capture stream <em>before</em> any app — Zoom, Meet, Teams, proctoring tools — ever sees it. It can't “stop working” after a macOS update, because it's a standard, documented Apple API working exactly as designed.</p>
+      <p style="color:var(--text-dim);font-size:14px;">Note: Vista hides its window from the digital screen-capture pipeline only. A physical camera pointed at your monitor still sees whatever is on the monitor — this is a software solution to a software problem.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Who buys this</div>
+      <h2>For anyone who's done the screen-share dance</h2>
+      <p>If you've felt the cold-palm moment of “wait, what's in my tab strip right now?” — this is for you.</p>
+    </div>
+    <div class="who-grid">
+      <div class="who"><b>Interviewees</b> who don't want their nervous Googling visible in a coding screen-share.</div>
+      <div class="who"><b>Streamers &amp; tutorial recorders</b> with reference notes that shouldn't end up in the final cut.</div>
+      <div class="who"><b>Presenters</b> who want to peek at speaker notes mid-pitch.</div>
+      <div class="who"><b>Consultants &amp; freelancers</b> flipping between client work in shared sessions.</div>
+      <div class="who"><b>Remote workers</b> in shared spaces who want a window that's not visible over their shoulder.</div>
+      <div class="who"><b>Anyone</b> who's ever hesitated before clicking “Share.”</div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="faq">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">FAQ</div>
+      <h2>Good questions, honest answers</h2>
+    </div>
+    <div class="faq-list">
+      <details class="faq">
+        <summary>Does this hide the browser from a camera pointing at my screen?</summary>
+        <p>No. Vista hides its window from the digital screen-capture pipeline. A camera looking at your monitor will still see whatever is on the monitor. This is a software solution to a software problem.</p>
+      </details>
+      <details class="faq">
+        <summary>Will it be detected by Zoom / Meet / Teams / proctoring software?</summary>
+        <p>Vista uses a standard, documented Apple API (<code style="font-family:var(--mono);color:var(--accent)">NSWindow.sharingType</code>) that the operating system honors. There's no kernel extension and no hook — because the OS itself removes the window from the capture stream before any app sees it.</p>
+      </details>
+      <details class="faq">
+        <summary>Does it work on Windows or Linux?</summary>
+        <p>No. This is a macOS-specific feature using a macOS-specific API. macOS only.</p>
+      </details>
+      <details class="faq">
+        <summary>Is the source code open?</summary>
+        <p>Not currently. If that changes, paying customers get first notice.</p>
+      </details>
+      <details class="faq">
+        <summary>Can I get a refund?</summary>
+        <p>Yes — within 14 days, no questions asked. Just send an email.</p>
+      </details>
+      <details class="faq">
+        <summary>Will there be more features?</summary>
+        <p>Yes. On the roadmap: bookmarks, reader mode, a global hotkey to toggle invisibility, multi-window support, and profiles. Lifetime updates means you get all of them.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="req">
+      <div><div class="k">macOS</div><div class="v">14.5 or later</div></div>
+      <div><div class="k">chip</div><div class="v">Apple Silicon or Intel</div></div>
+      <div><div class="k">size</div><div class="v">~1 MB on disk</div></div>
+      <div><div class="k">delivery</div><div class="v">Signed &amp; notarized DMG</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block cta">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Stop doing the screen-share dance</h2>
+      <p>Coffee-money pricing for the most-used app on my Mac. If it saves you one tense screen-share, it's done its job.</p>
+      <a href="https://rohitsainier.gumroad.com/l/clgbgx" class="btn-primary" target="_blank" rel="noopener">Get Vista — $19.99 →</a>
+      <div class="cta-note">Universal binary · Lifetime updates · 14-day refund</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-left">&copy; 2026 Vista · by Rohit Sainier</div>
+    <div class="footer-links">
+      <a href="../">All projects</a>
+      <a href="https://rohitsainier.gumroad.com/l/clgbgx" target="_blank" rel="noopener">Gumroad</a>
+      <a href="https://github.com/rohitsainier" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "b200ddd4adab49139ddb22f935b6490a"}'></script><!-- End Cloudflare Web Analytics -->
+</body>
+</html>

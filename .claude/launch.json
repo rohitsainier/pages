@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "pages-root",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8090", "--directory", "/Users/rohitsainier/Documents/Web/pages"],
+      "port": 8090
+    },
+    {
       "name": "quickkit-site",
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8091", "--directory", "/Users/rohitsainier/Documents/Web/pages/quickkit"],
@@ -12,6 +18,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8092", "--directory", "/Users/rohitsainier/Documents/Web/pages/mdtomedium"],
       "port": 8092
+    },
+    {
+      "name": "creatorcut-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8093", "--directory", "/Users/rohitsainier/Documents/Web/pages/creatorcut"],
+      "port": 8093
     }
   ]
 }
