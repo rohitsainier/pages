@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>For Veenu 💗</title>
-<meta name="description" content="Two months, and forever. For Veenu, with all my heart. — Rohit" />
+<title>For Jaan 💗</title>
+<meta name="description" content="Two months, and forever. For Jaan, with all my heart. — Rohit" />
 <meta name="theme-color" content="#1a0510" />
 
 <!-- Open Graph so it looks lovely when shared -->
-<meta property="og:title" content="For my Veenu 💗" />
+<meta property="og:title" content="For my Jaan 💗" />
 <meta property="og:description" content="Two months, and it already feels like forever." />
 <meta property="og:type" content="website" />
 
@@ -524,9 +524,79 @@
   @media (prefers-reduced-motion: reduce){
     .hero-bg,.band-bg{ animation:none !important; }
   }
+
+  /* ==================================================
+     PRIVATE LOCK — sits above everything, even the envelope
+  ================================================== */
+  .lock{
+    position:fixed; inset:0; z-index:300;
+    display:flex; align-items:center; justify-content:center; padding:24px;
+    background:
+      radial-gradient(900px 700px at 50% 35%, rgba(90,16,48,.6), transparent 70%),
+      linear-gradient(160deg,#1e0714,#0f0309);
+    text-align:center;
+  }
+  .lock.gone{ display:none; }
+  .lock-inner{ width:min(92vw,340px); display:flex; flex-direction:column; align-items:center; }
+  .lock-ico{ font-size:1.9rem; filter:drop-shadow(0 6px 16px rgba(0,0,0,.5)); }
+  .lock-title{
+    font-family:var(--script); font-size:clamp(2.3rem,10.5vw,3.2rem); color:var(--blush);
+    line-height:1.05; margin-top:10px; text-shadow:0 4px 26px rgba(255,45,94,.35);
+  }
+  .lock-sub{
+    font-family:var(--body); font-style:italic; font-size:1.06rem;
+    color:var(--text-dim); line-height:1.55; margin-top:8px;
+  }
+  .lock-input{
+    width:100%; margin-top:22px; padding:15px 18px; border-radius:14px;
+    background:rgba(255,255,255,.06); border:1px solid rgba(232,193,122,.3);
+    color:var(--cream); font-family:var(--ui); font-weight:300;
+    font-size:1.15rem; letter-spacing:.24em; text-align:center; outline:none;
+    transition:border-color .3s ease, box-shadow .3s ease;
+  }
+  .lock-input::placeholder{ color:rgba(247,233,238,.24); letter-spacing:.16em; }
+  .lock-input:focus{ border-color:var(--rose); box-shadow:0 0 0 3px rgba(255,45,94,.14); }
+  .lock-input.bad{ animation:lockShake .38s ease; border-color:#ff7b7b; }
+  @keyframes lockShake{
+    0%,100%{ transform:translateX(0); } 20%{ transform:translateX(-9px); }
+    40%{ transform:translateX(9px); } 60%{ transform:translateX(-6px); } 80%{ transform:translateX(6px); }
+  }
+  .lock-btn{
+    margin-top:14px; width:100%; cursor:pointer; border:none;
+    font-family:var(--ui); font-weight:400; font-size:.95rem; letter-spacing:.03em;
+    padding:14px 26px; border-radius:999px; color:#fff6f8;
+    background:linear-gradient(135deg, var(--heart), #c2185b);
+    box-shadow:0 10px 26px rgba(255,45,94,.34), inset 0 1px 0 rgba(255,255,255,.28);
+    transition:transform .2s cubic-bezier(.2,1.4,.4,1);
+  }
+  .lock-btn:active{ transform:scale(.96); }
+  .lock-msg{
+    font-family:var(--body); font-style:italic; font-size:1rem; color:var(--blush);
+    min-height:1.6em; margin-top:12px; line-height:1.4;
+  }
+  .lock-hint{
+    font-family:var(--ui); font-weight:300; font-size:.66rem; letter-spacing:.1em;
+    color:rgba(247,233,238,.34); margin-top:4px;
+  }
 </style>
 </head>
 <body>
+
+<!-- ============ PRIVATE LOCK ============ -->
+<div class="lock" id="lock">
+  <div class="lock-inner">
+    <div class="lock-ico">🔒</div>
+    <div class="lock-title">Only for you</div>
+    <div class="lock-sub">This one&rsquo;s just ours, my love.<br>Type the number to come in.</div>
+    <input class="lock-input" id="lockInput" type="password" inputmode="numeric"
+           autocomplete="off" autocorrect="off" spellcheck="false" maxlength="10"
+           placeholder="••••••••••" aria-label="Enter the number" />
+    <button class="lock-btn" id="lockBtn">Open&nbsp;💗</button>
+    <div class="lock-msg" id="lockMsg"></div>
+    <div class="lock-hint">the 10 digits that connect us</div>
+  </div>
+</div>
+<script>try{if(localStorage.getItem('us-unlocked-2026')==='1')document.getElementById('lock').classList.add('gone');}catch(e){}</script>
 
 <div class="bg"></div>
 <div class="stars" id="stars" aria-hidden="true"></div>
@@ -537,11 +607,11 @@
   <div class="intro-kicker">A little something, made only for you Jaana</div>
   <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open your letter">
     <div class="env-body">
-      <div class="env-name">Veenu</div>
+      <div class="env-name">Jaan</div>
     </div>
     <div class="letter-pop">Open me&nbsp;💌</div>
     <div class="env-flap"></div>
-    <div class="seal">V</div>
+    <div class="seal">J</div>
   </div>
   <div class="env-hint">tap the envelope to open&nbsp;&nbsp;<b>💗</b></div>
 </div>
@@ -557,7 +627,7 @@
     <div class="heart-big"></div>
   </div>
   <div class="hero-greet">Happy Anniversary</div>
-  <h1 class="hero-name">Veenu</h1>
+  <h1 class="hero-name">Jaan</h1>
   <p class="hero-sub">Two months, and it already feels like forever.</p>
 
   <div class="counter" id="counter" aria-label="Time since we met">
@@ -596,7 +666,7 @@
     Everything else stays the same. Repeat for each photo frame.
   -->
   <div class="photo reveal">
-    <img src="photos/p7.jpg" alt="Rohit and Veenu" loading="lazy" decoding="async" />
+    <img src="photos/p7.jpg" alt="Rohit and Jaan" loading="lazy" decoding="async" />
   </div>
   <div class="photo-cap reveal d1">…and yet, here we are.</div>
 </section>
@@ -629,7 +699,7 @@
 <!-- ============ CHAPTER 3 PHOTO (roses) ============ -->
 <section class="chapter" style="padding-top:2vh;padding-bottom:6vh;">
   <div class="photo reveal">
-    <img src="photos/p5.jpg" alt="Rohit and Veenu with roses" loading="lazy" decoding="async" />
+    <img src="photos/p5.jpg" alt="Rohit and Jaan with roses" loading="lazy" decoding="async" />
   </div>
   <div class="photo-cap reveal d1">you said yes 🌹</div>
 </section>
@@ -645,7 +715,7 @@
 
 <!-- ============ SHE — the most beautiful girl ============ -->
 <section class="beauty">
-  <div class="reveal"><figure class="frame"><img src="photos/p8.jpg" alt="Veenu" loading="lazy" decoding="async" /></figure></div>
+  <div class="reveal"><figure class="frame"><img src="photos/p8.jpg" alt="Jaan" loading="lazy" decoding="async" /></figure></div>
   <div class="beauty-text reveal d1">
     <div class="q">&ldquo;The most beautiful girl I have ever known — in every single way there is to be beautiful.&rdquo;</div>
     <div class="s">And every time I'm near you, without even trying, you make me smile and feel alive.</div>
@@ -660,9 +730,9 @@
     <figure class="polaroid"><img src="photos/p2.jpg" alt="us" loading="lazy" decoding="async" /><figcaption>us</figcaption></figure>
     <figure class="polaroid"><img src="photos/p3.jpg" alt="us" loading="lazy" decoding="async" /><figcaption>my love</figcaption></figure>
     <figure class="polaroid"><img src="photos/p4.jpg" alt="us" loading="lazy" decoding="async" /><figcaption>forever</figcaption></figure>
-    <figure class="polaroid"><img src="photos/p9.jpg" alt="Rohit and Veenu" loading="lazy" decoding="async" /><figcaption>you &amp; me</figcaption></figure>
-    <figure class="polaroid"><img src="photos/p10.jpg" alt="Veenu" loading="lazy" decoding="async" /><figcaption>my Veenu</figcaption></figure>
-    <figure class="polaroid"><img src="photos/p11.jpg" alt="Veenu" loading="lazy" decoding="async" /><figcaption>that smile</figcaption></figure>
+    <figure class="polaroid"><img src="photos/p9.jpg" alt="Rohit and Jaan" loading="lazy" decoding="async" /><figcaption>you &amp; me</figcaption></figure>
+    <figure class="polaroid"><img src="photos/p10.jpg" alt="Jaan" loading="lazy" decoding="async" /><figcaption>my Jaan</figcaption></figure>
+    <figure class="polaroid"><img src="photos/p11.jpg" alt="Jaan" loading="lazy" decoding="async" /><figcaption>that smile</figcaption></figure>
   </div>
 </section>
 
@@ -671,7 +741,7 @@
 <!-- ============ LOVE LETTER ============ -->
 <section class="letter-wrap">
   <article class="letter" id="letter">
-    <div class="letter-open line">My dearest Veenu,</div>
+    <div class="letter-open line">My dearest Jaan,</div>
     <p class="line">For years, our families knew each other — the same people, the same places, all that time.
       And yet, somehow, you and I never once met. I still can't explain it. Of all the moments we could have
       crossed paths, we never did — <span class="hl">as if life was saving you for me.</span></p>
@@ -850,6 +920,46 @@
     var words=line.querySelectorAll('.w');
     for(var i=0;i<words.length;i++){ words[i].style.transitionDelay=(0.2 + i*0.14)+'s'; }
   })();
+})();
+</script>
+
+<!-- ============ LOCK ============ -->
+<script>
+(function(){
+  "use strict";
+  var LK = 'us-unlocked-2026';
+  /* the number isn't stored here in the clear — only what it hashes to */
+  function hash(s){ var x=5381; for(var i=0;i<s.length;i++){ x=((x*33)^s.charCodeAt(i))>>>0; } return x; }
+  var PASS = 3855698084;
+
+  var lock = document.getElementById('lock'),
+      inp  = document.getElementById('lockInput'),
+      msg  = document.getElementById('lockMsg'),
+      btn  = document.getElementById('lockBtn');
+  if (!lock) return;
+
+  function letIn(){
+    try{ localStorage.setItem(LK,'1'); }catch(e){}
+    lock.classList.add('gone');
+  }
+  function attempt(){
+    var v = (inp.value||'').replace(/\D/g,'');
+    if (hash(v) === PASS){ msg.textContent = 'there you are 💗'; setTimeout(letIn, 260); return; }
+    inp.classList.remove('bad'); void inp.offsetWidth; inp.classList.add('bad');
+    msg.textContent = v.length ? 'not quite, my love — try again 💗' : 'you know this one 💗';
+    try{ if(navigator.vibrate) navigator.vibrate(30); }catch(e){}
+  }
+
+  btn.addEventListener('click', attempt);
+  inp.addEventListener('keydown', function(e){ if (e.key === 'Enter'){ e.preventDefault(); attempt(); } });
+  inp.addEventListener('input', function(){
+    msg.textContent = '';
+    var v = inp.value.replace(/\D/g,'');
+    if (v !== inp.value) inp.value = v;
+    if (v.length === 10) attempt();          /* full number typed — just open it */
+  });
+
+  if (!lock.classList.contains('gone')) setTimeout(function(){ try{ inp.focus(); }catch(e){} }, 400);
 })();
 </script>
 </body>
