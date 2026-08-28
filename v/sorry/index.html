@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>I'm Sorry, Jaan 💗</title>
+<meta name="description" content="I made a mistake. Loving you was never one of them. — Rohit" />
+<meta name="theme-color" content="#1a0510" />
+
+<!-- Open Graph so it looks lovely when shared -->
+<meta property="og:title" content="I'm Sorry, Jaan 💗" />
+<meta property="og:description" content="I made a mistake. Loving you was never one of them. Please read this." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script>
+  /* Enable scroll animations only when JS is healthy. If anything throws, we drop
+     the class and unlock the question, so the letter is never left invisible. */
+  document.documentElement.classList.add('js-anim');
+  window.addEventListener('error', function(){
+    try{
+      document.documentElement.classList.remove('js-anim');
+      var q = document.getElementById('qContent'); if (q) q.classList.remove('hidden');
+      var l = document.getElementById('lockNote'); if (l) l.classList.add('hidden');
+    }catch(e){}
+  });
+</script>
+<noscript><style>
+  #qContent{ display:block !important; }
+  #lockNote{ display:none !important; }
+</style></noscript>
+
+<style>
+  :root{
+    --plum:#1a0510;
+    --maroon:#3d0c22;
+    --wine:#5a1030;
+    --rose:#ff5e7e;
+    --rose-soft:#ff8fa3;
+    --blush:#ffb3c1;
+    --heart:#ff2d5e;
+    --gold:#e8c17a;
+    --gold-soft:#f3d9a4;
+    --cream:#fff7f0;
+    --text:#f7e9ee;
+    --text-dim:rgba(247,233,238,0.72);
+
+    --serif:'Playfair Display', Georgia, serif;
+    --body:'Cormorant Garamond', Georgia, serif;
+    --script:'Great Vibes', cursive;
+    --ui:'Poppins', system-ui, sans-serif;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+
+  body{
+    font-family:var(--body);
+    color:var(--text);
+    background:var(--plum);
+    overflow-x:hidden;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+
+  /* ---------- Layered romantic background ---------- */
+  .bg{
+    position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(1200px 800px at 15% 10%, rgba(255,94,126,0.16), transparent 60%),
+      radial-gradient(1000px 900px at 85% 20%, rgba(232,193,122,0.10), transparent 60%),
+      radial-gradient(1400px 1000px at 50% 100%, rgba(90,16,48,0.6), transparent 70%),
+      linear-gradient(160deg, #240715 0%, var(--plum) 30%, var(--maroon) 75%, #240a18 100%);
+  }
+  .stars{ position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+  .star{
+    position:absolute; width:2px; height:2px; border-radius:50%;
+    background:#fff; opacity:.5;
+    animation:twinkle 3s ease-in-out infinite;
+  }
+  @keyframes twinkle{ 0%,100%{opacity:.12; transform:scale(.7);} 50%{opacity:.8; transform:scale(1.2);} }
+
+  /* ---------- Slow floating hearts ---------- */
+  .float-hearts{ position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+  .fh{
+    position:absolute; top:105vh;
+    color:var(--rose);
+    animation:rise linear infinite;
+    will-change:transform;
+    user-select:none;
+  }
+  @keyframes rise{
+    from{ transform:translateY(0) rotate(-8deg); }
+    to{ transform:translateY(-125vh) rotate(10deg); }
+  }
+
+  main{ position:relative; z-index:1; }
+
+  /* ---------- Shared section styling ---------- */
+  .section{
+    max-width:760px;
+    margin:0 auto;
+    padding:96px 22px;
+    text-align:center;
+  }
+  .script{
+    font-family:var(--script);
+    font-weight:400;
+    color:var(--gold-soft);
+    line-height:1.15;
+  }
+  h2.script{ font-size:clamp(2.4rem, 6vw, 3.4rem); margin-bottom:18px; }
+  .lead{
+    font-size:clamp(1.18rem, 2.6vw, 1.4rem);
+    color:var(--text-dim);
+    line-height:1.7;
+  }
+
+  /* Visible by default; only the js-anim class opts into the fade-up. */
+  .js-anim .reveal{ opacity:0; transform:translateY(26px); transition:opacity .9s ease, transform .9s ease; }
+  .js-anim .reveal.in{ opacity:1; transform:none; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100svh;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center;
+    padding:40px 20px 90px;
+    position:relative;
+  }
+  .hero .pre{
+    font-family:var(--script);
+    font-size:clamp(1.9rem, 5vw, 2.6rem);
+    color:var(--rose-soft);
+    margin-bottom:6px;
+  }
+  .hero .broken{ font-size:clamp(2.2rem,6vw,3rem); margin-bottom:10px; filter:drop-shadow(0 0 18px rgba(255,45,94,.45)); }
+  .hero h1{
+    font-family:var(--script);
+    font-weight:400;
+    font-size:clamp(4.2rem, 13vw, 8rem);
+    line-height:1.05;
+    background:linear-gradient(120deg, var(--blush) 10%, var(--rose) 45%, var(--gold) 90%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+    padding:0 14px 12px;
+  }
+  .hero .sub{
+    max-width:520px;
+    margin-top:18px;
+    font-size:clamp(1.2rem, 3vw, 1.45rem);
+    font-style:italic;
+    color:var(--text-dim);
+    line-height:1.65;
+  }
+  .scroll-cue{
+    position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
+    font-family:var(--ui); font-size:.72rem; letter-spacing:.28em; text-transform:uppercase;
+    color:var(--text-dim);
+    display:flex; flex-direction:column; align-items:center; gap:8px;
+  }
+  .scroll-cue .heart-bob{ font-size:1.1rem; animation:bob 1.6s ease-in-out infinite; }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(7px);} }
+
+  /* ---------- Letter ---------- */
+  .letter-card{
+    text-align:left;
+    background:rgba(255,247,240,0.045);
+    border:1px solid rgba(232,193,122,0.22);
+    border-radius:22px;
+    padding:clamp(28px, 5vw, 52px);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    box-shadow:0 24px 60px rgba(0,0,0,.35);
+    position:relative;
+    overflow:hidden;
+  }
+  .letter-card::before{
+    content:"💗";
+    position:absolute; right:-14px; top:-18px;
+    font-size:7rem; opacity:.05; transform:rotate(14deg);
+  }
+  .letter-card p{
+    font-size:clamp(1.2rem, 2.6vw, 1.34rem);
+    line-height:1.85;
+    color:var(--text);
+    margin-bottom:1.15em;
+  }
+  .letter-card p:last-of-type{ margin-bottom:0; }
+  .letter-card .dear{
+    font-family:var(--script);
+    font-size:2.1rem;
+    color:var(--gold-soft);
+    margin-bottom:16px;
+  }
+  .letter-card em{ color:var(--rose-soft); }
+  .letter-card .sign{
+    font-family:var(--script);
+    font-size:2rem;
+    color:var(--rose-soft);
+    text-align:right;
+    margin-top:26px;
+  }
+
+  /* ---------- Photos ---------- */
+  /* a photo that fails to load removes its own frame, never a broken icon */
+  .ph-frame.img-missing{ display:none !important; }
+
+  .letter-portrait{
+    display:flex; flex-direction:column; align-items:center;
+    margin:0 0 30px;
+  }
+  .letter-portrait img{
+    width:116px; height:116px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid rgba(232,193,122,0.45);
+    box-shadow:0 12px 32px rgba(0,0,0,.5);
+  }
+  .letter-portrait figcaption{
+    font-family:var(--ui); font-size:.66rem; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--text-dim); margin-top:13px;
+  }
+
+  .her-strip{
+    display:flex; gap:16px; justify-content:center; flex-wrap:wrap;
+    margin:32px 0 4px;
+  }
+  .her-strip .ph-frame{
+    margin:0;
+    width:min(30%, 205px);
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid rgba(232,193,122,0.3);
+    box-shadow:0 16px 40px rgba(0,0,0,.45);
+    transition:transform .4s ease, border-color .4s ease;
+  }
+  .her-strip .ph-frame:hover{ transform:translateY(-6px) scale(1.02); border-color:rgba(232,193,122,0.6); }
+  .her-strip img{ width:100%; aspect-ratio:3/4; object-fit:cover; display:block; }
+  .her-caption{
+    font-family:var(--script);
+    font-size:clamp(1.8rem, 4.6vw, 2.4rem);
+    color:var(--gold-soft);
+    margin-top:22px;
+  }
+
+  .polaroids{
+    display:flex; justify-content:center; flex-wrap:wrap;
+    gap:22px; margin-top:38px;
+  }
+  .polaroid{
+    margin:0;
+    background:linear-gradient(180deg,#fdf6ef,#f2e4d7);
+    padding:12px 12px 46px;
+    border-radius:4px;
+    width:min(44%, 228px);
+    box-shadow:0 18px 44px rgba(0,0,0,.5);
+    position:relative;
+    transition:transform .45s cubic-bezier(.34,1.4,.64,1), box-shadow .45s ease;
+  }
+  .polaroid img{ width:100%; aspect-ratio:3/4; object-fit:cover; display:block; border-radius:2px; }
+  .polaroid figcaption{
+    position:absolute; left:0; right:0; bottom:11px;
+    font-family:var(--script); font-size:1.4rem; color:#8a3a58;
+    text-align:center;
+  }
+  .polaroid:nth-child(1){ transform:rotate(-5deg); }
+  .polaroid:nth-child(2){ transform:rotate(3.5deg); }
+  .polaroid:nth-child(3){ transform:rotate(-2deg); }
+  .polaroid:hover{
+    transform:rotate(0deg) translateY(-9px) scale(1.04);
+    box-shadow:0 28px 64px rgba(0,0,0,.62);
+    z-index:3;
+  }
+
+  .cele-photo{
+    width:98px; height:98px; border-radius:50%; object-fit:cover;
+    border:2px solid rgba(232,193,122,0.5);
+    margin:0 auto 18px; display:block;
+    box-shadow:0 12px 30px rgba(0,0,0,.55);
+  }
+
+  /* ---------- "What you are to me" cards ---------- */
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:18px;
+    margin-top:34px;
+    text-align:left;
+  }
+  .card-item{
+    background:rgba(255,247,240,0.04);
+    border:1px solid rgba(255,143,163,0.16);
+    border-radius:18px;
+    padding:24px 22px;
+    transition:transform .35s ease, border-color .35s ease, background .35s ease;
+  }
+  .card-item:hover{
+    transform:translateY(-4px);
+    border-color:rgba(232,193,122,0.4);
+    background:rgba(255,247,240,0.06);
+  }
+  .card-item .ico{ font-size:1.7rem; margin-bottom:10px; }
+  .card-item h3{
+    font-family:var(--serif);
+    font-size:1.12rem;
+    font-weight:600;
+    color:var(--gold-soft);
+    margin-bottom:8px;
+    letter-spacing:.02em;
+  }
+  .card-item p{
+    font-size:1.13rem;
+    line-height:1.6;
+    color:var(--text-dim);
+  }
+
+  /* ---------- Our promise ---------- */
+  .promise-quote{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:clamp(1.5rem, 3.6vw, 2rem);
+    line-height:1.55;
+    color:var(--cream);
+    max-width:640px;
+    margin:0 auto 20px;
+    position:relative;
+    padding:0 10px;
+  }
+  .promise-quote::before, .promise-quote::after{
+    font-family:var(--script);
+    color:var(--gold);
+    font-size:2.6rem;
+    line-height:0;
+    position:relative; top:12px;
+  }
+  .promise-quote::before{ content:"“ "; }
+  .promise-quote::after{ content:" ”"; }
+  .promise-by{
+    font-family:var(--ui); font-size:.8rem; letter-spacing:.24em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:26px;
+  }
+
+  /* ---------- Mend-my-heart game ---------- */
+  .game-wrap{
+    position:relative;
+    margin:26px auto 0;
+    max-width:480px;
+  }
+  .heart-stage{ position:relative; }
+  .heart-svg{
+    width:min(84vw, 400px);
+    height:auto;
+    overflow:visible;
+    display:block;
+    margin:0 auto;
+    transition:filter 1s ease;
+  }
+  .ghost{
+    fill:rgba(255,255,255,0.025);
+    stroke:rgba(255,179,193,0.28);
+    stroke-width:1.4;
+    stroke-dasharray:5 6;
+  }
+  .piece{
+    cursor:pointer;
+    transform-box:fill-box;
+    transform-origin:center;
+    transition:transform 1s cubic-bezier(.34,1.45,.64,1), opacity .6s ease, filter .6s ease;
+    filter:drop-shadow(0 10px 12px rgba(0,0,0,.45));
+    opacity:.94;
+    outline:none;
+  }
+  .piece:not(.placed):hover, .piece:not(.placed):focus-visible{ opacity:1; filter:drop-shadow(0 10px 16px rgba(255,45,94,.5)); }
+  .piece.placed{ transform:none !important; cursor:default; filter:none; opacity:1; }
+
+  .piece[data-i="1"]{ transform:translate(-40px,-30px) rotate(-22deg) scale(.96); }
+  .piece[data-i="2"]{ transform:translate(38px,-33px) rotate(17deg) scale(.96); }
+  .piece[data-i="3"]{ transform:translate(-44px,20px) rotate(13deg) scale(.96); }
+  .piece[data-i="4"]{ transform:translate(44px,16px) rotate(-15deg) scale(.96); }
+  .piece[data-i="5"]{ transform:translate(-26px,44px) rotate(-28deg) scale(.95); }
+  .piece[data-i="6"]{ transform:translate(30px,42px) rotate(24deg) scale(.95); }
+
+  .mended .heart-svg{ filter:drop-shadow(0 0 26px rgba(255,45,94,.55)); }
+  .mended .pieces{
+    transform-box:fill-box; transform-origin:center;
+    animation:beat 1.5s ease-in-out infinite;
+  }
+  .mended .ghost{ opacity:0; transition:opacity .8s ease; }
+  @keyframes beat{
+    0%,100%{ transform:scale(1); }
+    18%{ transform:scale(1.055); }
+    36%{ transform:scale(1); }
+    52%{ transform:scale(1.04); }
+    70%{ transform:scale(1); }
+  }
+
+  .dots{ display:flex; gap:9px; justify-content:center; margin:26px 0 12px; }
+  .dot{
+    width:13px; height:13px;
+    color:rgba(255,143,163,0.25);
+    font-size:13px; line-height:1;
+    transition:color .5s ease, transform .5s ease;
+  }
+  .dot.on{ color:var(--heart); transform:scale(1.25); text-shadow:0 0 10px rgba(255,45,94,.7); }
+
+  .piece-msg{
+    min-height:64px;
+    font-size:clamp(1.18rem, 2.6vw, 1.32rem);
+    font-style:italic;
+    color:var(--gold-soft);
+    line-height:1.6;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity .6s ease, transform .6s ease;
+    padding:0 8px;
+  }
+  .piece-msg.show{ opacity:1; transform:none; }
+
+  .burst-heart{
+    position:absolute;
+    left:50%; top:42%;
+    font-size:var(--fs, 16px);
+    color:var(--c, var(--heart));
+    pointer-events:none;
+    animation:burst 1.5s ease-out forwards;
+    z-index:5;
+  }
+  @keyframes burst{
+    0%{ transform:translate(-50%,-50%) scale(.4); opacity:1; }
+    100%{ transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) rotate(var(--r)) scale(1.15); opacity:0; }
+  }
+
+  /* ---------- The question ---------- */
+  .locked-note{
+    font-size:1.22rem; font-style:italic; color:var(--text-dim);
+    border:1px dashed rgba(232,193,122,0.35);
+    border-radius:16px;
+    padding:26px 20px;
+    max-width:480px; margin:0 auto;
+  }
+  .hidden{ display:none !important; }
+
+  .q-content{ animation:fadeUp 1s ease both; }
+  @keyframes fadeUp{ from{ opacity:0; transform:translateY(22px);} to{ opacity:1; transform:none;} }
+
+  .q-big{
+    font-family:var(--serif);
+    font-size:clamp(1.7rem, 4.4vw, 2.5rem);
+    color:var(--cream);
+    line-height:1.4;
+    margin:14px auto 34px;
+    max-width:600px;
+  }
+  .btns{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .btn{
+    font-family:var(--ui);
+    font-size:1rem;
+    font-weight:500;
+    padding:15px 30px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+  }
+  .btn.primary{
+    background:linear-gradient(120deg, var(--heart), var(--rose));
+    color:#fff;
+    box-shadow:0 12px 30px rgba(255,45,94,.4);
+  }
+  .btn.primary:hover{ transform:translateY(-3px) scale(1.03); box-shadow:0 16px 38px rgba(255,45,94,.55); }
+  .btn.ghost{
+    background:transparent;
+    color:var(--text-dim);
+    border:1px solid rgba(247,233,238,.28);
+  }
+  .btn.ghost:hover{ border-color:rgba(247,233,238,.55); color:var(--text); }
+  .no-msg{
+    margin-top:26px;
+    min-height:34px;
+    font-size:1.22rem;
+    font-style:italic;
+    color:var(--rose-soft);
+    opacity:0;
+    transition:opacity .5s ease;
+  }
+  .no-msg.show{ opacity:1; }
+  .forgiven-note{
+    font-size:1.3rem; font-style:italic; color:var(--gold-soft); line-height:1.7;
+  }
+
+  /* ---------- Celebration overlay ---------- */
+  .celebrate{
+    position:fixed; inset:0; z-index:60;
+    background:rgba(26,5,16,0.9);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    overflow:hidden;
+    animation:fadeIn .6s ease both;
+  }
+  @keyframes fadeIn{ from{opacity:0;} to{opacity:1;} }
+  .cele-card{
+    position:relative; z-index:2;
+    max-width:520px;
+    text-align:center;
+    background:linear-gradient(160deg, rgba(61,12,34,.92), rgba(26,5,16,.94));
+    border:1px solid rgba(232,193,122,0.35);
+    border-radius:26px;
+    padding:clamp(34px, 6vw, 54px) clamp(24px, 5vw, 44px);
+    box-shadow:0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(255,45,94,.18);
+    animation:pop .7s cubic-bezier(.34,1.5,.64,1) both .15s;
+  }
+  @keyframes pop{ from{ opacity:0; transform:scale(.85) translateY(18px);} to{ opacity:1; transform:none;} }
+  .cele-card .big-script{
+    font-family:var(--script);
+    font-size:clamp(2.6rem, 7vw, 3.6rem);
+    color:var(--gold-soft);
+    margin-bottom:18px;
+  }
+  .cele-card p{
+    font-size:1.24rem; line-height:1.75; color:var(--text); margin-bottom:16px;
+  }
+  .cele-card .hug{ color:var(--rose-soft); font-style:italic; }
+  .cele-card .sig{ font-family:var(--script); font-size:1.9rem; color:var(--rose-soft); margin:8px 0 22px; }
+  .rain-heart{
+    position:absolute; top:-6vh; z-index:1;
+    animation:fall linear forwards;
+    pointer-events:none;
+  }
+  @keyframes fall{
+    from{ transform:translateY(0) rotate(-10deg); opacity:1; }
+    to{ transform:translateY(115vh) rotate(14deg); opacity:.7; }
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    text-align:center;
+    padding:80px 20px 110px;
+  }
+  .foot-script{ font-size:clamp(2.4rem, 6vw, 3.2rem); margin-bottom:14px; }
+  footer p{ font-size:1.24rem; font-style:italic; color:var(--text-dim); }
+  footer .tiny{
+    margin-top:20px; font-family:var(--ui); font-size:.72rem; font-style:normal;
+    letter-spacing:.26em; text-transform:uppercase; color:rgba(247,233,238,.4);
+  }
+
+  @media (max-width:640px){
+    .cards{ grid-template-columns:1fr; }
+    .section{ padding:76px 20px; }
+    .her-strip{ gap:10px; }
+    .her-strip .ph-frame{ width:min(31%, 152px); border-radius:14px; }
+    .polaroid{ width:min(46%, 176px); padding:9px 9px 38px; }
+    .polaroid figcaption{ font-size:1.15rem; bottom:9px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .fh, .star, .scroll-cue .heart-bob, .mended .pieces{ animation:none !important; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="stars" id="stars"></div>
+<div class="float-hearts" id="floatHearts"></div>
+
+<main>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="pre">Jaan…</div>
+    <div class="broken">💔</div>
+    <h1>I'm Sorry</h1>
+    <p class="sub">I hurt you today, and I haven't been able to breathe right since.
+    Before you say anything — please, just scroll. Let me say this properly.</p>
+    <div class="scroll-cue">
+      <span>scroll, my love</span>
+      <span class="heart-bob">🤍</span>
+    </div>
+  </section>
+
+  <!-- ============ LETTER ============ -->
+  <section class="section">
+    <h2 class="script reveal">From my heart to yours</h2>
+    <div class="letter-card reveal">
+      <figure class="ph-frame letter-portrait">
+        <img src="img/rohit.jpg" alt="Rohit" loading="lazy"
+             onerror="this.parentNode.classList.add('img-missing')" />
+        <figcaption>the man who is sorry</figcaption>
+      </figure>
+      <div class="dear">My Jaan,</div>
+      <p>Today I messed up. Badly. I feel the hurt in your voice and I knew exactly who put it there — me.
+      There is no excuse good enough, and I won't insult you by inventing one.
+      I was wrong. <em>I am sorry.</em> Truly, completely, from the deepest part of me.</p>
+      <p>Here is the simple truth: <em>I cannot live without you — not even for a second.</em>
+      That's not a line from a movie. It's just my life. You are in every plan I make,
+      every future I imagine, every good thing I want to become.</p>
+      <p>You are more intelligent than me — you always have been. More patient, more kind,
+      more everything. You have all the things a man could ever ask for, and honestly?
+      You've always been out of my league. I still don't know what I did right to make
+      you choose me. I only know I am <em>so happy and so grateful</em> that you did.</p>
+      <p>I know a sorry doesn't undo today. I know that trust, once shaken, takes time to
+      rebuild — and maybe right now you don't love me the way you did this morning.
+      That's fair. I earned that. So I'm not asking you to forget.
+      I'm asking for the chance to <em>earn it all back</em> — one kept promise at a time,
+      one day at a time, for the rest of our lives.</p>
+      <p>I love you. More than my words ever manage to say,
+      and far more than my mistakes could ever unsay.</p>
+      <div class="sign">— Your truly sorry husband, Rohit</div>
+    </div>
+  </section>
+
+  <!-- ============ WHAT YOU ARE TO ME ============ -->
+  <section class="section">
+    <h2 class="script reveal">What you are to me</h2>
+    <p class="lead reveal">In case today made you forget, even for a moment —</p>
+
+    <div class="her-strip reveal">
+      <figure class="ph-frame">
+        <img src="img/jaan-1.jpg" alt="My Jaan" loading="lazy"
+             onerror="this.parentNode.classList.add('img-missing')" />
+      </figure>
+      <figure class="ph-frame">
+        <img src="img/jaan-2.jpg" alt="My Jaan" loading="lazy"
+             onerror="this.parentNode.classList.add('img-missing')" />
+      </figure>
+      <figure class="ph-frame">
+        <img src="../photos/p11.jpg" alt="My Jaan" loading="lazy"
+             onerror="this.parentNode.classList.add('img-missing')" />
+      </figure>
+    </div>
+    <p class="her-caption reveal">Look at you. How did I ever get this lucky?</p>
+
+    <div class="cards">
+      <div class="card-item reveal">
+        <div class="ico">🧠</div>
+        <h3>The Smarter One</h3>
+        <p>You're more intelligent than I'll ever be — and it's one of the thousand things I admire most about you.</p>
+      </div>
+      <div class="card-item reveal">
+        <div class="ico">✨</div>
+        <h3>My Everything</h3>
+        <p>Everything a man could ever ask for. You're not just part of my world, Jaan — you <em>are</em> it.</p>
+      </div>
+      <div class="card-item reveal">
+        <div class="ico">👑</div>
+        <h3>Out of My League</h3>
+        <p>Too perfect for me — always have been. I married up, and the whole world knows it.</p>
+      </div>
+      <div class="card-item reveal">
+        <div class="ico">🍀</div>
+        <h3>My Greatest Luck</h3>
+        <p>Of everyone you could have chosen, you chose me. I'll spend my whole life being grateful for that.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LOOK AT US ============ -->
+  <section class="section">
+    <h2 class="script reveal">Look at us</h2>
+    <p class="lead reveal">This is us, Jaan. This is what today tried to take from me —<br/>
+    and I am not letting it. Not for anything.</p>
+    <div class="polaroids reveal">
+      <figure class="polaroid ph-frame">
+        <img src="../photos/p1.jpg" alt="Us together" loading="lazy"
+             onerror="this.parentNode.classList.add('img-missing')" />
+        <figcaption>us</figcaption>
+      </figure>
+      <figure class="polaroid ph-frame">
+        <img src="../photos/p9.jpg" alt="Us together" loading="lazy"
+             onerror="this.parentNode.classList.add('img-missing')" />
+        <figcaption>my favourite</figcaption>
+      </figure>
+      <figure class="polaroid ph-frame">
+        <img src="../photos/p5.jpg" alt="Us together" loading="lazy"
+             onerror="this.parentNode.classList.add('img-missing')" />
+        <figcaption>always</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============ OUR PROMISE ============ -->
+  <section class="section">
+    <h2 class="script reveal">Remember our promise?</h2>
+    <div class="reveal">
+      <p class="promise-quote">No matter how big the fight gets, we resolve it ourselves. Just the two of us.</p>
+      <div class="promise-by">— us, to each other</div>
+      <p class="lead">So here I am, Jaan — keeping my half of that promise.<br/>
+      This page is me refusing to let one bad day be bigger than <em>us</em>.</p>
+    </div>
+  </section>
+
+  <!-- ============ MEND MY HEART (GAME) ============ -->
+  <section class="section" id="game">
+    <h2 class="script reveal">Mend my heart?</h2>
+    <p class="lead reveal">When I hurt you, something cracked in me too. Here it is — my heart, in pieces.<br/>
+    Only your hands can put it back together. <strong style="color:var(--rose-soft)">Tap each piece, Jaan.</strong></p>
+
+    <div class="game-wrap reveal">
+      <div class="heart-stage" id="heartStage">
+        <svg class="heart-svg" id="heartSvg" viewBox="-48 -42 296 268" aria-label="A broken heart puzzle — tap the pieces to mend it">
+          <defs>
+            <linearGradient id="heartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ff8fa3"/>
+              <stop offset="45%" stop-color="#ff2d5e"/>
+              <stop offset="100%" stop-color="#b3123f"/>
+            </linearGradient>
+            <path id="heartShape" d="M100,170 C60,130 10,95 10,55 C10,25 35,10 60,10 C80,10 95,25 100,40 C105,25 120,10 140,10 C165,10 190,25 190,55 C190,95 140,130 100,170 Z"/>
+            <clipPath id="cp1"><polygon points="0,0 100,0 92,28 110,55 94,90 58,74 34,58 0,66"/></clipPath>
+            <clipPath id="cp2"><polygon points="100,0 200,0 200,70 168,60 140,76 110,55 92,28"/></clipPath>
+            <clipPath id="cp3"><polygon points="0,66 34,58 58,74 94,90 106,125 50,140 20,180 0,180"/></clipPath>
+            <clipPath id="cp4"><polygon points="110,55 140,76 168,60 200,70 200,130 150,135 106,125 94,90"/></clipPath>
+            <clipPath id="cp5"><polygon points="20,180 50,140 106,125 100,180"/></clipPath>
+            <clipPath id="cp6"><polygon points="106,125 150,135 200,130 200,180 100,180"/></clipPath>
+          </defs>
+
+          <use class="ghost" href="#heartShape"/>
+
+          <g class="pieces" id="pieces">
+            <g class="piece" data-i="1" role="button" tabindex="0" aria-label="Mend piece 1 of my heart"><g clip-path="url(#cp1)"><use href="#heartShape" fill="url(#heartGrad)"/></g></g>
+            <g class="piece" data-i="2" role="button" tabindex="0" aria-label="Mend piece 2 of my heart"><g clip-path="url(#cp2)"><use href="#heartShape" fill="url(#heartGrad)"/></g></g>
+            <g class="piece" data-i="3" role="button" tabindex="0" aria-label="Mend piece 3 of my heart"><g clip-path="url(#cp3)"><use href="#heartShape" fill="url(#heartGrad)"/></g></g>
+            <g class="piece" data-i="4" role="button" tabindex="0" aria-label="Mend piece 4 of my heart"><g clip-path="url(#cp4)"><use href="#heartShape" fill="url(#heartGrad)"/></g></g>
+            <g class="piece" data-i="5" role="button" tabindex="0" aria-label="Mend piece 5 of my heart"><g clip-path="url(#cp5)"><use href="#heartShape" fill="url(#heartGrad)"/></g></g>
+            <g class="piece" data-i="6" role="button" tabindex="0" aria-label="Mend piece 6 of my heart"><g clip-path="url(#cp6)"><use href="#heartShape" fill="url(#heartGrad)"/></g></g>
+          </g>
+        </svg>
+      </div>
+
+      <div class="dots" id="dots" aria-hidden="true">
+        <span class="dot">♥</span><span class="dot">♥</span><span class="dot">♥</span>
+        <span class="dot">♥</span><span class="dot">♥</span><span class="dot">♥</span>
+      </div>
+      <p class="piece-msg" id="pieceMsg" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- ============ THE QUESTION ============ -->
+  <section class="section" id="ask">
+    <div class="locked-note" id="lockNote">🔒 <em>Mend my heart above first… something is waiting for you here.</em></div>
+
+    <div class="q-content hidden" id="qContent">
+      <h2 class="script">One last thing…</h2>
+      <p class="lead">I know "sorry" is just a word, Jaan. So let me ask you properly:</p>
+      <p class="q-big">Will you give me the chance<br/>to make this right?</p>
+      <div class="btns">
+        <button class="btn primary" id="btnYes">Yes, I forgive you ❤️</button>
+        <button class="btn ghost" id="btnNo">I need more time 🥺</button>
+      </div>
+      <p class="no-msg" id="noMsg"></p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer>
+    <div class="script foot-script">I love you, Jaan.</div>
+    <p>I can't live without you — not even for a second.</p>
+    <p class="tiny">made with all my love — Rohit</p>
+  </footer>
+
+</main>
+
+<!-- ============ CELEBRATION OVERLAY ============ -->
+<div class="celebrate hidden" id="celebrate" aria-live="polite">
+  <div class="cele-card">
+    <img class="cele-photo" src="../photos/p9.jpg" alt="Us together"
+         onerror="this.style.display='none'" />
+    <div class="big-script">Thank you, my Jaan</div>
+    <p>You just made me the happiest man alive — again.
+    I promise you will never regret giving me this chance.
+    I'll prove it to you every single day, starting right now.</p>
+    <p class="hug">Now come here — your hug is waiting. 🤗</p>
+    <div class="sig">— Your Rohit</div>
+    <button class="btn primary" id="closeCele">Forever us ❤️</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Twinkling stars ---------- */
+  var stars = document.getElementById('stars');
+  for (var i = 0; i < 46; i++){
+    var s = document.createElement('span');
+    s.className = 'star';
+    s.style.left = (Math.random()*100) + 'vw';
+    s.style.top = (Math.random()*100) + 'vh';
+    s.style.animationDelay = (Math.random()*3) + 's';
+    s.style.animationDuration = (2.2 + Math.random()*2.4) + 's';
+    stars.appendChild(s);
+  }
+
+  /* ---------- Slow floating hearts ---------- */
+  var fhWrap = document.getElementById('floatHearts');
+  for (var j = 0; j < 10; j++){
+    var h = document.createElement('span');
+    h.className = 'fh';
+    h.textContent = '♥';
+    h.style.left = (Math.random()*96) + 'vw';
+    h.style.fontSize = (11 + Math.random()*16) + 'px';
+    h.style.opacity = (0.08 + Math.random()*0.12).toFixed(2);
+    h.style.color = Math.random() > 0.7 ? 'var(--gold)' : 'var(--rose)';
+    h.style.animationDuration = (16 + Math.random()*14) + 's';
+    h.style.animationDelay = (-Math.random()*24) + 's';
+    fhWrap.appendChild(h);
+  }
+
+  /* ---------- Reveal on scroll (simple + bulletproof) ---------- */
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  function revealCheck(){
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    revealEls = revealEls.filter(function(el){
+      // reveal once the top has crossed the trigger line — including anything
+      // already scrolled past, so a fast flick can never strand a hidden section
+      if (el.getBoundingClientRect().top < vh * 0.92){ el.classList.add('in'); return false; }
+      return true;
+    });
+  }
+  window.addEventListener('scroll', revealCheck, { passive:true });
+  window.addEventListener('resize', revealCheck);
+  window.addEventListener('load', revealCheck);
+  setTimeout(revealCheck, 300);
+
+  /* ---------- Mend-my-heart game ---------- */
+  var promises = [
+    "I promise to listen first — really listen — before I ever react.",
+    "I promise to think before I speak, so my words never cut you again.",
+    "I promise to never let my ego stand in front of us.",
+    "I promise to love you louder on our worst days than on our best.",
+    "I promise to keep our promise — we fix us, always, just the two of us.",
+    "I promise to spend every day earning your trust back — starting today."
+  ];
+
+  var placedCount = 0;
+  var stage = document.getElementById('heartStage');
+  var msgEl = document.getElementById('pieceMsg');
+  var dots = document.querySelectorAll('#dots .dot');
+  var lockNote = document.getElementById('lockNote');
+  var qContent = document.getElementById('qContent');
+
+  function showMsg(text){
+    msgEl.classList.remove('show');
+    // restart the transition
+    void msgEl.offsetWidth;
+    msgEl.textContent = text;
+    msgEl.classList.add('show');
+  }
+
+  function miniBurst(count, big){
+    for (var k = 0; k < count; k++){
+      var b = document.createElement('span');
+      b.className = 'burst-heart';
+      b.textContent = ['♥','💗','💖','♥'][Math.floor(Math.random()*4)];
+      var ang = Math.random()*Math.PI*2;
+      var dist = (big ? 90 : 46) + Math.random()*(big ? 130 : 60);
+      b.style.setProperty('--dx', (Math.cos(ang)*dist) + 'px');
+      b.style.setProperty('--dy', (Math.sin(ang)*dist) + 'px');
+      b.style.setProperty('--r', (Math.random()*70 - 35) + 'deg');
+      b.style.setProperty('--fs', (big ? 16 : 11) + Math.random()*14 + 'px');
+      b.style.setProperty('--c', Math.random() > 0.65 ? 'var(--gold)' : 'var(--heart)');
+      stage.appendChild(b);
+      (function(el){ setTimeout(function(){ el.remove(); }, 1600); })(b);
+    }
+  }
+
+  function heartMended(){
+    document.getElementById('game').classList.add('mended');
+    showMsg("You made it whole again. You always do. ❤️");
+    miniBurst(30, true);
+    setTimeout(function(){ miniBurst(20, true); }, 500);
+
+    setTimeout(function(){
+      lockNote.classList.add('hidden');
+      qContent.classList.remove('hidden');
+      setTimeout(function(){
+        document.getElementById('ask').scrollIntoView({ behavior:'smooth', block:'center' });
+      }, 350);
+    }, 1500);
+  }
+
+  function placePiece(piece){
+    if (piece.classList.contains('placed')) return;
+    piece.classList.add('placed');
+    piece.removeAttribute('role');
+    piece.removeAttribute('tabindex');
+    placedCount++;
+    dots[placedCount - 1].classList.add('on');
+    miniBurst(7, false);
+    if (placedCount === promises.length){
+      showMsg(promises[placedCount - 1]);
+      setTimeout(heartMended, 1400);
+    } else {
+      showMsg(promises[placedCount - 1]);
+    }
+  }
+
+  document.querySelectorAll('.piece').forEach(function(piece){
+    piece.addEventListener('click', function(){ placePiece(piece); });
+    piece.addEventListener('keydown', function(ev){
+      if (ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); placePiece(piece); }
+    });
+  });
+
+  /* ---------- The question ---------- */
+  var noMsgs = [
+    "That's okay. Take all the time you need — I'm not going anywhere. Ever. 💗",
+    "Still here. Still sorry. Still completely yours.",
+    "Then I'll ask again tomorrow. And the day after. You're worth every second of waiting, Jaan. 💗"
+  ];
+  var noCount = 0;
+  var noMsgEl = document.getElementById('noMsg');
+
+  document.getElementById('btnNo').addEventListener('click', function(){
+    noMsgEl.classList.remove('show');
+    void noMsgEl.offsetWidth;
+    noMsgEl.textContent = noMsgs[Math.min(noCount, noMsgs.length - 1)];
+    noMsgEl.classList.add('show');
+    noCount++;
+  });
+
+  var celebrate = document.getElementById('celebrate');
+
+  function heartRain(){
+    for (var k = 0; k < 34; k++){
+      var r = document.createElement('span');
+      r.className = 'rain-heart';
+      r.textContent = ['♥','💗','💖','💘'][Math.floor(Math.random()*4)];
+      r.style.left = (Math.random()*100) + 'vw';
+      r.style.fontSize = (13 + Math.random()*20) + 'px';
+      r.style.color = Math.random() > 0.7 ? 'var(--gold)' : 'var(--heart)';
+      r.style.animationDuration = (2.6 + Math.random()*3) + 's';
+      r.style.animationDelay = (Math.random()*1.6) + 's';
+      celebrate.appendChild(r);
+    }
+  }
+
+  document.getElementById('btnYes').addEventListener('click', function(){
+    celebrate.classList.remove('hidden');
+    heartRain();
+    qContent.innerHTML =
+      '<h2 class="script">She forgave me 🥹</h2>' +
+      '<p class="forgiven-note">Luckiest man alive — twice now.<br/>First when you chose me, and again just now.<br/>I won\'t waste it, Jaan. I promise. ❤️</p>';
+  });
+
+  document.getElementById('closeCele').addEventListener('click', function(){
+    celebrate.classList.add('hidden');
+  });
+})();
+</script>
+
+</body>
+</html>
