@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mithai Mania · Support</title>
+  <meta name="description" content="Mithai Mania is a festive match-3 roguelike made of Indian sweets. Help, how to play and contact.">
+  <link rel="icon" href="icon.png">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-top: #5a1030;
+      --bg-bottom: #1e0624;
+      --card: #3a0c2c;
+      --edge: rgba(249, 197, 74, 0.35);
+      --gold: #f9c54a;
+      --cream: #fff4de;
+      --cream-dim: rgba(255, 244, 222, 0.75);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom)) fixed;
+      color: var(--cream);
+      font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 16px 64px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    header img {
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 34px;
+      line-height: 1.1;
+      color: var(--gold);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 21px;
+      color: var(--gold);
+    }
+
+    .sub {
+      margin: 4px 0 0;
+      color: var(--cream-dim);
+    }
+
+    section {
+      margin-bottom: 18px;
+      padding: 20px;
+      background: var(--card);
+      border: 1px solid var(--edge);
+      border-radius: 20px;
+    }
+
+    .highlight {
+      border-color: var(--gold);
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    li + li {
+      margin-top: 6px;
+    }
+
+    p {
+      margin: 8px 0 0;
+    }
+
+    section > p:first-child {
+      margin-top: 0;
+    }
+
+    details + details {
+      margin-top: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    a {
+      color: var(--gold);
+    }
+
+    footer {
+      margin-top: 28px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <img src="icon.png" alt="Mithai Mania app icon" width="72" height="72">
+      <div>
+        <h1>Mithai Mania</h1>
+        <p class="sub">A festive match-3 roguelike for iPhone</p>
+      </div>
+    </header>
+
+    <section>
+      <h2>How to play</h2>
+      <ul>
+        <li>Swipe a sweet (or tap two neighbours) to swap them and line up 3 or more of a kind.</li>
+        <li>Match 4 to make a <strong>line blaster</strong>, which clears its whole row or column when matched.</li>
+        <li>Match 5 to make a <strong>Diwali bomb</strong>. Swap it with any sweet to eat every sweet of that kind.</li>
+        <li>Reach each level's target before your moves run out. Unused moves become bonus points.</li>
+        <li>After every level, pick a <strong>treat</strong>. Treats stack for the rest of the run.</li>
+        <li>Fail a level and the run is over. Try to beat your best score!</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Questions</h2>
+      <details>
+        <summary>Does the game need the internet?</summary>
+        <p>No. Mithai Mania works completely offline.</p>
+      </details>
+      <details>
+        <summary>Are there ads or in-app purchases?</summary>
+        <p>No. There are no ads, no purchases and no accounts.</p>
+      </details>
+      <details>
+        <summary>How do I turn off sound or vibration?</summary>
+        <p>Use the Sound and Haptics toggles on the home screen, or pause a run and change them there.
+        Sounds also follow your iPhone's silent switch.</p>
+      </details>
+      <details>
+        <summary>How do I reset my best score?</summary>
+        <p>Your records are stored only on your iPhone. Deleting and reinstalling the app resets them.</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>Found a bug or have an idea? Email <a href="mailto:rohitsainier@gmail.com">rohitsainier@gmail.com</a>.</p>
+    </section>
+
+    <footer><a href="privacy.html">Privacy Policy</a></footer>
+  </main>
+</body>
+</html>
