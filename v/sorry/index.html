@@ -50,6 +50,7 @@ h1{margin:0;font-size:clamp(20px,3.2vw,30px);font-weight:800;line-height:1.1}
   box-shadow:0 0 0 2px var(--ring) inset,0 3px 0 var(--ring);
 }
 .btn:active{transform:translateY(2px);box-shadow:0 0 0 2px var(--ring) inset,0 1px 0 var(--ring)}
+.btn:disabled{opacity:.4;cursor:default;transform:none}
 .btn[aria-pressed="false"]{opacity:.5;text-decoration:line-through}
 .btn:focus-visible,.play:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .rotate-hint{display:none;text-align:center;color:var(--muted);font-size:14px;margin:8px 0 0}
@@ -125,6 +126,11 @@ h1{margin:0;font-size:clamp(20px,3.2vw,30px);font-weight:800;line-height:1.1}
 .fh{position:absolute;pointer-events:none;z-index:1;font-size:clamp(14px,3cqw,40px)}
 .wrap:fullscreen{display:flex;align-items:center;justify-content:center;background:#000;width:100vw;height:100vh}
 .wrap:fullscreen #stage{width:min(100vw, calc(100vh * 16 / 9));border-radius:0;box-shadow:none}
+#paused{display:none;flex-direction:column;gap:.5em;background:rgba(30,10,40,.42);cursor:pointer;z-index:30;
+  font-size:clamp(11px,2cqw,24px);color:#fff;text-align:center}
+#paused .pbig{width:4.4em;height:4.4em;border-radius:50%;background:#ff4d7d;border:.15em solid #2b1b25;box-shadow:0 .18em 0 #2b1b25;
+  display:flex;align-items:center;justify-content:center;font-size:1.6em;padding-left:.2em}
+#paused p{margin:0;font-family:"Kalam","Comic Sans MS",cursive;font-weight:700;text-shadow:0 .08em .2em rgba(0,0,0,.5)}
 @media (prefers-reduced-motion:reduce){#meter.danger .mtrack{animation:none}}
 </style>
 </head>
@@ -373,7 +379,13 @@ h1{margin:0;font-size:clamp(20px,3.2vw,30px);font-weight:800;line-height:1.1}
     <p class="letter">Ek chhoti si kahani… thoda pyaar, thoda gussa, aur ek keeda. 🐛</p>
     <div class="choices"><button class="play" id="playBtn">▶ Kahani shuru karo</button></div>
     <p class="tiny">Sound on rakhna 🔊 (thodi si “gaali” bhi hai 🙈)</p>
+    <p class="tiny">Beech mein rokna ho toh screen pe tap karo ⏸️</p>
   </div>
+</div>
+
+<div id="paused" class="overlay" role="button" aria-label="Resume">
+  <div class="pbig">▶</div>
+  <p>Kahani ruki hui hai… tap karo, aage chalegi</p>
 </div>
 
 <div id="end" class="overlay">
@@ -389,6 +401,7 @@ h1{margin:0;font-size:clamp(20px,3.2vw,30px);font-weight:800;line-height:1.1}
 </div>
 
 <div class="controls">
+  <button class="btn" id="pauseBtn" disabled>⏸ Pause</button>
   <button class="btn" id="replayBtn">↻ Replay</button>
   <button class="btn" id="musicBtn" aria-pressed="true">🎵 Music</button>
   <button class="btn" id="voiceBtn" aria-pressed="true">🗣️ Voice</button>
@@ -408,11 +421,16 @@ const P = { rohit: 'r', veenu: 'v' };
 const HEART = 'M0,10 C-14,0 -20,-6 -20,-12 C-20,-19 -14,-23 -9,-23 C-4,-23 -1,-20 0,-17 C1,-20 4,-23 9,-23 C14,-23 20,-19 20,-12 C20,-6 14,0 0,10Z';
 let RUN = 0;
 
-/* ---------- timers & abort ---------- */
+/* ---------- timers & abort (pausable: a held timeout keeps its remaining time) ---------- */
 const timers = new Set();
-function later(fn, ms){ const t = setTimeout(() => { timers.delete(t); fn(); }, ms); timers.add(t); return t; }
-function every(fn, ms){ const t = setInterval(fn, ms); timers.add(t); return t; }
-function clearTimers(){ timers.forEach(t => { clearTimeout(t); clearInterval(t); }); timers.clear(); }
+let PAUSED = false, PLAYING = false;
+function schedule(t){ t.at = Date.now(); t.h = t.rep ? setInterval(t.run, t.ms) : setTimeout(t.run, t.left); }
+function later(fn, ms){ const t = { rep: false, left: ms }; t.run = () => { timers.delete(t); fn(); }; timers.add(t); if (!PAUSED) schedule(t); return t; }
+function every(fn, ms){ const t = { rep: true, ms, run: fn }; timers.add(t); if (!PAUSED) schedule(t); return t; }
+function cancel(t){ if (!t) return; clearTimeout(t.h); clearInterval(t.h); timers.delete(t); }
+function clearTimers(){ timers.forEach(t => { clearTimeout(t.h); clearInterval(t.h); }); timers.clear(); }
+function holdTimers(){ timers.forEach(t => { clearTimeout(t.h); clearInterval(t.h); if (!t.rep) t.left = Math.max(0, t.left - (Date.now() - t.at)); }); }
+function releaseTimers(){ timers.forEach(schedule); }
 class Abort extends Error {}
 const wait = (ms, id) => new Promise((res, rej) => later(() => id === RUN ? res() : rej(new Abort('stop')), ms));
 
@@ -429,6 +447,8 @@ const A = {
     const rev = c.createConvolver(); rev.buffer = this.impulse(2.4);
     const rg = c.createGain(); rg.gain.value = .3; this.musicVol.connect(rev); rev.connect(rg); rg.connect(this.master);
     this.fx = c.createGain(); this.fx.gain.value = this.on ? .7 : 0; this.fx.connect(this.master);
+    this.vox = c.createGain(); this.vox.gain.value = 1.1; this.meter = c.createAnalyser(); this.meter.fftSize = 512;
+    this.vox.connect(this.meter); this.meter.connect(this.master);
     const len = c.sampleRate * 1.5; this.noiseBuf = c.createBuffer(1, len, c.sampleRate);
     const d = this.noiseBuf.getChannelData(0); for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
     setInterval(() => this.tick(), 90);
@@ -564,11 +584,52 @@ const SFX = {
     o.connect(g); g.connect(A.fx); o.start(s); o.stop(s + .65); }); }
 };
 
-/* ---------- voices (browser text-to-speech) ---------- */
+/* ---------- voices: ElevenLabs clips (made by make-voices.mjs), browser text-to-speech for anything missing ---------- */
 const V = {
-  ok: 'speechSynthesis' in window, voices: [],
-  load(){ if (!this.ok) return; const get = () => { try { this.voices = speechSynthesis.getVoices() || []; } catch(e){} };
+  ok: 'speechSynthesis' in window, voices: [], files: {}, raw: {}, decoded: {}, src: null, gen: 0,
+  load(){
+    this.ready = fetch('voice/manifest.json').then(r => r.ok ? r.json() : {}).then(m => {
+      this.files = m;
+      for (const k in m) this.raw[k] = fetch('voice/' + m[k].file).then(r => r.ok ? r.arrayBuffer() : null).catch(() => null);
+      if (Object.keys(m).length) $('#voiceBtn').style.display = '';
+    }).catch(() => {});
+    if (!this.ok) return; const get = () => { try { this.voices = speechSynthesis.getVoices() || []; } catch(e){} };
     get(); try { speechSynthesis.addEventListener('voiceschanged', get); } catch(e){ speechSynthesis.onvoiceschanged = get; } },
+  decode(key){
+    if (!this.raw[key] || !A.ctx) return Promise.resolve(null);
+    return this.decoded[key] || (this.decoded[key] = this.raw[key].then(b => b && A.ctx.decodeAudioData(b)).catch(() => null));
+  },
+  decodeAll(){ Object.keys(this.raw).forEach(k => this.decode(k)); },
+  async clip(key){
+    const within = (p, ms) => Promise.race([p, new Promise(r => later(() => r(null), ms))]);
+    await within(this.ready, 2500);
+    return this.files[key] ? within(this.decode(key), 4000) : null;
+  },
+  async speak(text, role){
+    if (!A.voice) return;
+    const clean = this.clean(text); if (!clean || /^[.,!?\s]+$/.test(clean)) return;
+    const gen = this.gen, buf = await this.clip(role + '|' + clean);
+    if (gen !== this.gen || !A.voice) return;
+    return buf ? this.play(buf) : this.tts(clean, role);
+  },
+  play(buf){
+    this.halt();
+    return new Promise(res => {
+      const s = A.ctx.createBufferSource(); s.buffer = buf; s.connect(A.vox);
+      let done = false; const fin = () => { if (done) return; done = true; if (this.src === s) this.src = null; A.duckOn(false); res(); };
+      s.onended = fin; s.fin = fin; this.src = s;
+      A.duckOn(true); s.start();
+    });
+  },
+  halt(){ const s = this.src; if (!s) return; this.src = null; try { s.onended = null; s.stop(); } catch(e){} s.fin(); },
+  level(){ // loudness of the clip playing now (drives the lip-flap), or -1 when no clip is playing
+    if (!this.src || !A.meter) return -1;
+    const d = this.buf || (this.buf = new Float32Array(A.meter.fftSize)); A.meter.getFloatTimeDomainData(d);
+    let s = 0; for (let i = 0; i < d.length; i++) s += d[i] * d[i];
+    return Math.sqrt(s / d.length);
+  },
+  pause(){ if (this.ok) try { speechSynthesis.pause(); } catch(e){} },
+  resume(){ if (this.ok) try { speechSynthesis.resume(); } catch(e){} },
   pick(role){
     const L = this.voices; if (!L.length) return null;
     const lang = v => (v.lang || '').toLowerCase().replace('_', '-');
@@ -582,21 +643,20 @@ const V = {
     return pool.find(want) || L.find(v => want(v) && lang(v).startsWith('en')) || pool[0];
   },
   clean(t){ return t.replace(/<[^>]+>/g, '').replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{200D}\u{2B50}\u{2764}]/gu, '').replace(/…/g, ', ').replace(/[“”"]/g, '').replace(/\s+/g, ' ').trim(); },
-  speak(text, role){
+  tts(clean, role){
     return new Promise(res => {
-      if (!this.ok || !A.voice) return res();
-      const clean = this.clean(text); if (!clean || /^[.,!?\s]+$/.test(clean)) return res();
+      if (!this.ok) return res();
       let done = false; const fin = () => { if (done) return; done = true; A.duckOn(false); res(); };
       try {
         const u = new SpeechSynthesisUtterance(clean), v = this.pick(role);
         if (v){ u.voice = v; u.lang = v.lang; } else u.lang = 'en-IN';
         const s = { rohit:[.85,.95], veenu:[1.3,1.02], narrator:[1.05,.92], worm:[1.9,1.15] }[role] || [1, 1];
         u.pitch = s[0]; u.rate = s[1]; u.onend = fin; u.onerror = fin;
-        A.duckOn(true); speechSynthesis.speak(u); setTimeout(fin, 2500 + clean.length * 110);
+        A.duckOn(true); speechSynthesis.speak(u); later(fin, 2500 + clean.length * 110);
       } catch(e){ fin(); }
     });
   },
-  stop(){ if (this.ok) try { speechSynthesis.cancel(); } catch(e){} }
+  stop(){ this.gen++; this.halt(); if (this.ok) try { speechSynthesis.resume(); speechSynthesis.cancel(); } catch(e){} }
 };
 V.load();
 
@@ -655,8 +715,10 @@ function bubble(who, html, cls = ''){
 function pop(b){ gsap.to(b, { scale: .6, opacity: 0, duration: .2, onComplete: () => b.remove() }); }
 function talk(who, base){
   let on = false;
-  const t = every(() => { on = !on; face(who, null, on ? (base === 'o' ? 'smile' : 'o') : base); }, 150);
-  return () => { clearInterval(t); timers.delete(t); face(who, null, base); };
+  const open = base === 'o' ? 'smile' : 'o';
+  // with a voice clip the mouth follows its loudness; with browser speech it just flaps
+  const t = every(() => { const l = V.level(); on = l < 0 ? !on : l > .03; face(who, null, on ? open : base); }, 130);
+  return () => { cancel(t); face(who, null, base); };
 }
 async function say(who, text, o = {}, id){
   const b = bubble(who, text, o.cls || '');
@@ -727,7 +789,7 @@ function growPuddle(){
 function cry(who, on){
   const p = P[who];
   gsap.to(`#${p}StreamL, #${p}StreamR`, { opacity: on ? .9 : 0, duration: .4 });
-  if (cries[who]){ clearInterval(cries[who]); timers.delete(cries[who]); cries[who] = null; }
+  if (cries[who]){ cancel(cries[who]); cries[who] = null; }
   if (!on) return;
   cries[who] = every(() => {
     const x = cx(who) + gsap.getProperty('#' + p + 'Feat', 'x');
@@ -927,6 +989,7 @@ function floatHearts(){
 }
 function showEnd(id){
   if (id !== RUN) return;
+  setPlaying(false);
   const e = $('#end'); e.style.display = 'flex';
   $('#endMsg').textContent = 'Maaf kiya?';
   const no = $('#noBtn'); no.textContent = noLines[0]; no.style.transform = ''; no.style.display = '';
@@ -963,6 +1026,20 @@ $('#yesBtn').addEventListener('click', () => {
   V.speak('Yayyy! Ab ek last sawaal. Khana khaya?', 'rohit');
 });
 
+/* ---------- pause / resume: timers, tweens, music, sfx and voice all freeze together ---------- */
+function setPaused(p){
+  if (p === PAUSED || (p && !PLAYING)) return;
+  PAUSED = p;
+  if (p){ holdTimers(); gsap.globalTimeline.pause(); if (A.ctx) A.ctx.suspend(); V.pause(); }
+  else { releaseTimers(); gsap.globalTimeline.resume(); if (A.ctx) A.ctx.resume(); V.resume(); }
+  $('#paused').style.display = p ? 'flex' : 'none';
+  const b = $('#pauseBtn'); b.textContent = p ? '▶ Resume' : '⏸ Pause';
+}
+function setPlaying(on){
+  PLAYING = on; $('#pauseBtn').disabled = !on;
+  if (!on && PAUSED) setPaused(false);
+}
+
 /* ---------- reset / start ---------- */
 let idleTw = [];
 function startIdle(){
@@ -978,6 +1055,7 @@ function startIdle(){
   });
 }
 function resetScene(){
+  setPlaying(false);
   clearTimers(); cries = {}; steamTw = null;
   gsap.globalTimeline.clear();
   V.stop(); A.mood(null);
@@ -1008,10 +1086,11 @@ function resetScene(){
   startIdle();
 }
 function begin(){
-  A.init();
+  A.init(); V.ready.then(() => V.decodeAll());
   if (V.ok && A.voice){ try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch(e){} }
   RUN++;
   resetScene();
+  setPlaying(true);
   const id = RUN;
   gsap.to('#start', { opacity: 0, duration: .5, onComplete: () => { $('#start').style.display = 'none'; } });
   story(id).catch(e => { if (!(e instanceof Abort)) console.error(e); });
@@ -1031,6 +1110,14 @@ $('#replayBtn').addEventListener('click', begin);
 $('#againBtn').addEventListener('click', begin);
 $('#musicBtn').addEventListener('click', e => { const on = !A.on; A.setOn(on); e.currentTarget.setAttribute('aria-pressed', on); });
 $('#voiceBtn').addEventListener('click', e => { A.voice = !A.voice; if (!A.voice) V.stop(); e.currentTarget.setAttribute('aria-pressed', A.voice); });
+$('#pauseBtn').addEventListener('click', () => setPaused(!PAUSED));
+// tap the picture (or press Space / K) to pause and resume; leaving the tab pauses too
+stage.addEventListener('click', e => { if (PLAYING && !e.target.closest('#start, #end')) setPaused(!PAUSED); });
+document.addEventListener('keydown', e => {
+  if (!PLAYING || e.repeat || e.target.closest('button, input, textarea')) return;
+  if (e.key === ' ' || e.key.toLowerCase() === 'k'){ e.preventDefault(); setPaused(!PAUSED); }
+});
+document.addEventListener('visibilitychange', () => { if (document.hidden) setPaused(true); });
 const wrap = $('#wrap');
 if (!document.fullscreenEnabled) $('#fsBtn').style.display = 'none';
 $('#fsBtn').addEventListener('click', () => {
